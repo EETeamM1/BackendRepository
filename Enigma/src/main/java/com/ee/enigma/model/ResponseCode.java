@@ -18,5 +18,9 @@ public class ResponseCode {
 		this.message = message;
 	} 
 	
+	@Override
+	public String toString() {
+		return "code: "+this.getCode()+", messages: "+this.getMessage();
+	}
 	
 }

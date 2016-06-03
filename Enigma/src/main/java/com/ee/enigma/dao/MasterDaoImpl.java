@@ -25,7 +25,8 @@ public class MasterDaoImpl implements MasterDao{
 	@Override
 	public Master getMasterInfo() {
 		Session session = this.sessionFactory.getCurrentSession();
-		Master master = (Master) session.createQuery("from Master");
+		Master master = (Master) session.load(Master.class, 1);
+		logger.info(master);
 		return master;
 	}
 	

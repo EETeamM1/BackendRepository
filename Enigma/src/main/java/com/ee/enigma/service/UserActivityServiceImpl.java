@@ -1,5 +1,6 @@
 package com.ee.enigma.service;
 
+import java.sql.Time;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -22,7 +23,6 @@ import com.ee.enigma.model.ResponseCode;
 import com.ee.enigma.model.ResponseResult;
 import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.model.UserInfo;
-import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 
 @Service(value = "userActivityService")
 @Transactional
@@ -36,19 +36,19 @@ public class UserActivityServiceImpl implements UserActivityService {
 	private Response response;
 	private ResponseCode responseCode;
 	private ResponseResult result;
-	
+
 	@Autowired
-	@Qualifier(value="userInfoDao")
+	@Qualifier(value = "userInfoDao")
 	public void setUserInfoDao(UserInfoDao userInfoDao) {
 		this.userInfoDao = userInfoDao;
 	}
 	@Autowired
-	@Qualifier(value="masterDao")
+	@Qualifier(value = "masterDao")
 	public void setMasterDao(MasterDao masterDao) {
 		this.masterDao = masterDao;
 	}
 	@Autowired
-	@Qualifier(value="deviceInfoDao")
+	@Qualifier(value = "deviceInfoDao")
 	public void setDeviceInfoDao(DeviceInfoDao deviceInfoDao) {
 		this.deviceInfoDao = deviceInfoDao;
 	}
@@ -64,6 +64,13 @@ public class UserActivityServiceImpl implements UserActivityService {
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
 
+		if(null == loginInfo.getParameters()){
+			responseCode.setCode(Constants.CODE_BAD_REQUEST);
+			responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
+			response.setResponseCode(responseCode);
+			return response;
+		}
+		
 		String userId = loginInfo.getParameters().getUserId();
 		String password = loginInfo.getParameters().getPassword();
 		long deviceId = loginInfo.getParameters().getDeviceId();
@@ -80,65 +87,73 @@ public class UserActivityServiceImpl implements UserActivityService {
 		}
 
 		// Authenticating User.
-		if(!IsUserAuthenticated(userId, password)){
+		if (!IsUserAuthenticated(userId, password)) {
 			responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
 			responseCode.setMessage(Constants.MESSAGE_AUTHENTICATION_FAILD);
 			response.setResponseCode(responseCode);
 			return response;
-		}		
+		}
+
 		
 		// Checking device info
 		DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
-		if(null == deviceInfo){
+		if (null == deviceInfo) {
 			responseCode.setCode(Constants.CODE_NOT_FOUND);
 			responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
 			response.setResponseCode(responseCode);
 			return response;
-		}		
-		int timeoutPeriod = deviceInfo.getTimeoutPeriod();
+		}
+		Time timeoutPeriod = deviceInfo.getTimeoutPeriod();
 		String masterPassword = null;
 		if (!deviceInfo.isMasterSet()) {
-			//Get Master Password.
+			// Get Master Password.
 			Master master = masterDao.getMasterInfo();
 			masterPassword = master.getMasterPassword();
 		}
 
 		// call "DeviceIssueInfoService" to get issueId
-		String issueId = "yyyymmdd1234";
+		String issueId = "issue1";
 
 		// call "GeoLocationService" to get location name from Geo coordinates.
-		String location = "location";
+		String location = "Indore";
 
 		// create sessionToken
-		String sessionToken = "skdfeo12334";
 
-		//make UserActivity entry. 
+		
+		// make UserActivity entry.
+		Date loginTime = new Date();
+		String activityId = activityIdGenerator(userId,loginTime.getTime());		
 		UserActivity userAct = new UserActivity();
+		userAct.setUserId(userId);
 		userAct.setDeviceId(deviceId);
 		userAct.setIssueId(issueId);
-		userAct.setLocation(location);
-		Date loginTime = new Date();
-		userAct.setLoginTime(new java.sql.Date(loginTime.getTime()));
-		userAct.setUserId(userId);
+		userAct.setLocation(location);		
+		userAct.setLoginTime(loginTime);
+		userAct.setActivityId(activityId);		
 		userActivityDao.createNewActivity(userAct);
 
-		//Success response.
+		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		responseCode.setMessage(Constants.MESSAGE_SUCCESS);
-		result.setSessionToken(sessionToken);
-		result.setTimeout(timeoutPeriod);
+		result.setSessionToken(activityId);
+		result.setMasterPassword(masterPassword);
+		result.setTimeout(timeoutPeriod.getHours()*60+timeoutPeriod.getMinutes());
 		response.setResponseCode(responseCode);
 		response.setResult(result);
 
 		return response;
 	}
 
+	private String activityIdGenerator(String userId, long time) {
+		return userId+time;
+	}
+
 	private boolean IsUserAuthenticated(String userId, String password) {
-		UserInfo userInfo = userInfoDao.getUserInfo(userId);
-		if(null == userInfo || password == userInfo.getPassword()){
+		UserInfo userInfo = userInfoDao.getUserInfo(userId, password);
+		if (null != userInfo) {
 			return true;
 		}
-		return false;				
+		return false;
 	}
 
 	public void userLogoutService(Request logoutInfo) {

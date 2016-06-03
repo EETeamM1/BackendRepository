@@ -29,7 +29,7 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/test" />
+		<property name="url" value="jdbc:mysql://localhost:3306/transility" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
 	</bean>
@@ -41,6 +41,10 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.ee.enigma.model.UserActivity</value>
+				<value>com.ee.enigma.model.UserInfo</value>
+				<value>com.ee.enigma.model.Master</value>
+				<value>com.ee.enigma.model.DeviceInfo</value>
+				<value>com.ee.enigma.model.DeviceIssueInfo</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

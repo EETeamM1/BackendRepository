@@ -1,5 +1,6 @@
 package com.ee.enigma.model;
 
+import java.sql.Time;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,15 +17,15 @@ public class DeviceInfo {
 	private String OSVersion;
 	private String yearOfManufacturing;
 	private boolean isMasterSet;
-	private int timeoutPeriod;
+	private Time timeoutPeriod;
 	
 	/* GETTERS AND SETTERS */
 	
 	
-	public int getTimeoutPeriod() {
+	public Time getTimeoutPeriod() {
 		return timeoutPeriod;
 	}
-	public void setTimeoutPeriod(int timeoutPeriod) {
+	public void setTimeoutPeriod(Time timeoutPeriod) {
 		this.timeoutPeriod = timeoutPeriod;
 	}
 	public long getDeviceId() {
@@ -68,5 +69,10 @@ public class DeviceInfo {
 	}
 	public void setMasterSet(boolean isMasterSet) {
 		this.isMasterSet = isMasterSet;
+	}
+	
+	@Override
+	public String toString() {
+		return "DeviceId : "+this.getDeviceId()+", DeviceName: "+this.getDeviceName()+", OS: "+this.getOS()+", OSVersion: "+this.getOSVersion()+", Manufacturer: "+this.getManufacturer()+", YOM: "+this.getYearOfManufacturing()+", TimeoutPeriod: "+this.getTimeoutPeriod()+", isMasterSet: "+this.isMasterSet();
 	}
 }

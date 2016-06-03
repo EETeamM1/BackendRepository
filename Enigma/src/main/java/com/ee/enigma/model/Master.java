@@ -10,14 +10,24 @@ import javax.persistence.Table;
 public class Master {
 
 	@Id
-	String masterPassword;
+	private int id;
+        private String masterPassword;
 
-	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getMasterPassword() {
 		return masterPassword;
 	}
-
 	public void setMasterPassword(String masterPassword) {
 		this.masterPassword = masterPassword;
 	}	
+	
+	@Override
+	public String toString() {
+		return "id: "+this.getId()+", masterPassword: "+this.getMasterPassword();
+	}
 }
