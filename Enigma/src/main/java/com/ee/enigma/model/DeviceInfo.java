@@ -55,8 +55,8 @@ public class DeviceInfo {
 	public String getOSVersion() {
 		return OSVersion;
 	}
-	public void setOSVersion(String oSVersion) {
-		OSVersion = oSVersion;
+	public void setOSVersion(String osVersion) {
+		OSVersion = osVersion;
 	}
 	public String getYearOfManufacturing() {
 		return yearOfManufacturing;

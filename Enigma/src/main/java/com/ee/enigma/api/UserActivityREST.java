@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.model.Request;
 import com.ee.enigma.model.Response;
-import com.ee.enigma.service.UserActivityService;
+import com.ee.enigma.service.UserLoginLogoutService;
 
 
 @Controller(value="userActivityREST")
@@ -23,17 +23,17 @@ import com.ee.enigma.service.UserActivityService;
 public class UserActivityREST {
 	private Logger logger = Logger.getLogger(UserActivityREST.class);
 
-	private UserActivityService userActivityService;
+	private UserLoginLogoutService userLoginLogoutService;
 	@Autowired(required = true)
-	@Qualifier(value = "userActivityService")
-	public void setUserActivityService(UserActivityService userActivityService) {
-		this.userActivityService = userActivityService;
+	@Qualifier(value = "userLoginLogoutService")
+	public void setUserActivityService(UserLoginLogoutService userActivityService) {
+		this.userLoginLogoutService = userActivityService;
 	}
 	
 	@POST
 	@Path("/login")
 	public Response login(Request loginInfo){
-		Response loginResponse = userActivityService.userLoginService(loginInfo);
+		Response loginResponse = userLoginLogoutService.userLoginService(loginInfo);
 		return loginResponse;
 		
 	}

@@ -36,4 +36,10 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
 		}
 	}
 
+	@Override
+	public void updateDeviceInfo(DeviceInfo deviceInfo) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(deviceInfo);		
+	}
+
 }

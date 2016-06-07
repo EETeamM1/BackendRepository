@@ -1,15 +1,20 @@
 package com.ee.enigma.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="LOCATION_INFO")
 public class LocationInfo {
 	private float latitude;
 	private float longitude;
+	@Id
 	private String location;
 	private int radius;
+	@Transient
+	private double distance;
 	
 	public float getLatitude() {
 		return latitude;
@@ -34,6 +39,12 @@ public class LocationInfo {
 	}
 	public void setRadius(int radius) {
 		this.radius = radius;
+	}
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 	
 	

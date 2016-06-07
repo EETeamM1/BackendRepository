@@ -45,6 +45,8 @@
 				<value>com.ee.enigma.model.Master</value>
 				<value>com.ee.enigma.model.DeviceInfo</value>
 				<value>com.ee.enigma.model.DeviceIssueInfo</value>
+			<value>com.ee.enigma.model.LocationInfo</value>
+				<value>com.ee.enigma.model.Session</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
