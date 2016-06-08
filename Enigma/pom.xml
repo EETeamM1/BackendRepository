@@ -125,7 +125,7 @@
 
 
 	<build>
-		<finalName>InventoryManagment</finalName>
+		<finalName>InventoryManagement</finalName>
 		<plugins>
 
 			<plugin>
