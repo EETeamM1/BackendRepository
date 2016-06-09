@@ -20,13 +20,13 @@ import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.LocationInfo;
 import com.ee.enigma.model.Master;
-import com.ee.enigma.model.Request;
-import com.ee.enigma.model.Response;
-import com.ee.enigma.model.ResponseCode;
-import com.ee.enigma.model.ResponseResult;
 import com.ee.enigma.model.Session;
 import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.model.UserInfo;
+import com.ee.enigma.request.Request;
+import com.ee.enigma.response.Response;
+import com.ee.enigma.response.ResponseCode;
+import com.ee.enigma.response.ResponseResult;
 
 @Service(value = "userLoginLogoutService")
 @Transactional
@@ -85,67 +85,49 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
 
-		if (null == loginInfo.getParameters()) {
-			responseCode.setCode(Constants.CODE_BAD_REQUEST);
-			responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
-			response.setResponseCode(responseCode);
-			return response;
-		}
-		
-		String userId = null;
-		String password = null;
-		long deviceId = 0;
-		float latitude = 0f;
-		float longitude = 0f;
-		String osVersion = null;
-		if (loginInfo.getParameters() != null) {
-			 userId = loginInfo.getParameters().getUserId();
-			 password = loginInfo.getParameters().getPassword();
-			 deviceId = loginInfo.getParameters().getDeviceId();
-			 latitude = loginInfo.getParameters().getLatitude();
-			 longitude = loginInfo.getParameters().getLongitude();
-			 osVersion = loginInfo.getParameters().getOsVersion();
+		String userId;
+		String password;
+		long deviceId;
+		float latitude;
+		float longitude;
+		String osVersion;
+
+		try {
+			userId = loginInfo.getParameters().getUserId();
+			password = loginInfo.getParameters().getPassword();
+			deviceId = loginInfo.getParameters().getDeviceId();
+			latitude = loginInfo.getParameters().getLatitude();
+			longitude = loginInfo.getParameters().getLongitude();
+			osVersion = loginInfo.getParameters().getOsVersion();
+		} catch (Exception e) {
+			logger.error(e);
+			return badRequest();
 		}
 
 		// Checking whether request contains all require fields or not.
-		if (null == userId || null == password || 0 == deviceId || 0 == latitude || 0 == longitude) {
-			responseCode.setCode(Constants.CODE_BAD_REQUEST);
-			responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
-			response.setResponseCode(responseCode);
-			return response;
+		if (null == userId || null == password || 0 == deviceId) {
+			return badRequest();
 		}
 
 		// Authenticating User.
 		if (!IsUserAuthenticated(userId, password)) {
-			responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
-			responseCode.setMessage(Constants.MESSAGE_AUTHENTICATION_FAILD);
-			response.setResponseCode(responseCode);
-			return response;
+			return authenticationFailedResponse();
 		}
 
 		// Checking device info
 		DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
 		if (null == deviceInfo) {
-			responseCode.setCode(Constants.CODE_NOT_FOUND);
-			responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
-			response.setResponseCode(responseCode);
-			return response;
+			return deviceNotRegisteredResponse();
 		}
 		Time timeoutPeriod = deviceInfo.getTimeoutPeriod();
-		String masterPassword = null;
-		if (!deviceInfo.isMasterSet()) {
-			// Get Master Password.
-			Master master = masterDao.getMasterInfo();
-			masterPassword = master.getMasterPassword();
-		}
+
+		// fetching Master passwrod
+		Master master = masterDao.getMasterInfo();
+		String masterPassword = master.getMasterPassword();
+
 		//check and update OS Version.
-		if(osVersion != null || masterPassword != null){
-			if(osVersion != null && !osVersion.equals(deviceInfo.getOSVersion())){
-				deviceInfo.setOSVersion(osVersion);
-			}
-			if(masterPassword != null){
-				deviceInfo.setMasterSet(true);
-			}
+		if (osVersion != null && !osVersion.equals(deviceInfo.getOSVersion())) {
+			deviceInfo.setOSVersion(osVersion);
 			deviceInfoDao.updateDeviceInfo(deviceInfo);
 		}
 
@@ -153,13 +135,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		String issueId = "issue1";
 
 		// call "GeoLocationService" to get location name from Geo coordinates.
-		LocationInfo locationInfo = locationInfoDao.getLocationName(latitude, longitude);
-		String location;
-		if (null == locationInfo) {
-			location = latitude + "," + longitude;
-		} else {
-			location = locationInfo.getLocation();
-		}
+		String location = getGeoLocation(latitude, longitude);
 
 		// make UserActivity entry.
 		Date loginTime = new Date();
@@ -174,11 +150,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		userActivityDao.createNewActivity(userAct);
 
 		// create session validity entry.
-		Session session = new Session();
-		session.setActivityId(activityId);
-		Date notificationStartTime = getNotificationStartTime(loginTime, timeoutPeriod);
-		session.setNotificationStartTime(notificationStartTime);
-		sessionDao.createSeesionEntry(session);
+		createSessionEntry(activityId, loginTime, timeoutPeriod);
 
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
@@ -189,6 +161,49 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		response.setResponseCode(responseCode);
 		response.setResult(result);
 
+		return response;
+	}
+
+	private void createSessionEntry(String activityId, Date loginTime, Time timeoutPeriod) {
+		Session session = new Session();
+		session.setActivityId(activityId);
+		Date notificationStartTime = getNotificationStartTime(loginTime, timeoutPeriod);
+		session.setNotificationStartTime(notificationStartTime);
+		sessionDao.createSeesionEntry(session);
+	}
+
+	private String getGeoLocation(float latitude, float longitude) {
+		LocationInfo locationInfo = null;
+		String location = null;
+		if (0 != latitude && 0 != longitude) {
+			locationInfo = locationInfoDao.getLocationName(latitude, longitude);
+			if (null == locationInfo) {
+				location = latitude + "," + longitude;
+			} else {
+				location = locationInfo.getLocation();
+			}
+		}
+		return location;
+	}
+
+	private Response deviceNotRegisteredResponse() {
+		responseCode.setCode(Constants.CODE_NOT_FOUND);
+		responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
+		response.setResponseCode(responseCode);
+		return response;
+	}
+
+	private Response authenticationFailedResponse() {
+		responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
+		responseCode.setMessage(Constants.MESSAGE_AUTHENTICATION_FAILD);
+		response.setResponseCode(responseCode);
+		return response;
+	}
+
+	private Response badRequest() {
+		responseCode.setCode(Constants.CODE_BAD_REQUEST);
+		responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
+		response.setResponseCode(responseCode);
 		return response;
 	}
 

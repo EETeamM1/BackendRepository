@@ -1,4 +1,4 @@
-package com.ee.enigma.model;
+package com.ee.enigma.request;
 
 public class RequestParameters {
 	private String userId;

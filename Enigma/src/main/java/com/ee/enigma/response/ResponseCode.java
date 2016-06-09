@@ -1,4 +1,4 @@
-package com.ee.enigma.model;
+package com.ee.enigma.response;
 
 public class ResponseCode {
 	private int code;

@@ -1,7 +1,7 @@
 package com.ee.enigma.service;
 
-import com.ee.enigma.model.Request;
-import com.ee.enigma.model.Response;
+import com.ee.enigma.request.Request;
+import com.ee.enigma.response.Response;
 
 public interface UserLoginLogoutService {
 	public Response userLoginService(Request loginInfo);
