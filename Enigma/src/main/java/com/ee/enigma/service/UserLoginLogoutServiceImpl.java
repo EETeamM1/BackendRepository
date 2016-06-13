@@ -210,9 +210,10 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 	private Date getNotificationStartTime(Date loginTime, Time timeoutPeriod) {
 		int hour = loginTime.getHours() + timeoutPeriod.getHours();
 		int minutes = loginTime.getMinutes() + timeoutPeriod.getMinutes();
-		loginTime.setHours(hour);
-		loginTime.setMinutes(minutes);
-		return loginTime;
+		Date sessionExpireTime = new Date(loginTime.getTime());
+		sessionExpireTime.setHours(hour);
+		sessionExpireTime.setMinutes(minutes);
+		return sessionExpireTime;
 	}
 
 	private String activityIdGenerator(String userId, long time) {
@@ -227,9 +228,37 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		return false;
 	}
 
-	public void userLogoutService(Request logoutInfo) {
-		// TODO Auto-generated method stub
+	public Response userLogoutService(Request logoutInfo) {
+		String sessionToken = null;
 
+		response = new Response();
+		responseCode = new ResponseCode();
+
+		try {
+			sessionToken = logoutInfo.getParameters().getSessionToken();
+		} catch (Exception e) {
+			logger.error(e);
+			return badRequest();
+		}
+		// Checking whether request contains require field sessionToken or not.
+		if (null == sessionToken) {
+			return badRequest();
+		}
+		String status = userActivityDao.logOutActivity(sessionToken);
+		
+		if( status.equals(Constants.MESSAGE_SUCCESS)) {
+		// Success response.
+		responseCode.setCode(Constants.CODE_SUCCESS);
+		responseCode.setMessage(Constants.LOGOUT_SUCCESS);
+		} else {
+			// Failure response
+			responseCode.setCode(Constants.CODE_BAD_REQUEST);
+			responseCode.setMessage(status);
+			
+		}
+		response.setResponseCode(responseCode);
+		response.setResult(null);
+		return response;
 	}
 
 }

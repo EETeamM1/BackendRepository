@@ -5,5 +5,5 @@ import com.ee.enigma.response.Response;
 
 public interface UserLoginLogoutService {
 	public Response userLoginService(Request loginInfo);
-	public void userLogoutService(Request logoutInfo);
+	public Response userLogoutService(Request logoutInfo);
 }

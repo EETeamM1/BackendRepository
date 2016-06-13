@@ -38,6 +38,14 @@ public class UserActivityREST {
 		
 	}
 	
+	@POST
+	@Path("/logout")
+	public Response logout(Request logoutInfo){
+		Response logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
+		return logoutResponse;
+		
+	}
+	
 	@GET
 	@Path("/login")
 	public String loginAPITest(){

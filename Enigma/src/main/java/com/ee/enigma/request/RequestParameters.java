@@ -7,6 +7,7 @@ public class RequestParameters {
 	private String osVersion;
 	private float latitude;
 	private float longitude;
+	private String sessionToken;
 	
 	
 	public String getUserId() {
@@ -44,6 +45,12 @@ public class RequestParameters {
 	}
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
+	}
+	public String getSessionToken() {
+		return sessionToken;
+	}
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
 	}
 	
 	

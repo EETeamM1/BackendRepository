@@ -118,5 +118,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	 private String issueIdGenerator(String userId, long deviceId) {
      return userId+deviceId;
    }
+
+	@Override
+	public DeviceIssueInfo getDeviceIssueInfoByIssueID(String issueId) {
+		Session session = this.sessionFactory.getCurrentSession();
+		DeviceIssueInfo deviceIssueInfo = (DeviceIssueInfo) session.load(DeviceIssueInfo.class, issueId);
+		logger.info(deviceIssueInfo.toString());
+		return deviceIssueInfo;
+	}
 	
 }
