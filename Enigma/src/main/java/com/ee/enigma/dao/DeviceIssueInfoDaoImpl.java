@@ -41,7 +41,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	 public void createDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo) {
 	   logger.info(deviceIssueInfo);
 	    Session session = this.sessionFactory.getCurrentSession();
-	    deviceIssueInfo.setIssueId(issueIdGenerator(deviceIssueInfo.getUserId(), deviceIssueInfo.getDeviceId()));
+	    deviceIssueInfo.setIssueId(issueIdGenerator( deviceIssueInfo.getDeviceId(),deviceIssueInfo.getUserId()));
 	    session.persist(deviceIssueInfo); 
 	 }
 	 
@@ -71,6 +71,28 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	    }
 	 }
 	
+	 @Override
+	  public List<DeviceIssueInfo> getDeviceIssueInfoList(long deviceId,String userId) {
+	    try {
+	      String hql = "from DeviceIssueInfo where deviceId= :deviceId and userId= :userId";
+	      Session session = this.sessionFactory.getCurrentSession();
+	      Query query = session.createQuery(hql);
+	      query.setParameter("deviceId", deviceId);
+	      query.setParameter("userId", userId);
+	      List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
+	      if(null == deviceIssueInfoList || deviceIssueInfoList.size() == 0 ){
+	        return null;
+	      }
+	      logger.info(deviceIssueInfoList.toString());
+	      return deviceIssueInfoList;
+	    } catch (HibernateException e) {
+	      logger.error(e);
+	      return null;
+	    }
+	 }
+	
+	 
+	 
 	@Override
   public String submitDeviceIssueInfo(long deviceId, String userId)
   {
@@ -91,7 +113,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
       newDeviceIssueInfo.setDeviceId(deviceId);
       newDeviceIssueInfo.setUserId(userId);
       newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDate());
-      newDeviceIssueInfo.setIssueId(issueIdGenerator(userId, deviceId));
+      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId,userId));
       createDeviceIssueInfo(newDeviceIssueInfo);
     }
     else
@@ -115,8 +137,8 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
     return issueId;
   }
 	
-	 private String issueIdGenerator(String userId, long deviceId) {
-     return userId+deviceId;
+	 private String issueIdGenerator( long deviceId,String userId) {
+     return deviceId+userId+CommonUtils.getCurrentDate();
    }
 
 	@Override

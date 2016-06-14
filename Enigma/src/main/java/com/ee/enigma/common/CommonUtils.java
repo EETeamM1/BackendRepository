@@ -9,4 +9,9 @@ public class CommonUtils
     Date date= new java.util.Date();
     return (new java.sql.Date(date.getTime()));
   }
+  public static long getTime()
+  {
+    Date date= new java.util.Date();
+    return (date.getTime());
+  }
 }

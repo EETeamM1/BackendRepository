@@ -11,6 +11,7 @@ public interface DeviceIssueInfoDao {
 	public void createDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo) ;
 	public void updateDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo) ;
 	public List<DeviceIssueInfo> getDeviceIssueInfoList(long deviceId) ;
+	public List<DeviceIssueInfo> getDeviceIssueInfoList(long deviceId,String userId) ;
 	
 	
 }

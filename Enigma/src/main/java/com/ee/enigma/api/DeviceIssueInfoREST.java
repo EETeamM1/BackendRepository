@@ -1,0 +1,41 @@
+package com.ee.enigma.api;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+
+import com.ee.enigma.request.Request;
+import com.ee.enigma.response.Response;
+
+import com.ee.enigma.service.DeviceIssueInfoService;
+
+
+@Controller(value="deviceIssueInfoREST")
+@Consumes("application/json")
+@Produces("application/json")
+public class DeviceIssueInfoREST {
+	private Logger logger = Logger.getLogger(DeviceIssueInfoREST.class);
+
+	DeviceIssueInfoService deviceIssueInfoService;
+	@Autowired(required = true)
+	@Qualifier(value = "deviceIssueInfoService")
+	public void setDeviceIssueInfoService(DeviceIssueInfoService deviceIssueInfoService) {
+		this.deviceIssueInfoService = deviceIssueInfoService;
+	}
+		
+	@POST
+	@Path("/deviceIssueInfo")
+	public Response deviceIssueInfoServiceOne(Request deviceIssueInfo){
+		Response deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
+		return deviceIssueResponse;
+	}
+	
+	
+	
+}
