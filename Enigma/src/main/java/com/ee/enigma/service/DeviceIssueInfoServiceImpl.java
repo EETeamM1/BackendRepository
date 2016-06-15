@@ -13,7 +13,7 @@ import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.request.Request;
-import com.ee.enigma.response.Response;
+import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
 
@@ -23,7 +23,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
 {
 
   private Logger logger = Logger.getLogger(DeviceIssueInfoServiceImpl.class);
-  private Response response;
+  private EnigmaResponse response;
   private ResponseCode responseCode;
   private ResponseResult result;
   private DeviceIssueInfoDao deviceIssueInfoDao;
@@ -35,9 +35,9 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     this.deviceIssueInfoDao = deviceIssueInfoDao;
   }
 
-  public Response deviceIssueInfoService(Request deviceIssueInfo)
+  public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo)
   {
-    response = new Response();
+    response = new EnigmaResponse();
     responseCode = new ResponseCode();
     result = new ResponseResult();
     String userId;
@@ -135,7 +135,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return deviceId + userId + CommonUtils.getTime();
   }
 
-  private Response deviceNotRegisteredResponse()
+  private EnigmaResponse deviceNotRegisteredResponse()
   {
     responseCode.setCode(Constants.CODE_NOT_FOUND);
     responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
@@ -143,7 +143,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return response;
   }
 
-  private Response authenticationFailedResponse()
+  private EnigmaResponse authenticationFailedResponse()
   {
     responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
     responseCode.setMessage(Constants.MESSAGE_AUTHENTICATION_FAILD);
@@ -151,7 +151,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return response;
   }
 
-  private Response badRequest()
+  private EnigmaResponse badRequest()
   {
     responseCode.setCode(Constants.CODE_BAD_REQUEST);
     responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);

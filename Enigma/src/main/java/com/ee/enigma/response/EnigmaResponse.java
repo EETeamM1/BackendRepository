@@ -1,7 +1,7 @@
 package com.ee.enigma.response;
 
 
-public class Response {
+public class EnigmaResponse {
 	private ResponseResult result;
 	private ResponseCode responseCode;
 	

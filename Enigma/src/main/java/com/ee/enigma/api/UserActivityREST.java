@@ -5,15 +5,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.request.Request;
-import com.ee.enigma.response.Response;
+import com.ee.enigma.response.EnigmaResponse;
+//import com.ee.enigma.response.Response;
 import com.ee.enigma.service.UserLoginLogoutService;
 
 
@@ -33,16 +36,16 @@ public class UserActivityREST {
 	@POST
 	@Path("/login")
 	public Response login(Request loginInfo){
-		Response loginResponse = userLoginLogoutService.userLoginService(loginInfo);
-		return loginResponse;
+		EnigmaResponse loginResponse = userLoginLogoutService.userLoginService(loginInfo);
+		return Response.ok(loginResponse, MediaType.APPLICATION_JSON).status(loginResponse.getResponseCode().getCode()).build();
 		
 	}
 	
 	@POST
 	@Path("/logout")
 	public Response logout(Request logoutInfo){
-		Response logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
-		return logoutResponse;
+		EnigmaResponse logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
+		return Response.ok(logoutResponse, MediaType.APPLICATION_JSON).status(logoutResponse.getResponseCode().getCode()).build();
 		
 	}
 	

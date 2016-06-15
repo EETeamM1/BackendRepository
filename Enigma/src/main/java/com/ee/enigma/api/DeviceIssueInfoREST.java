@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.request.Request;
-import com.ee.enigma.response.Response;
+import com.ee.enigma.response.EnigmaResponse;
 
 import com.ee.enigma.service.DeviceIssueInfoService;
 
@@ -31,8 +31,8 @@ public class DeviceIssueInfoREST {
 		
 	@POST
 	@Path("/deviceIssueInfo")
-	public Response deviceIssueInfoServiceOne(Request deviceIssueInfo){
-		Response deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
+	public EnigmaResponse deviceIssueInfoServiceOne(Request deviceIssueInfo){
+		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
 		return deviceIssueResponse;
 	}
 	

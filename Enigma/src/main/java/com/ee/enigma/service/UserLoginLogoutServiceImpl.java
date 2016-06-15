@@ -24,7 +24,7 @@ import com.ee.enigma.model.Session;
 import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
-import com.ee.enigma.response.Response;
+import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
 
@@ -39,7 +39,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 	private SessionDao sessionDao;
 	private DeviceInfoDao deviceInfoDao;
 	private MasterDao masterDao;
-	private Response response;
+	private EnigmaResponse response;
 	private ResponseCode responseCode;
 	private ResponseResult result;
 
@@ -79,9 +79,9 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		this.userActivityDao = userActivityDao;
 	}
 
-	public Response userLoginService(Request loginInfo) {
+	public EnigmaResponse userLoginService(Request loginInfo) {
 
-		response = new Response();
+		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
 
@@ -186,21 +186,21 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		return location;
 	}
 
-	private Response deviceNotRegisteredResponse() {
+	private EnigmaResponse deviceNotRegisteredResponse() {
 		responseCode.setCode(Constants.CODE_NOT_FOUND);
 		responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
 		response.setResponseCode(responseCode);
 		return response;
 	}
 
-	private Response authenticationFailedResponse() {
+	private EnigmaResponse authenticationFailedResponse() {
 		responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
 		responseCode.setMessage(Constants.MESSAGE_AUTHENTICATION_FAILD);
 		response.setResponseCode(responseCode);
 		return response;
 	}
 
-	private Response badRequest() {
+	private EnigmaResponse badRequest() {
 		responseCode.setCode(Constants.CODE_BAD_REQUEST);
 		responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
 		response.setResponseCode(responseCode);
@@ -228,10 +228,10 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		return false;
 	}
 
-	public Response userLogoutService(Request logoutInfo) {
+	public EnigmaResponse userLogoutService(Request logoutInfo) {
 		String sessionToken = null;
 
-		response = new Response();
+		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 
 		try {

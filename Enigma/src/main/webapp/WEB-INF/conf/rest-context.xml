@@ -88,14 +88,14 @@
 			<ref bean='jsonProvider' />
 		</jaxrs:providers>
 	</jaxrs:server>
-	<jaxrs:server id="deviceIssueREST" address="/deviceIssue">
-		<jaxrs:serviceBeans>
-			<ref bean="deviceIssueInfoREST" />
-		</jaxrs:serviceBeans>
-		<jaxrs:providers>
-			<ref bean='jsonProvider' />
-		</jaxrs:providers>
-	</jaxrs:server>
+<!-- 	<jaxrs:server id="deviceIssueREST" address="/deviceIssue"> -->
+<!-- 		<jaxrs:serviceBeans> -->
+<!-- 			<ref bean="deviceIssueInfoREST" /> -->
+<!-- 		</jaxrs:serviceBeans> -->
+<!-- 		<jaxrs:providers> -->
+<!-- 			<ref bean='jsonProvider' /> -->
+<!-- 		</jaxrs:providers> -->
+<!-- 	</jaxrs:server> -->
 
 	<!-- <jaxrs:server address="/" basePackages="com.ee.enigma.api"/> -->
 
