@@ -16,15 +16,26 @@ public class DeviceIssueInfo {
 	private String userId;
 	private Date issueTime;
 	private Date submitTime;
-	private Boolean byAdmin;
+	private Boolean issueByAdmin;
+  private Boolean submitByAdmin;
 	
-	public Boolean getByAdmin() {
-		return byAdmin;
-	}
-	public void setByAdmin(Boolean byAdmin) {
-		this.byAdmin = byAdmin;
-	}
-	/* GETTERS AND SETTERS */
+  public Boolean getIssueByAdmin()
+  {
+    return issueByAdmin;
+  }
+  public void setIssueByAdmin(Boolean issueByAdmin)
+  {
+    this.issueByAdmin = issueByAdmin;
+  }
+  public Boolean getSubmitByAdmin()
+  {
+    return submitByAdmin;
+  }
+  public void setSubmitByAdmin(Boolean submitByAdmin)
+  {
+    this.submitByAdmin = submitByAdmin;
+  }
+  /* GETTERS AND SETTERS */
 	public String getIssueId() {
 		return issueId;
 	}

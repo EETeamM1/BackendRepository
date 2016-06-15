@@ -114,7 +114,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
             else
             {
             deviceIssue.setSubmitTime(CommonUtils.getCurrentDate());
-            deviceIssue.setByAdmin(false);
+            deviceIssue.setSubmitByAdmin(false);
             }
             break;
           }
@@ -166,7 +166,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     newDeviceIssueInfo.setUserId(userId);
     newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDate());
     newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
-    newDeviceIssueInfo.setByAdmin(byAdmin);
+    newDeviceIssueInfo.setIssueByAdmin(byAdmin);
     deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
   }
 
