@@ -90,7 +90,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
         responseCode.setMessage(Constants.MESSAGE_DEVICE_ALREADY_ISSUED);
         response.setResponseCode(responseCode);
         response.setResult(result);
-
         return response;
       }
     }
@@ -103,8 +102,20 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
           if (deviceIssue.getSubmitTime() == null)
           {
             // submit Device
+            if(deviceIssue.getUserId().equals(userId))
+            {
+              //Not submit User Is same 
+              responseCode.setCode(Constants.CODE_SUCCESS);
+              responseCode.setMessage(deviceIssue.getIssueId());
+              response.setResponseCode(responseCode);
+              response.setResult(result);
+              return response;
+            }
+            else
+            {
             deviceIssue.setSubmitTime(CommonUtils.getCurrentDate());
             deviceIssue.setByAdmin(false);
+            }
             break;
           }
         }
