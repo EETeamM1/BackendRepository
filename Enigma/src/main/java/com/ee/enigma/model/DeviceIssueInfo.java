@@ -16,7 +16,14 @@ public class DeviceIssueInfo {
 	private String userId;
 	private Date issueTime;
 	private Date submitTime;
+	private Boolean byAdmin;
 	
+	public Boolean getByAdmin() {
+		return byAdmin;
+	}
+	public void setByAdmin(Boolean byAdmin) {
+		this.byAdmin = byAdmin;
+	}
 	/* GETTERS AND SETTERS */
 	public String getIssueId() {
 		return issueId;

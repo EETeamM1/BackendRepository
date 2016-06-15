@@ -15,4 +15,8 @@ public interface Constants {
 	String USER_ACTIVITY_ID_NOT_FOUND = "Provided Session Token is not exist";
 	String USER_ALREADY_LOGOUT = "User already logout for provided Session Token";
 	String USER_ALREADY_AUTOMATIC_LOGOUT = "User automatic logout for provided Session Token";
+	
+	//Device Issue Info
+	String MESSAGE_DEVICE_ALREADY_ISSUED = "Device is already issued .";
+	String MESSAGE_DEVICE_SUCCESSFULLY_ISSUED = "Device successfully issued to user.";
 }
