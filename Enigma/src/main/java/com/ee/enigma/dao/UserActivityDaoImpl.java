@@ -30,7 +30,6 @@ public class UserActivityDaoImpl implements UserActivityDao{
 	
 	public void createNewActivity(UserActivity userActivity) {
 		logger.info(userActivity);
-		System.out.println(" userActivity "+userActivity);
 		Session session = this.sessionFactory.getCurrentSession();
 		session.persist(userActivity);		
 	}
