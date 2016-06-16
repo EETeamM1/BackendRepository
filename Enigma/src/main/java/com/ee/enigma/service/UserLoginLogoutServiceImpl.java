@@ -105,7 +105,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		}
 
 		// Checking whether request contains all require fields or not.
-		if (null == userId || null == password || 0 == deviceId) {
+		if (null == userId || null == password ) {
 			return badRequest();
 		}
 
