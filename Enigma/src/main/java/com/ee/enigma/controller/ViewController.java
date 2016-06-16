@@ -14,4 +14,11 @@ public class ViewController {
 		ModelAndView mav= new ModelAndView("index"); 
 		return mav;		
 	}
+	
+	@RequestMapping("/login")
+	public ModelAndView loginPage()
+	{
+		ModelAndView mav= new ModelAndView("login"); 
+		return mav;		
+	}
 }
