@@ -138,7 +138,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
   }
 	
 	 private String issueIdGenerator( long deviceId,String userId) {
-     return deviceId+userId+CommonUtils.getTime();
+     return deviceId+"_"+CommonUtils.getTime();
    }
 
 	@Override
