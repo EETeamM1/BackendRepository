@@ -31,11 +31,18 @@ public class DeviceIssueInfoREST {
 		
 	@POST
 	@Path("/deviceIssueInfo")
-	public EnigmaResponse deviceIssueInfoServiceOne(Request deviceIssueInfo){
+	public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo){
 		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
 		return deviceIssueResponse;
 	}
 	
+	@POST
+  @Path("/deviceIssueReport")
+  public EnigmaResponse deviceIssueReportService(Request deviceIssueInfo){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getReportForDevice(deviceIssueInfo);
+    return deviceIssueResponse;
+  }
+  
 	
 	
 }

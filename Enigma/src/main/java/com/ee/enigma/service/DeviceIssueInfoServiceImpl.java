@@ -1,8 +1,10 @@
 package com.ee.enigma.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,43 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     this.deviceIssueInfoDao = deviceIssueInfoDao;
   }
 
+  public EnigmaResponse getReportForDevice(Request deviceIssueInfo){
+    EnigmaResponse  response=null;
+ 
+    long deviceId;
+    String beginDateString;
+    String endDateString;
+    Date beginDate;
+    Date endDate;
+    try
+    {
+      deviceId = deviceIssueInfo.getParameters().getDeviceId();
+      beginDateString = deviceIssueInfo.getParameters().getBeginDate();
+      endDateString = deviceIssueInfo.getParameters().getEndDate();
+      beginDate= CommonUtils.getSqlDateByString(beginDateString);
+      endDate= CommonUtils.getSqlDateByString(endDateString);
+      if(beginDate==null)
+        endDate=null;
+    }
+    catch (Exception e)
+    {
+      logger.error(e);
+      return badRequest();
+    }
+    JSONObject jsonObject=null;
+    jsonObject=getDeviceInfoReportJson(deviceId, beginDate, endDate);
+    return response;
+  }
+  
+  public JSONObject getDeviceInfoReportJson(long deviceId,Date beginDate,Date endDate)
+  {
+    JSONObject jsonObject = new JSONObject();
+     List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueInfoListByDate(deviceId, beginDate, endDate);
+    jsonObject.put("jsonList", jsonObjectList);
+    logger.error(jsonObjectList);  
+    return jsonObject;
+  }
+   
   public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo)
   {
     response = new EnigmaResponse();
@@ -132,7 +171,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
 
   private String issueIdGenerator(long deviceId, String userId)
   {
-    return deviceId + userId + CommonUtils.getTime();
+    return deviceId+"_"+CommonUtils.getTime();
   }
 
   private EnigmaResponse deviceNotRegisteredResponse()

@@ -9,9 +9,28 @@ public class RequestParameters {
 	private float longitude;
 	private String sessionToken;
 	private boolean byAdmin;
+	 private String beginDate;
+	  private String endDate;
 	
 	
-	public String getUserId() {
+	
+	public String getBeginDate()
+    {
+      return beginDate;
+    }
+    public void setBeginDate(String beginDate)
+    {
+      this.beginDate = beginDate;
+    }
+    public String getEndDate()
+    {
+      return endDate;
+    }
+    public void setEndDate(String endDate)
+    {
+      this.endDate = endDate;
+    }
+  public String getUserId() {
 		return userId;
 	}
 	public void setUserId(String userId) {

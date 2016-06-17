@@ -5,5 +5,6 @@ import com.ee.enigma.response.EnigmaResponse;
 
 public interface DeviceIssueInfoService {
 	public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo);
+	public EnigmaResponse getReportForDevice(Request deviceIssueInfo);
 
 }
