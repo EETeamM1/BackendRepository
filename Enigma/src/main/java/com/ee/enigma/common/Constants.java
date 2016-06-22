@@ -20,9 +20,12 @@ public interface Constants {
 	//Device Issue Info
 	String MESSAGE_DEVICE_ALREADY_ISSUED = "Device is already issued.";
 	String MESSAGE_DEVICE_SUCCESSFULLY_ISSUED = "Device successfully issued to user.";
-	String MESSAGE_DEVICE_ISSUED_TO_OTHER_USER = "Device Issue to Other User.";
-	 String MESSAGE_DEVICE_ASSIGNED_TO_SAME_USER = "Device is already assigned to you.";
-	
+	String MESSAGE_DEVICE_ISSUED_TO_OTHER_USER = "Device is issued to other User.";
+	String MESSAGE_DEVICE_ASSIGNED_TO_SAME_USER = "Device is already assigned to you.";
+  String MESSAGE_DEVICE_SUBMITTED_TO_ADMIN_FOR_APPROVAL = "Device is submitted to admin, approval is pending.";
+  String MESSAGE_DEVICE_ALREADY_SUBMITTED = "Device is already submitted.";
+  String MESSAGE_DEVICE_SUBMITTED = "Device is submitted.";
+  
 	String DEVICE_INFO_ADMIN_AVAILABLE = "AV";
 	String DEVICE_INFO_PENDING_WITH_ADMIN = "PD";
 	String DEVICE_INFO_ISSUED_TO_USER = "IS";

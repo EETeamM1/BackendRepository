@@ -1,6 +1,7 @@
 package com.ee.enigma.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,8 +15,8 @@ public class DeviceIssueInfo {
 	private String issueId;
 	private long deviceId;
 	private String userId;
-	private Date issueTime;
-	private Date submitTime;
+	private Timestamp issueTime;
+	private Timestamp submitTime;
 	private Boolean issueByAdmin;
   private Boolean submitByAdmin;
 	
@@ -54,16 +55,21 @@ public class DeviceIssueInfo {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public Date getIssueTime() {
-		return issueTime;
-	}
-	public void setIssueTime(Date issueTime) {
-		this.issueTime = issueTime;
-	}
-	public Date getSubmitTime() {
-		return submitTime;
-	}
-	public void setSubmitTime(Date submitTime) {
-		this.submitTime = submitTime;
-	}
+  public Timestamp getIssueTime()
+  {
+    return issueTime;
+  }
+  public void setIssueTime(Timestamp issueTime)
+  {
+    this.issueTime = issueTime;
+  }
+  public Timestamp getSubmitTime()
+  {
+    return submitTime;
+  }
+  public void setSubmitTime(Timestamp submitTime)
+  {
+    this.submitTime = submitTime;
+  }
+	
 }

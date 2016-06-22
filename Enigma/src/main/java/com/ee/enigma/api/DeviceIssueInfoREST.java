@@ -42,6 +42,13 @@ public class DeviceIssueInfoREST {
     EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getReportForDevice(deviceIssueInfo);
     return deviceIssueResponse;
   }
+	
+	@POST
+  @Path("/submitDevice")
+  public EnigmaResponse submitDevice(Request deviceIssueInfo){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.submitDevice(deviceIssueInfo);
+    return deviceIssueResponse;
+  }
   
 	
 	

@@ -18,6 +18,14 @@ public class CommonUtils
     //logger.info(sqlDate);
     return sqlDate;
   }
+  
+  public static java.sql.Timestamp getCurrentDateTime()
+  {
+    java.sql.Timestamp sqlDate=new java.sql.Timestamp((new java.util.Date()).getTime());
+    //logger.info(sqlDate);
+    return sqlDate;
+  }
+  
   public static long getTime()
   {
     Date date= new Date();
