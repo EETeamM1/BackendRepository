@@ -124,52 +124,6 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	    }
 	 }
 	
-	 
-	 
-	@Override
-  public String submitDeviceIssueInfo(long deviceId, String userId)
-  {
-    String issueId=null;
-    DeviceIssueInfo newDeviceIssueInfo=null;
-    List<DeviceIssueInfo> deviceIssueInfoList = getDeviceIssueInfoList(deviceId);
-    boolean deviveInfoFound=false;
-    for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-    {
-      if(deviceIssueInfo.getIssueId().equals(userId))
-      {
-        deviveInfoFound=true;
-      }
-    }
-    if(!deviveInfoFound)
-    {
-      newDeviceIssueInfo=new DeviceIssueInfo();
-      newDeviceIssueInfo.setDeviceId(deviceId);
-      newDeviceIssueInfo.setUserId(userId);
-      newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDate());
-      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId,userId));
-      createDeviceIssueInfo(newDeviceIssueInfo);
-    }
-    else
-    {
-      boolean flag=false;
-      for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-      {
-        if(deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime()==null)
-        {
-          deviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDate());
-          updateDeviceIssueInfo(deviceIssueInfo);
-          flag=true;
-          break;
-        }
-      }
-      if(!flag)
-      {
-        //Need to implement , where submit time is not null
-      }
-    }
-    return issueId;
-  }
-	
 	 private String issueIdGenerator( long deviceId,String userId) {
      return deviceId+"_"+CommonUtils.getTime();
    }

@@ -18,6 +18,7 @@ public class DeviceInfo {
 	private String yearOfManufacturing;
 	private boolean isMasterSet;
 	private Time timeoutPeriod;
+	private String isAdminApproved;
 	
 	/* GETTERS AND SETTERS */
 	
@@ -71,7 +72,15 @@ public class DeviceInfo {
 		this.isMasterSet = isMasterSet;
 	}
 	
-	@Override
+	public String getIsAdminApproved()
+  {
+    return isAdminApproved;
+  }
+  public void setIsAdminApproved(String isAdminApproved)
+  {
+    this.isAdminApproved = isAdminApproved;
+  }
+  @Override
 	public String toString() {
 		return "DeviceId : "+this.getDeviceId()+", DeviceName: "+this.getDeviceName()+", OS: "+this.getOS()+", OSVersion: "+this.getOSVersion()+", Manufacturer: "+this.getManufacturer()+", YOM: "+this.getYearOfManufacturing()+", TimeoutPeriod: "+this.getTimeoutPeriod()+", isMasterSet: "+this.isMasterSet();
 	}

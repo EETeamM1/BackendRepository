@@ -8,7 +8,7 @@ public class RequestParameters {
 	private float latitude;
 	private float longitude;
 	private String sessionToken;
-	private boolean byAdmin;
+	private Boolean byAdmin;
 	 private String beginDate;
 	  private String endDate;
 	
@@ -72,12 +72,14 @@ public class RequestParameters {
 	public void setSessionToken(String sessionToken) {
 		this.sessionToken = sessionToken;
 	}
-	public boolean isByAdmin() {
-		return byAdmin;
-	}
-	public void setByAdmin(boolean byAdmin) {
-		this.byAdmin = byAdmin;
-	}
+  public Boolean getByAdmin()
+  {
+    return byAdmin;
+  }
+  public void setByAdmin(Boolean byAdmin)
+  {
+    this.byAdmin = byAdmin;
+  }
 	
 	
 }

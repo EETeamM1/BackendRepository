@@ -15,8 +15,15 @@ public interface Constants {
 	String USER_ACTIVITY_ID_NOT_FOUND = "Provided Session Token is not exist";
 	String USER_ALREADY_LOGOUT = "User already logout for provided Session Token";
 	String USER_ALREADY_AUTOMATIC_LOGOUT = "User automatic logout for provided Session Token";
+	String USER_NOT_EXISTING = "User does not exist, please use valid user.";
 	
 	//Device Issue Info
-	String MESSAGE_DEVICE_ALREADY_ISSUED = "Device is already issued .";
+	String MESSAGE_DEVICE_ALREADY_ISSUED = "Device is already issued.";
 	String MESSAGE_DEVICE_SUCCESSFULLY_ISSUED = "Device successfully issued to user.";
+	String MESSAGE_DEVICE_ISSUED_TO_OTHER_USER = "Device Issue to Other User.";
+	 String MESSAGE_DEVICE_ASSIGNED_TO_SAME_USER = "Device is already assigned to you.";
+	
+	String DEVICE_INFO_ADMIN_AVAILABLE = "AV";
+	String DEVICE_INFO_PENDING_WITH_ADMIN = "PD";
+	String DEVICE_INFO_ISSUED_TO_USER = "IS";
 }
