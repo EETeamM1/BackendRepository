@@ -30,7 +30,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	}
 	
 	 @Override
-	 public List<DeviceIssueInfo> getDeviceIssueInfoListByDate(long deviceId,Date beginDate,Date  endDate) {
+	 public List<DeviceIssueInfo> getDeviceIssueInfoListByDate(String deviceId,Date beginDate,Date  endDate) {
 	   try {
 	     String hql=null;
 	     Query query=null;
@@ -63,7 +63,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	 }
 	
 	@Override
-	public DeviceIssueInfo getDeviceIssueInfo(long deviceId) {
+	public DeviceIssueInfo getDeviceIssueInfo(String deviceId) {
 		Session session = this.sessionFactory.getCurrentSession();
 		DeviceIssueInfo deviceIssueInfo = (DeviceIssueInfo) session.load(DeviceIssueInfo.class, deviceId);
 		logger.info(deviceIssueInfo.toString());
@@ -86,7 +86,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
    }
 	 
 	 @Override
-	  public List<DeviceIssueInfo> getDeviceIssueInfoList(long deviceId) {
+	  public List<DeviceIssueInfo> getDeviceIssueInfoList(String deviceId) {
 	    try {
 	      String hql = "from DeviceIssueInfo where deviceId= :deviceId ";
 	      Session session = this.sessionFactory.getCurrentSession();
@@ -105,7 +105,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	 }
 	
 	 @Override
-	  public List<DeviceIssueInfo> getDeviceIssueInfoList(long deviceId,String userId) {
+	  public List<DeviceIssueInfo> getDeviceIssueInfoList(String deviceId,String userId) {
 	    try {
 	      String hql = "from DeviceIssueInfo where deviceId= :deviceId and userId= :userId";
 	      Session session = this.sessionFactory.getCurrentSession();
@@ -124,7 +124,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	    }
 	 }
 	
-	 private String issueIdGenerator( long deviceId,String userId) {
+	 private String issueIdGenerator( String deviceId,String userId) {
      return deviceId+"_"+CommonUtils.getTime();
    }
 

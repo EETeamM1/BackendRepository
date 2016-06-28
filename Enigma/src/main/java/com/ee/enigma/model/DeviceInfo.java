@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class DeviceInfo {
 	
 	@Id
-	private long deviceId;
+	private String deviceId;
 	private String deviceName;
 	private String manufacturer;
 	private String OS;
@@ -29,10 +29,10 @@ public class DeviceInfo {
 	public void setTimeoutPeriod(Time timeoutPeriod) {
 		this.timeoutPeriod = timeoutPeriod;
 	}
-	public long getDeviceId() {
+	public String getDeviceId() {
 		return deviceId;
 	}
-	public void setDeviceId(long deviceId) {
+	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
 	public String getDeviceName() {

@@ -1,11 +1,15 @@
 package com.ee.enigma.dao;
 
 import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -29,15 +33,10 @@ public class UserInfoDaoImpl implements UserInfoDao {
 		try {
 			String hql = "from UserInfo where userId= :userId AND password= :password";
 			Session session = this.sessionFactory.getCurrentSession();
-			Query query = session.createQuery(hql);
-			query.setParameter("userId", userId);
-			query.setParameter("password", password);
-			List<UserInfo> userInfoList = (List<UserInfo>) query.list();
-			if(null == userInfoList || userInfoList.size() == 0 ){
-				return null;
-			}
-			UserInfo userInfo = userInfoList.get(0);
-			logger.info(userInfo.toString());
+			Criteria criteria = session.createCriteria(UserInfo.class);
+			criteria.add(Restrictions.sqlRestriction("userId = ? collate Latin1_General_CS", userId, new StringType()));
+			criteria.add(Restrictions.sqlRestriction("password = ? collate Latin1_General_CS", password, new StringType()));
+			UserInfo userInfo = (UserInfo) criteria.uniqueResult();			
 			return userInfo;
 		} catch (HibernateException e) {
 			logger.error(e);

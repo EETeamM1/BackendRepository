@@ -13,7 +13,7 @@ public class DeviceIssueInfo {
 	
 	@Id
 	private String issueId;
-	private long deviceId;
+	private String deviceId;
 	private String userId;
 	private Timestamp issueTime;
 	private Timestamp submitTime;
@@ -43,10 +43,10 @@ public class DeviceIssueInfo {
 	public void setIssueId(String issueId) {
 		this.issueId = issueId;
 	}
-	public long getDeviceId() {
+	public String getDeviceId() {
 		return deviceId;
 	}
-	public void setDeviceId(long deviceId) {
+	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
 	public String getUserId() {

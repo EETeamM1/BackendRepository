@@ -58,7 +58,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   public EnigmaResponse getReportForDevice(Request deviceIssueInfo){
     EnigmaResponse  response=null;
  
-    long deviceId;
+    String deviceId;
     String beginDateString;
     String endDateString;
     Date beginDate;
@@ -83,7 +83,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return response;
   }
   
-  public JSONObject getDeviceInfoReportJson(long deviceId,Date beginDate,Date endDate)
+  public JSONObject getDeviceInfoReportJson(String deviceId,Date beginDate,Date endDate)
   {
     JSONObject jsonObject = new JSONObject();
      List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueInfoListByDate(deviceId, beginDate, endDate);
@@ -98,7 +98,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     responseCode = new ResponseCode();
     result = new ResponseResult();
     String userId;
-    long deviceId;
+    String deviceId;
     Boolean byAdmin;
 
     try
@@ -115,7 +115,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
 
     // Checking whether request contains all require fields or not.
-    if (null == userId || "".equals(userId.trim()) || 0 == deviceId || null==byAdmin)
+    if (null == userId || "".equals(userId.trim()) || null == deviceId || null==byAdmin)
     {
       return badRequest();
     }
@@ -207,7 +207,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     responseCode = new ResponseCode();
     result = new ResponseResult();
     String userId;
-    long deviceId;
+    String deviceId;
     Boolean byAdmin;
 
     try
@@ -231,7 +231,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
     boolean deviveInfoFound=false;
    // Checking whether request contains all require fields or not.
-    if (null == userId || "".equals(userId.trim()) || 0 == deviceId || null==byAdmin)
+    if (null == userId || "".equals(userId.trim()) || null == deviceId || null==byAdmin)
     {
       return badRequest();
     }
@@ -369,13 +369,59 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return response;
   }
   
-  private String issueIdGenerator(long deviceId, String userId)
+  
+ @Override
+  public String submitDeviceIssueInfo(String deviceId, String userId)
+  {
+    String issueId=null;
+    DeviceIssueInfo newDeviceIssueInfo=null;
+    List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+    boolean deviveInfoFound=false;
+    for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
+    {
+      if(deviceIssueInfo.getIssueId().equals(userId))
+      {
+        deviveInfoFound=true;
+      }
+    }
+    if(!deviveInfoFound)
+    {
+      newDeviceIssueInfo=new DeviceIssueInfo();
+      newDeviceIssueInfo.setDeviceId(deviceId);
+      newDeviceIssueInfo.setUserId(userId);
+      newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
+      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId,userId));
+      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
+    }
+    else
+    {
+      boolean flag=false;
+      for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
+      {
+        if(deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime()==null)
+        {
+          deviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
+          deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
+          flag=true;
+          break;
+        }
+      }
+      if(!flag)
+      {
+        //Need to implement , where submit time is not null
+      }
+    }
+    return issueId;
+  } 
+
+  
+  private String issueIdGenerator(String deviceId, String userId)
   {
     return deviceId+"_"+CommonUtils.getTime();
   }
  
 
-  private void createDeviceIssueInfo(long deviceId, String userId, boolean byAdmin)
+  private void createDeviceIssueInfo(String deviceId, String userId, boolean byAdmin)
   {
     DeviceIssueInfo newDeviceIssueInfo = new DeviceIssueInfo();
     newDeviceIssueInfo.setDeviceId(deviceId);

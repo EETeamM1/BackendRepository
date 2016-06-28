@@ -3,7 +3,7 @@ package com.ee.enigma.request;
 public class RequestParameters {
 	private String userId;
 	private String password;
-	private long deviceId;
+	private String deviceId;
 	private String osVersion;
 	private float latitude;
 	private float longitude;
@@ -42,10 +42,10 @@ public class RequestParameters {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public long getDeviceId() {
+	public String getDeviceId() {
 		return deviceId;
 	}
-	public void setDeviceId(long deviceId) {
+	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
 	public String getOsVersion() {

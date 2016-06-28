@@ -24,7 +24,7 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
 	}
 
 	@Override
-	public DeviceInfo getDeviceInfo(long deviceId) {
+	public DeviceInfo getDeviceInfo(String deviceId) {
 		try {
 			Session session = this.sessionFactory.getCurrentSession();
 			DeviceInfo deviceInfo = (DeviceInfo) session.load(DeviceInfo.class, deviceId);

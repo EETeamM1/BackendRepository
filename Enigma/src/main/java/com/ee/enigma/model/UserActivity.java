@@ -19,7 +19,7 @@ public class UserActivity {
 	String location;
 	String userId;
 	String issueId;
-	long deviceId;
+	String deviceId;
 	
 	/*GETTERS AND SETTERS*/	
 	public String getActivityId() {
@@ -70,11 +70,11 @@ public class UserActivity {
 		this.issueId = issueId;
 	}
 
-	public long getDeviceId() {
+	public String getDeviceId() {
 		return deviceId;
 	}
 
-	public void setDeviceId(long deviceId) {
+	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
 	

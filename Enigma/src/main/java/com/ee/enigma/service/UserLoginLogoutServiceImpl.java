@@ -42,6 +42,13 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 	private EnigmaResponse response;
 	private ResponseCode responseCode;
 	private ResponseResult result;
+	private DeviceIssueInfoService deviceIssueInfoService;
+
+	@Autowired
+	@Qualifier(value="deviceIssueInfoService")
+	public void setDeviceIssueInfoService(DeviceIssueInfoService deviceIssueInfoService) {
+		this.deviceIssueInfoService = deviceIssueInfoService;
+	}
 
 	@Autowired
 	@Qualifier(value = "sessionDao")
@@ -87,15 +94,15 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
 		String userId;
 		String password;
-		long deviceId;
+		String deviceId;
 		float latitude;
 		float longitude;
 		String osVersion;
 
 		try {
-			userId = loginInfo.getParameters().getUserId();
-			password = loginInfo.getParameters().getPassword();
-			deviceId = loginInfo.getParameters().getDeviceId();
+			userId = loginInfo.getParameters().getUserId().trim();
+			password = loginInfo.getParameters().getPassword().trim();
+			deviceId = loginInfo.getParameters().getDeviceId().trim();
 			latitude = loginInfo.getParameters().getLatitude();
 			longitude = loginInfo.getParameters().getLongitude();
 			osVersion = loginInfo.getParameters().getOsVersion();
@@ -132,7 +139,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		}
 
 		// call "DeviceIssueInfoService" to get issueId
-		String issueId = "issue1";
+		String issueId = deviceIssueInfoService.submitDeviceIssueInfo(deviceId,userId);
 
 		// call "GeoLocationService" to get location name from Geo coordinates.
 		String location = getGeoLocation(latitude, longitude);
