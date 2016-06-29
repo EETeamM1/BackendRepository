@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ViewController {
 	
 
-	@RequestMapping("/")
+	@RequestMapping({"/","/index","/welcome"})
 	public ModelAndView indexPage()
 	{
 		ModelAndView mav= new ModelAndView("index"); 
