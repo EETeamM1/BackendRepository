@@ -18,6 +18,7 @@
 		<pool.version>1.4</pool.version>
 		<servlet.version>3.1.0</servlet.version>
 		<cxf.version>3.0.4</cxf.version>
+		<spring.security.version>4.0.2.RELEASE</spring.security.version>
 	</properties>
 
 	<dependencies>
@@ -126,6 +127,19 @@
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+		
+		<!-- Spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
 		</dependency>
 	</dependencies>
 
