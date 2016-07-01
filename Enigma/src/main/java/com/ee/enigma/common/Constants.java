@@ -29,4 +29,8 @@ public interface Constants {
 	String DEVICE_INFO_ADMIN_AVAILABLE = "AV";
 	String DEVICE_INFO_PENDING_WITH_ADMIN = "PD";
 	String DEVICE_INFO_ISSUED_TO_USER = "IS";
+	
+	String MESSAGE_SUCCESSFULLY_SAVE = "Successfully saved.";
+	 String MESSAGE_SUCCESSFULLY_UPDATED = "Successfully updated.";
+	 String MESSAGE_SUCCESSFULLY_DELETED = "Successfully deleted";
 }

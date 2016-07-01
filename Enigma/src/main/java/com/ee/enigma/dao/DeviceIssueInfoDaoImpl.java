@@ -37,11 +37,11 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	     Session session = this.sessionFactory.getCurrentSession();
 	     if(beginDate==null)
 	     {  
-	       hql = "from DeviceIssueInfo where deviceId= :deviceId ";
+	       hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueId desc";
        }
 	     else
 	     {
-	       hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) ";
+	       hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueId ";
 	     }
 	     query = session.createQuery(hql);
        query.setParameter("deviceId", deviceId);

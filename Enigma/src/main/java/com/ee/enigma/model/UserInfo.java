@@ -1,7 +1,12 @@
 package com.ee.enigma.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -13,7 +18,20 @@ public class UserInfo {
 	private String userName;
 	private String password;
 	
-	/* GETTERS AND SETTERS */
+	@OneToMany(fetch = FetchType.EAGER)
+  @JoinColumn(name = "deviceId",insertable =false, updatable=false)
+  private Set<DeviceIssueInfo> deviceIssueInfos;
+	
+	public Set<DeviceIssueInfo> getDeviceIssueInfos()
+  {
+    return deviceIssueInfos;
+  }
+  public void setDeviceIssueInfos(Set<DeviceIssueInfo> deviceIssueInfos)
+  {
+    this.deviceIssueInfos = deviceIssueInfos;
+  }
+   
+  /* GETTERS AND SETTERS */
 	public String getUserId() {
 		return userId;
 	}

@@ -224,7 +224,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 	}
 
 	private String activityIdGenerator(String userId, long time) {
-		return userId + time;
+		return userId +"_"+ time;
 	}
 
 	private boolean IsUserAuthenticated(String userId, String password) {

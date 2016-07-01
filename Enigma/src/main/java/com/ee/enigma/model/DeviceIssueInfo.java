@@ -2,9 +2,14 @@ package com.ee.enigma.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +24,28 @@ public class DeviceIssueInfo {
 	private Timestamp submitTime;
 	private Boolean issueByAdmin;
   private Boolean submitByAdmin;
-	
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "deviceId" ,insertable =false, updatable=false)
+  private DeviceInfo deviceInfo;
+  
+  @OneToMany(fetch = FetchType.EAGER)
+  @JoinColumn(name = "issueId" ,insertable =false, updatable=false)
+  @javax.persistence.OrderBy("loginTime")
+  private Set<UserActivity> userActivity;
+  
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "userId",insertable =false, updatable=false)
+  private UserInfo userInfo;
+  
+  public UserInfo getUserInfo()
+  {
+    return userInfo;
+  }
+  public void setUserInfo(UserInfo userInfo)
+  {
+    this.userInfo = userInfo;
+  }
   public Boolean getIssueByAdmin()
   {
     return issueByAdmin;
@@ -70,6 +96,24 @@ public class DeviceIssueInfo {
   public void setSubmitTime(Timestamp submitTime)
   {
     this.submitTime = submitTime;
+  }
+  
+  public DeviceInfo getDeviceInfo()
+  {
+    return deviceInfo;
+  }
+  public void setDeviceInfo(DeviceInfo deviceInfo)
+  {
+    this.deviceInfo = deviceInfo;
+  }
+  
+  public Set<UserActivity> getUserActivity()
+  {
+    return userActivity;
+  }
+  public void setUserActivity(Set<UserActivity> userActivity)
+  {
+    this.userActivity = userActivity;
   }
 	
 }

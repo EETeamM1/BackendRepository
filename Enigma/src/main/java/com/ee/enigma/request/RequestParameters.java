@@ -11,9 +11,16 @@ public class RequestParameters {
 	private Boolean byAdmin;
 	 private String beginDate;
 	  private String endDate;
+	  private String userName;
+	  private String opration;
 	
-	
-	
+    String deviceName;
+    String isAdminApproved;
+    String manufacturer;
+    String oS;
+    String timeoutPeriod;
+    String yearOfManufacturing;
+		  
 	public String getBeginDate()
     {
       return beginDate;
@@ -79,6 +86,70 @@ public class RequestParameters {
   public void setByAdmin(Boolean byAdmin)
   {
     this.byAdmin = byAdmin;
+  }
+  public String getUserName()
+  {
+    return userName;
+  }
+  public void setUserName(String userName)
+  {
+    this.userName = userName;
+  }
+  public String getOpration()
+  {
+    return opration;
+  }
+  public void setOpration(String opration)
+  {
+    this.opration = opration;
+  }
+  public String getDeviceName()
+  {
+    return deviceName;
+  }
+  public void setDeviceName(String deviceName)
+  {
+    this.deviceName = deviceName;
+  }
+  public String getIsAdminApproved()
+  {
+    return isAdminApproved;
+  }
+  public void setIsAdminApproved(String isAdminApproved)
+  {
+    this.isAdminApproved = isAdminApproved;
+  }
+  public String getManufacturer()
+  {
+    return manufacturer;
+  }
+  public void setManufacturer(String manufacturer)
+  {
+    this.manufacturer = manufacturer;
+  }
+  public String getoS()
+  {
+    return oS;
+  }
+  public void setoS(String oS)
+  {
+    this.oS = oS;
+  }
+  public String getTimeoutPeriod()
+  {
+    return timeoutPeriod;
+  }
+  public void setTimeoutPeriod(String timeoutPeriod)
+  {
+    this.timeoutPeriod = timeoutPeriod;
+  }
+  public String getYearOfManufacturing()
+  {
+    return yearOfManufacturing;
+  }
+  public void setYearOfManufacturing(String yearOfManufacturing)
+  {
+    this.yearOfManufacturing = yearOfManufacturing;
   }
 	
 	

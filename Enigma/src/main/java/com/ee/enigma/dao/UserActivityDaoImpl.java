@@ -1,9 +1,12 @@
 package com.ee.enigma.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserActivity;
 
 @Repository(value="userActivityDao")
@@ -68,4 +72,37 @@ public class UserActivityDaoImpl implements UserActivityDao{
 		return Constants.USER_ACTIVITY_ID_NOT_FOUND;
 	}
 
+	@Override
+  public List<UserActivity> getUserActivityByDates(String deviceId,Date fromDate,Date  toDate) {
+    try {
+      String hql=null;
+      Query query=null;
+      Session session = this.sessionFactory.getCurrentSession();
+      if(fromDate==null)
+      {  
+        hql = "from UserActivity where deviceId= :deviceId order by loginTime desc";
+      }
+      else
+      {
+        hql = "from UserActivity where deviceId= :deviceId and ((loginTime between :fromDate and :toDate) or (logoutTime between :fromDate and :toDate)) order by issueId ";
+      }
+      query = session.createQuery(hql);
+      query.setParameter("deviceId", deviceId);
+      if(fromDate!=null)
+      {
+        query.setParameter("fromDate", fromDate);
+        query.setParameter("toDate", toDate);
+      }
+      List<UserActivity> userActivityList = (List<UserActivity>) query.list();
+      if(null == userActivityList || userActivityList.size() == 0 ){
+        return null;
+      }
+      logger.info(userActivityList.toString());
+      return userActivityList;
+    } catch (HibernateException e) {
+      logger.error(e);
+      return null;
+    }
+  }
+	
 }

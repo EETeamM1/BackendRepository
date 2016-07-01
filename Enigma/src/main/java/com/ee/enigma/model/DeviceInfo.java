@@ -1,8 +1,13 @@
 package com.ee.enigma.model;
 
 import java.sql.Time;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +25,11 @@ public class DeviceInfo {
 	private Time timeoutPeriod;
 	private String isAdminApproved;
 	
+	@OneToMany(fetch = FetchType.EAGER)
+  @JoinColumn(name = "deviceId",insertable =false, updatable=false)
+  private Set<DeviceIssueInfo> deviceIssueInfos;
+	
 	/* GETTERS AND SETTERS */
-	
-	
 	public Time getTimeoutPeriod() {
 		return timeoutPeriod;
 	}

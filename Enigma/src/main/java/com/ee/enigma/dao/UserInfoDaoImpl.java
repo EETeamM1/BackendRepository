@@ -27,6 +27,42 @@ public class UserInfoDaoImpl implements UserInfoDao {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+	
+  @Override
+  public void createUserInfo(UserInfo userInfo)
+  {
+    logger.info(userInfo);
+    Session session = this.sessionFactory.getCurrentSession();
+    session.persist(userInfo);
+  }
+
+  @Override
+  public void updateUserInfo(UserInfo userInfo)
+  {
+    logger.info(userInfo);
+    Session session = this.sessionFactory.getCurrentSession();
+    session.update(userInfo);
+  }
+
+  @Override
+  public int deleteUserInfo(UserInfo userInfo)
+  {
+    int result = 0;
+    try
+    {
+      String hql = "delete UserInfo where userId= :userId";
+      Session session = this.sessionFactory.getCurrentSession();
+      Query query = session.createQuery(hql);
+      query.setParameter("userId", userInfo.getUserId());
+      result = query.executeUpdate();
+      return result;
+    }
+    catch (HibernateException e)
+    {
+      logger.error(e);
+      return result;
+    }
+  }
 
 	@Override
 	public UserInfo getUserInfo(String userId, String password) {

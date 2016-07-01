@@ -83,6 +83,7 @@
 	<jaxrs:server id="userManagerREST" address="/user">
 		<jaxrs:serviceBeans>
 			<ref bean="userActivityREST" />
+		     <ref bean="userREST" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<ref bean='jsonProvider' />
@@ -91,6 +92,7 @@
 	<jaxrs:server id="deviceIssueREST" address="/deviceIssue">
 		<jaxrs:serviceBeans>
 			<ref bean="deviceIssueInfoREST" />
+			<ref bean="devicInfoREST" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<ref bean='jsonProvider' />

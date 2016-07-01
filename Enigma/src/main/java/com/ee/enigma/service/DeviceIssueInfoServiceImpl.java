@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
+import com.ee.enigma.dao.DeviceIssueHelper;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
@@ -79,18 +80,14 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       return badRequest();
     }
     JSONObject jsonObject=null;
-    jsonObject=getDeviceInfoReportJson(deviceId, beginDate, endDate);
+    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+    List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueInfoListByDate(deviceId, beginDate, endDate);
+    jsonObject=deviceIssueHelper.buildJSONObjectForDateWiseDeviceReport(jsonObjectList);
+    //response.getResult().setJsonObject(jsonObject);
     return response;
   }
   
-  public JSONObject getDeviceInfoReportJson(String deviceId,Date beginDate,Date endDate)
-  {
-    JSONObject jsonObject = new JSONObject();
-     List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueInfoListByDate(deviceId, beginDate, endDate);
-    jsonObject.put("jsonList", jsonObjectList);
-    logger.error(jsonObjectList);  
-    return jsonObject;
-  }
+
    
   public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest)
   {
