@@ -19,6 +19,7 @@
 		<servlet.version>3.1.0</servlet.version>
 		<cxf.version>3.0.4</cxf.version>
 		<spring.security.version>4.0.2.RELEASE</spring.security.version>
+	     <junit.version>1.9.5</junit.version>
 	</properties>
 
 	<dependencies>
@@ -141,6 +142,12 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+		<dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>

@@ -58,7 +58,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   
   public EnigmaResponse getReportForDevice(Request deviceIssueInfo){
     EnigmaResponse  response=null;
- 
+    response = new EnigmaResponse();
+    responseCode = new ResponseCode();
+    result = new ResponseResult();
+    
     String deviceId;
     String beginDateString;
     String endDateString;
@@ -84,6 +87,14 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueInfoListByDate(deviceId, beginDate, endDate);
     jsonObject=deviceIssueHelper.buildJSONObjectForDateWiseDeviceReport(jsonObjectList);
     //response.getResult().setJsonObject(jsonObject);
+    responseCode.setCode(Constants.CODE_SUCCESS);
+   // responseCode.setResultObject(deviceIssueHelper.buildJSONObjectForDateWiseDeviceReport(jsonObjectList));
+    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+    response.setResponseCode(responseCode);
+    response.setResult(result);
+
+    
+    
     return response;
   }
   

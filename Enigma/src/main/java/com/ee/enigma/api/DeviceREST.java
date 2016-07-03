@@ -49,5 +49,15 @@ public class DeviceREST
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
   }
+  
+  @POST
+  @Path("/getDeviceInfo")
+  public Response getUserInfo(Request requestInfo)
+  {
+    EnigmaResponse userResponse = deviceService.getDeviceInfo(requestInfo);
+    Response response= Response.ok(userResponse, MediaType.APPLICATION_JSON)
+      .entity(userResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
 
 }

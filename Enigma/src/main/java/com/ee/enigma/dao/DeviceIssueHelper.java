@@ -17,6 +17,7 @@ public class DeviceIssueHelper
 {
   
   public JSONObject buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
+ // public List<DeviceIssueInfo> buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
   {
     JSONObject deviceJson = new JSONObject();
     ReportResultInfo reportResultInfo = null;
@@ -175,85 +176,10 @@ public class DeviceIssueHelper
       System.out.println("jsonObject: " + deviceJson);
     }
     return deviceJson;
+    //return deviceIssueInfos;
   }
  
- 
- public JSONObject buildJSONObjectForDateWiseDeviceReport2(List<DeviceIssueInfo> deviceIssueInfos)
-  {
-    JSONObject deviceJson = new JSONObject();
-    ReportResultInfo  reportResultInfo=null; 
-    List<ReportResultInfo> reportResultInfoList=new ArrayList<ReportResultInfo>();
-    JSONArray userActityJsonArray = null;
-    JSONArray issueIdJsonArray = null;
-    String deviceId="";
-    JSONObject issueIdJson=null;
-    JSONObject userActivityJson=null;
-      DeviceIssueInfo deviceIssueInfo=null;
-    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
-    {
-        UserActivity userActivity=null;
-        issueIdJsonArray=new JSONArray();
-        String userName="";
-        String loginTime=null;
-        String logoutTime=null;
-        String status=null;
-        String previousStatus=null;
-        for (int i=0;i<deviceIssueInfos.size();i++)
-        {
-           deviceIssueInfo=deviceIssueInfos.get(i);
-           deviceId=deviceIssueInfo.getDeviceId();
-           issueIdJson=new JSONObject();
-           issueIdJson.put("issueId", deviceIssueInfo.getIssueId());
-           issueIdJson.put("issueTime",  CommonUtils.getDayBeginTime(deviceIssueInfo.getIssueTime()));
-           issueIdJson.put("submitTime", CommonUtils.getDayEndTime(deviceIssueInfo.getSubmitTime()));
-           
-           
-           if(deviceIssueInfo.getUserActivity()!=null)
-           {
-             Iterator<UserActivity> iterator = deviceIssueInfo.getUserActivity().iterator(); 
-             userActityJsonArray=new JSONArray();
-             while (iterator.hasNext()){
-                userActivity=iterator.next();
-                userActivityJson=new JSONObject();
-                userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
-                if(userActivity.getLoginTime()==null)
-                {
-                  loginTime="NA";
-                }
-                else
-                {
-                loginTime=userActivity.getLoginTime().toString();
-                }
-                if(userActivity.getLogoutTime()==null)
-                {
-                  logoutTime="NA";
-                }
-                else
-                {
-                logoutTime=userActivity.getLogoutTime().toString();
-                }
-                userActivityJson.put("loginTime", loginTime);
-                userActivityJson.put("logoutTime", logoutTime);
-                status="";
-                userActivityJson.put("useStatus", "Active");
-                userActivityJson.put("duration", CommonUtils.getTimeDiffernce(userActivity.getLoginTime(), userActivity.getLogoutTime()));
-                userActityJsonArray.add(userActivityJson);
-                
-                 userName=deviceIssueInfo.getUserInfo().getUserName();
-                 
-                 previousStatus="";
-             } 
-           }
-           issueIdJson.put("userActivities", userActityJsonArray);
-           issueIdJsonArray.add(issueIdJson);
-      }
-        deviceJson.put("deviceId", deviceId);
-        deviceJson.put("deviceIssueDetails", issueIdJsonArray);
-        System.out.println("jsonObject: " + deviceJson);
-    }
-    return deviceJson;
-  }
- 
+
 }
 
 
