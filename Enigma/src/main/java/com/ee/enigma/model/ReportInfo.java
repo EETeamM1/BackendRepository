@@ -1,5 +1,6 @@
 package com.ee.enigma.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class ReportInfo
@@ -13,6 +14,117 @@ public class ReportInfo
   String deviceId;
   String fromTable;
   String userName;
+  String deviceName;
+  private Timestamp issueTime;
+  private Timestamp submitTime;
+  private Boolean issueByAdmin;
+  private Boolean submitByAdmin;
+  private String manufacturer;
+  private String OS;
+  private String OSVersion;
+  private String issuedBy;
+  
+  public String getIssuedBy()
+  {
+    return issuedBy;
+  }
+
+  public void setIssuedBy(String issuedBy)
+  {
+    this.issuedBy = issuedBy;
+  }
+
+  public String getManufacturer()
+  {
+    return manufacturer;
+  }
+
+  public void setManufacturer(String manufacturer)
+  {
+    this.manufacturer = manufacturer;
+  }
+
+  public String getOS()
+  {
+    return OS;
+  }
+
+  public void setOS(String oS)
+  {
+    OS = oS;
+  }
+
+  public String getOSVersion()
+  {
+    return OSVersion;
+  }
+
+  public void setOSVersion(String oSVersion)
+  {
+    OSVersion = oSVersion;
+  }
+
+  public Timestamp getIssueTime()
+  {
+    return issueTime;
+  }
+
+  public void setIssueTime(Timestamp issueTime)
+  {
+    this.issueTime = issueTime;
+  }
+
+  public Timestamp getSubmitTime()
+  {
+    return submitTime;
+  }
+
+  public void setSubmitTime(Timestamp submitTime)
+  {
+    this.submitTime = submitTime;
+  }
+
+  public Boolean getIssueByAdmin()
+  {
+    return issueByAdmin;
+  }
+
+  public void setIssueByAdmin(Boolean issueByAdmin)
+  {
+    this.issueByAdmin = issueByAdmin;
+  }
+
+  public Boolean getSubmitByAdmin()
+  {
+    return submitByAdmin;
+  }
+
+  public void setSubmitByAdmin(Boolean submitByAdmin)
+  {
+    this.submitByAdmin = submitByAdmin;
+  }
+
+  private String isAdminApproved;
+  
+  public String getIsAdminApproved()
+  {
+    return isAdminApproved;
+  }
+
+  public void setIsAdminApproved(String isAdminApproved)
+  {
+    this.isAdminApproved = isAdminApproved;
+  }
+
+  public String getDeviceName()
+  {
+    return deviceName;
+  }
+
+  public void setDeviceName(String deviceName)
+  {
+    this.deviceName = deviceName;
+  }
 
   public String getActivityId()
   {

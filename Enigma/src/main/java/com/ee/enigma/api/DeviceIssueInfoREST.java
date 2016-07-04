@@ -39,9 +39,9 @@ public class DeviceIssueInfoREST {
 	}
 	
 	@POST
-  @Path("/deviceIssueReport")
+  @Path("/deviceTimeLineReport")
   public EnigmaResponse deviceIssueReportService(Request deviceIssueInfo){
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getReportForDevice(deviceIssueInfo);
+	  EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceTimeLineReport(deviceIssueInfo);
     return deviceIssueResponse;
   }
 	
@@ -52,6 +52,28 @@ public class DeviceIssueInfoREST {
     return deviceIssueResponse;
   }
   
-	
+	@POST
+  @Path("/deviceReportByStatus")
+  public Response getDeviceIssueReportByStatus(Request deviceIssueInfo){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReportByStatus(deviceIssueInfo);
+    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
+  
+  @POST
+  @Path("/deviceIssueTrendReport")
+  public Response getDeviceIssueTrendReport(Request deviceIssueInfo){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueTrendReport(deviceIssueInfo);
+    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
+  
+  @POST
+  @Path("/deviceSubmitTrendReport")
+  public Response deviceSubmitTrendReport(Request deviceIssueInfo){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceSubmitTrendReport(deviceIssueInfo);
+    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
 	
 }

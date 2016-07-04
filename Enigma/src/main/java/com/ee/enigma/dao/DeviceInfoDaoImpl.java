@@ -1,5 +1,7 @@
 package com.ee.enigma.dao;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.model.DeviceInfo;
+import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserInfo;
 
 @Repository(value = "deviceInfoDao")
@@ -72,4 +75,23 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
       return result;
     }
   }
+  
+  
+  @Override
+  public List<DeviceInfo> getDevicesList() {
+    try {
+      String hql = "from DeviceInfo  ";
+      Session session = this.sessionFactory.getCurrentSession();
+      Query query = session.createQuery(hql);
+      List<DeviceInfo> deviceInfo = (List<DeviceInfo>) query.list();
+      if(null == deviceInfo || deviceInfo.size() == 0 ){
+        return null;
+      }
+      logger.info(deviceInfo.toString());
+      return deviceInfo;
+    } catch (HibernateException e) {
+      logger.error(e);
+      return null;
+    }
+ }
 }

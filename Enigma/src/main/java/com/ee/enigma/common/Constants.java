@@ -6,6 +6,11 @@ public interface Constants {
 	int CODE_AUTHENTICATION_FAILD=401;
 	int CODE_NOT_FOUND=404;
 	
+	String ISSUED_BY_ADMIN = "Issued By Admin";
+	String ISSUED_BY_SYSTEM = "Issued By System";
+	String SUBMITTED_BY_ADMIN = "Submitted By Admin";
+    String SUBMITTED_BY_SYSTEM = "Submitted By System";
+	
 	String MESSAGE_SUCCESS = "Success";
 	String LOGOUT_SUCCESS = "Successfully LogOut";
 	String MESSAGE_BAD_REQUEST = "Bad Requeset";
@@ -26,9 +31,9 @@ public interface Constants {
   String MESSAGE_DEVICE_ALREADY_SUBMITTED = "Device is already submitted.";
   String MESSAGE_DEVICE_SUBMITTED = "Device is submitted.";
   
-	String DEVICE_INFO_ADMIN_AVAILABLE = "AV";
-	String DEVICE_INFO_PENDING_WITH_ADMIN = "PD";
-	String DEVICE_INFO_ISSUED_TO_USER = "IS";
+	String DEVICE_INFO_ADMIN_AVAILABLE = "Available";
+	String DEVICE_INFO_PENDING_WITH_ADMIN = "Pending With Admin";
+	String DEVICE_INFO_ISSUED_TO_USER = "Issued";
 	
 	String MESSAGE_SUCCESSFULLY_SAVE = "Successfully saved.";
 	 String MESSAGE_SUCCESSFULLY_UPDATED = "Successfully updated.";

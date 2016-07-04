@@ -5,7 +5,11 @@ import com.ee.enigma.response.EnigmaResponse;
 
 public interface DeviceIssueInfoService {
 	public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo);
-	public EnigmaResponse getReportForDevice(Request deviceIssueInfo);
+	public EnigmaResponse getDeviceTimeLineReport(Request deviceIssueInfo);
 	public EnigmaResponse submitDevice(Request deviceIssueInfo);
 	public String submitDeviceIssueInfo(String deviceId, String userId);
+	public EnigmaResponse getDeviceIssueReportByStatus(Request deviceIssueInfo);
+	public EnigmaResponse getDeviceIssueTrendReport(Request deviceIssueInfo);
+	public EnigmaResponse getDeviceSubmitTrendReport(Request deviceIssueInfo);
+	
 }

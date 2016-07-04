@@ -8,6 +8,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.ee.enigma.common.CommonUtils;
+import com.ee.enigma.common.Constants;
+import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.ReportInfo;
 import com.ee.enigma.model.ReportResultInfo;
@@ -15,6 +17,116 @@ import com.ee.enigma.model.UserActivity;
 
 public class DeviceIssueHelper
 {
+  public List<ReportInfo> buildDeviceIssueTrendList(List<DeviceIssueInfo> deviceIssueInfos)
+  {
+    DeviceIssueInfo deviceIssueInfo = null;
+    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
+    ReportInfo reportInfo = null;
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceIssueInfos.size(); i++)
+      {
+         deviceIssueInfo = deviceIssueInfos.get(i);
+          reportInfo = new ReportInfo();
+          reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
+          reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
+          reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
+          reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
+          reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
+          reportInfo.setIssueTime(deviceIssueInfo.getIssueTime());
+          if(reportInfo.getIssueByAdmin()!=null && reportInfo.getIssueByAdmin())
+          {
+            reportInfo.setIssuedBy(Constants.ISSUED_BY_ADMIN);
+          }
+          else
+          {
+            reportInfo.setIssuedBy(Constants.ISSUED_BY_SYSTEM);
+          }
+          reportInfo.setSubmitTime(deviceIssueInfo.getSubmitTime());
+          reportInfoList.add(reportInfo);
+      }
+    }
+    return reportInfoList;
+  }  
+  
+  public List<ReportInfo> buildDeviceSubmitTrendList(List<DeviceIssueInfo> deviceIssueInfos)
+  {
+    DeviceIssueInfo deviceIssueInfo = null;
+    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
+    ReportInfo reportInfo = null;
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceIssueInfos.size(); i++)
+      {
+         deviceIssueInfo = deviceIssueInfos.get(i);
+          reportInfo = new ReportInfo();
+          reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
+          reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
+          reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
+          reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
+          reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
+          reportInfo.setIssueTime(deviceIssueInfo.getIssueTime());
+          if(reportInfo.getSubmitByAdmin()!=null && reportInfo.getSubmitByAdmin())
+          {
+            reportInfo.setIssuedBy(Constants.SUBMITTED_BY_ADMIN);
+          }
+          else
+          {
+            reportInfo.setIssuedBy(Constants.SUBMITTED_BY_SYSTEM);
+          }
+          reportInfo.setSubmitTime(deviceIssueInfo.getSubmitTime());
+          reportInfoList.add(reportInfo);
+      }
+    }
+    return reportInfoList;
+  }  
+  
+ 
+ public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceIssueInfo> deviceIssueInfos,List<DeviceInfo> deviceInfoList)
+  {
+    DeviceIssueInfo deviceIssueInfo = null;
+    DeviceInfo deviceInfo = null;
+    List<String> deviceInfoListByissueId = new ArrayList<String>();
+    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
+    ReportInfo reportInfo = null;
+    /*if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceIssueInfos.size(); i++)
+      {
+        deviceIssueInfo = deviceIssueInfos.get(i);
+        if (!deviceInfoListByissueId.contains(deviceIssueInfo.getDeviceId()))
+        {
+          deviceInfoListByissueId.add(deviceIssueInfo.getDeviceId());
+          reportInfo = new ReportInfo();
+          reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
+          reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
+          reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
+          reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
+          reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
+          reportInfoList.add(reportInfo);
+        }
+      }
+    }*/
+    for (int i = 0; i < deviceInfoList.size(); i++)
+    {
+      deviceInfo = deviceInfoList.get(i);
+      //if (!deviceInfoListByissueId.contains(deviceInfo.getDeviceId())) {
+        reportInfo = new ReportInfo();
+        reportInfo.setDeviceId(deviceInfo.getDeviceId());
+        reportInfo.setDeviceName(deviceInfo.getDeviceName());
+        reportInfo.setIsAdminApproved(deviceInfo.getIsAdminApproved());
+         reportInfo.setManufacturer(deviceInfo.getManufacturer());
+        reportInfo.setOS(deviceInfo.getOS());
+        reportInfo.setOSVersion(deviceInfo.getOSVersion());
+        reportInfoList.add(reportInfo);
+      //}
+    }
+    return reportInfoList;
+  }  
+  
   
   public JSONObject buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
  // public List<DeviceIssueInfo> buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)

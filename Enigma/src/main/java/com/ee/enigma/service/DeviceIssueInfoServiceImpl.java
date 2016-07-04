@@ -18,6 +18,7 @@ import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
+import com.ee.enigma.model.ReportInfo;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -56,7 +57,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     this.userInfoDao = userInfoDao;
   }
   
-  public EnigmaResponse getReportForDevice(Request deviceIssueInfo){
+  public EnigmaResponse getDeviceTimeLineReport(Request deviceIssueInfo){
     EnigmaResponse  response=null;
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -92,9 +93,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     responseCode.setMessage(Constants.MESSAGE_SUCCESS);
     response.setResponseCode(responseCode);
     response.setResult(result);
-
-    
-    
     return response;
   }
   
@@ -422,7 +420,115 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return issueId;
   } 
 
-  
+
+ public EnigmaResponse getDeviceIssueReportByStatus(Request deviceIssueInfo){
+   EnigmaResponse  response=null;
+   response = new EnigmaResponse();
+   responseCode = new ResponseCode();
+   result = new ResponseResult();
+   
+   String beginDateString;
+   String endDateString;
+   Date beginDate=null;
+   Date endDate=null;
+   try
+   {
+     beginDateString = deviceIssueInfo.getParameters().getBeginDate();
+     endDateString = deviceIssueInfo.getParameters().getEndDate();
+     beginDate= CommonUtils.getSqlDateByString(beginDateString);
+     endDate= CommonUtils.getSqlDateByString(endDateString);
+     if(beginDate==null)
+       endDate=null;
+   }
+   catch (Exception e)
+   {
+     logger.error(e);
+   }
+   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+   List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueReportListByStatus(beginDate, endDate);
+   
+   List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
+   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueReportListByStatus(deviceIssueInfoList,deviceInfoList);
+   responseCode.setResultObject(jsonObjectList);
+   responseCode.setCode(Constants.CODE_SUCCESS);
+   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+   response.setResponseCode(responseCode);
+   response.setResult(result);
+   return response;
+ }
+ 
+ public EnigmaResponse getDeviceIssueTrendReport(Request deviceIssueInfo){
+   EnigmaResponse  response=null;
+   response = new EnigmaResponse();
+   responseCode = new ResponseCode();
+   result = new ResponseResult();
+   
+   String beginDateString;
+   String endDateString;
+   Date beginDate=null;
+   Date endDate=null;
+   String deviceId=null;
+   try
+   {
+     deviceId = deviceIssueInfo.getParameters().getDeviceId();
+     beginDateString = deviceIssueInfo.getParameters().getBeginDate();
+     endDateString = deviceIssueInfo.getParameters().getEndDate();
+     beginDate= CommonUtils.getSqlDateByString(beginDateString);
+     endDate= CommonUtils.getSqlDateByString(endDateString);
+     if(beginDate==null)
+       endDate=null;
+   }
+   catch (Exception e)
+   {
+     logger.error(e);
+   }
+   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+   List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueTrendList(deviceId,beginDate, endDate);
+   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueTrendList(deviceIssueInfoList);
+   responseCode.setResultObject(jsonObjectList);
+   responseCode.setCode(Constants.CODE_SUCCESS);
+   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+   response.setResponseCode(responseCode);
+   response.setResult(result);
+   return response;
+ }
+ 
+ public EnigmaResponse getDeviceSubmitTrendReport(Request deviceIssueInfo){
+   EnigmaResponse  response=null;
+   response = new EnigmaResponse();
+   responseCode = new ResponseCode();
+   result = new ResponseResult();
+   
+   String beginDateString;
+   String endDateString;
+   Date beginDate=null;
+   Date endDate=null;
+   String deviceId=null;
+   try
+   {
+     deviceId = deviceIssueInfo.getParameters().getDeviceId();
+     beginDateString = deviceIssueInfo.getParameters().getBeginDate();
+     endDateString = deviceIssueInfo.getParameters().getEndDate();
+     beginDate= CommonUtils.getSqlDateByString(beginDateString);
+     endDate= CommonUtils.getSqlDateByString(endDateString);
+     if(beginDate==null)
+       endDate=null;
+   }
+   catch (Exception e)
+   {
+     logger.error(e);
+   }
+   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+   List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceSubmitTrendList(deviceId,beginDate, endDate);
+   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceSubmitTrendList(deviceIssueInfoList);
+   responseCode.setResultObject(jsonObjectList);
+   responseCode.setCode(Constants.CODE_SUCCESS);
+   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+   response.setResponseCode(responseCode);
+   response.setResult(result);
+   return response;
+ }
+ 
   private String issueIdGenerator(String deviceId, String userId)
   {
     return deviceId+"_"+CommonUtils.getTime();
