@@ -19,6 +19,12 @@ public class ViewController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/entities")
+	public ModelAndView entityPage() {
+		ModelAndView mav = new ModelAndView("entities");
+		return mav;
+	}
+
 	@RequestMapping("/login")
 	public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
