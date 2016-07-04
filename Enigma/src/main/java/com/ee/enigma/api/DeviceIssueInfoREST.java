@@ -4,6 +4,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
-
 import com.ee.enigma.service.DeviceIssueInfoService;
 
 
@@ -31,9 +32,10 @@ public class DeviceIssueInfoREST {
 		
 	@POST
 	@Path("/deviceIssueInfo")
-	public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo){
+	public Response deviceIssueInfoService(Request deviceIssueInfo){
 		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
-		return deviceIssueResponse;
+		Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+		return response;
 	}
 	
 	@POST

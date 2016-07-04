@@ -49,5 +49,14 @@ public class UserREST
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
   }
+  
+  @POST
+  @Path("/getUserInfo")
+  public Response getUserInfo(Request userInfo)
+  {
+    EnigmaResponse userResponse = userService.getUserInfo(userInfo);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+      .entity(userResponse.getResponseCode().getResultObject()).build();
+  }
 
 }

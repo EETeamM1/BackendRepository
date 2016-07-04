@@ -8,13 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
-import com.ee.enigma.dao.LocationInfoDao;
-import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
-import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
-import com.ee.enigma.model.UserActivity;
-import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
@@ -160,9 +155,10 @@ public class DeviceServiceImpl implements DeviceService
     {
       return badRequest();
     }
-    deviceInfoDao.getDeviceInfo(deviceId);
+     DeviceInfo deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
+     
+    responseCode.setResultObject(deviceInfo);
     responseCode.setMessage(Constants.MESSAGE_SUCCESS);
-
     // Success response.
     responseCode.setCode(Constants.CODE_SUCCESS);
     response.setResponseCode(responseCode);

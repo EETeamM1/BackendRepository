@@ -17,8 +17,18 @@ public class ResponseCode {
 	public void setMessage(String message) {
 		this.message = message;
 	} 
+	 private Object resultObject;
+	  
 	
-	@Override
+	public Object getResultObject()
+  {
+    return resultObject;
+  }
+  public void setResultObject(Object resultObject)
+  {
+    this.resultObject = resultObject;
+  }
+  @Override
 	public String toString() {
 		return "code: "+this.getCode()+", messages: "+this.getMessage();
 	}

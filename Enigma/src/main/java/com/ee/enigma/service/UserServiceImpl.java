@@ -1,17 +1,12 @@
 package com.ee.enigma.service;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.dao.LocationInfoDao;
-import com.ee.enigma.dao.MasterDao;
-import com.ee.enigma.dao.UserActivityDaoImpl;
 import com.ee.enigma.dao.UserInfoDao;
-import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -23,7 +18,7 @@ import com.ee.enigma.response.ResponseResult;
 public class UserServiceImpl implements UserService
 {
 
-  private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
+  //private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
   private UserInfoDao userInfoDao;
   private EnigmaResponse response;
   private ResponseCode responseCode;
@@ -56,7 +51,7 @@ public class UserServiceImpl implements UserService
     }
     catch (Exception e)
     {
-      logger.error(e);
+     // logger.error(e);
       return badRequest();
     }
 
@@ -101,7 +96,7 @@ public class UserServiceImpl implements UserService
     }
     catch (Exception e)
     {
-      logger.error(e);
+     // logger.error(e);
       return badRequest();
     }
 
@@ -135,7 +130,7 @@ public class UserServiceImpl implements UserService
     }
     catch (Exception e)
     {
-      logger.error(e);
+     // logger.error(e);
       return badRequest();
     }
 
@@ -144,9 +139,8 @@ public class UserServiceImpl implements UserService
     {
       return badRequest();
     }
-    UserInfo userInfo = new UserInfo();
-    userInfo.setUserId(userId);
-    userInfoDao.deleteUserInfo(userInfo);
+    UserInfo userInfo=  userInfoDao.getUserInfo(userId);
+    responseCode.setResultObject(userInfo);
     responseCode.setMessage(Constants.MESSAGE_SUCCESS);
 
     // Success response.
