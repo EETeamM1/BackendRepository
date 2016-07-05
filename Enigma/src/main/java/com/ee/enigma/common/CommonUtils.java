@@ -6,6 +6,9 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import com.ee.enigma.response.EnigmaResponse;
+import com.ee.enigma.response.ResponseCode;
+
 public class CommonUtils
 {
   private static Logger logger = Logger.getLogger(CommonUtils.class);
@@ -98,6 +101,17 @@ public class CommonUtils
       e1.printStackTrace();
     }
     return endDate;
+  }
+  
+  
+  public static EnigmaResponse badRequest()
+  {
+    ResponseCode responseCode = new ResponseCode();
+    EnigmaResponse response = new EnigmaResponse();
+	responseCode.setCode(Constants.CODE_BAD_REQUEST);
+    responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
+	response.setResponseCode(responseCode);
+    return response;
   }
 
 }

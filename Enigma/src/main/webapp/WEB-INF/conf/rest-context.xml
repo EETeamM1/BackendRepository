@@ -98,7 +98,14 @@
 			<ref bean='jsonProvider' />
 		</jaxrs:providers>
 	</jaxrs:server>
-
+	<jaxrs:server id="masterManagerREST" address="/master">
+		<jaxrs:serviceBeans>
+			<ref bean="masterAPI" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+	</jaxrs:server>
 	<!-- <jaxrs:server address="/" basePackages="com.ee.enigma.api"/> -->
 
 </beans>

@@ -20,6 +20,21 @@ public class RequestParameters {
     String oS;
     String timeoutPeriod;
     String yearOfManufacturing;
+    private String currentMasterPassword;
+	private String newMasterPassword;
+    
+	public String getCurrentMasterPassword() {
+		return currentMasterPassword;
+	}
+	public void setCurrentMasterPassword(String currentMasterPassword) {
+		this.currentMasterPassword = currentMasterPassword;
+	}
+	public String getNewMasterPassword() {
+		return newMasterPassword;
+	}
+	public void setNewMasterPassword(String newMasterPassword) {
+		this.newMasterPassword = newMasterPassword;
+	}
 		  
 	public String getBeginDate()
     {
