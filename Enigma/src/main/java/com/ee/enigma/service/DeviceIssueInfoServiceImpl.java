@@ -421,13 +421,31 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   } 
 
 
- public EnigmaResponse getDeviceIssueReportByStatus(Request deviceIssueInfo){
+ public EnigmaResponse getDeviceReportAvailability(){
    EnigmaResponse  response=null;
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
    
-   String beginDateString;
+   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+   
+   List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
+   ReportInfo reportInfo=deviceIssueHelper.buildDeviceReportAvailability(deviceInfoList);
+   responseCode.setResultObject(reportInfo);
+   responseCode.setCode(Constants.CODE_SUCCESS);
+   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+   response.setResponseCode(responseCode);
+   response.setResult(result);
+   return response;
+ }
+ 
+ public EnigmaResponse getDeviceIssueReportByStatus(){
+   EnigmaResponse  response=null;
+   response = new EnigmaResponse();
+   responseCode = new ResponseCode();
+   result = new ResponseResult();
+   
+   /*String beginDateString;
    String endDateString;
    Date beginDate=null;
    Date endDate=null;
@@ -443,14 +461,13 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    catch (Exception e)
    {
      logger.error(e);
-   }
+   }*/
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
    //List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueReportListByStatus(beginDate, endDate);
    
    List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
-  // List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueReportListByStatus(deviceInfoList);
-   ReportInfo reportInfo=deviceIssueHelper.buildDeviceIssueReportByStatus(deviceInfoList);
-   responseCode.setResultObject(reportInfo);
+   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueReportListByStatus(deviceInfoList);
+   responseCode.setResultObject(jsonObjectList);
    responseCode.setCode(Constants.CODE_SUCCESS);
    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
    response.setResponseCode(responseCode);

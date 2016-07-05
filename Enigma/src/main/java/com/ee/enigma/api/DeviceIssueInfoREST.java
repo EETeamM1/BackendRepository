@@ -1,6 +1,7 @@
 package com.ee.enigma.api;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -51,14 +52,24 @@ public class DeviceIssueInfoREST {
     EnigmaResponse deviceIssueResponse = deviceIssueInfoService.submitDevice(deviceIssueInfo);
     return deviceIssueResponse;
   }
+	
+  @GET
+  @Path("/deviceReportByAvailability")
+  public Response getDeviceReportAvailability()
+  {
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceReportAvailability();
+    Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
   
-	@POST
+  @GET
   @Path("/deviceReportByStatus")
-  public Response getDeviceIssueReportByStatus(Request deviceIssueInfo){
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReportByStatus(deviceIssueInfo);
+  public Response getDeviceIssueReportByStatus(){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReportByStatus();
     Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
     return response;
   }
+  
   
   @POST
   @Path("/deviceIssueTrendReport")

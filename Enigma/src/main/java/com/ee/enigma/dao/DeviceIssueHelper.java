@@ -30,7 +30,7 @@ public class DeviceIssueHelper
           reportInfo = new ReportInfo();
           reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
           reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
-          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
+          reportInfo.setDeviceAvailability(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
           reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
           reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
           reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
@@ -63,7 +63,7 @@ public class DeviceIssueHelper
           reportInfo = new ReportInfo();
           reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
           reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
-          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
+          reportInfo.setDeviceAvailability(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
           reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
           reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
           reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
@@ -84,7 +84,7 @@ public class DeviceIssueHelper
   }  
   
  
- public ReportInfo buildDeviceIssueReportByStatus(List<DeviceInfo> deviceInfoList)
+ public ReportInfo buildDeviceReportAvailability(List<DeviceInfo> deviceInfoList)
   {
     DeviceInfo deviceInfo = null;
      int totalDevicesCount=0;
@@ -111,7 +111,47 @@ public class DeviceIssueHelper
     return reportInfo;
   }  
   
-  
+ public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
+ {
+   //DeviceIssueInfo deviceIssueInfo = null;
+   DeviceInfo deviceInfo = null;
+   //List<String> deviceInfoListByissueId = new ArrayList<String>();
+   List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
+   ReportInfo reportInfo = null;
+   /*if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+   {
+     for (int i = 0; i < deviceIssueInfos.size(); i++)
+     {
+       deviceIssueInfo = deviceIssueInfos.get(i);
+       if (!deviceInfoListByissueId.contains(deviceIssueInfo.getDeviceId()))
+       {
+         deviceInfoListByissueId.add(deviceIssueInfo.getDeviceId());
+         reportInfo = new ReportInfo();
+         reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
+         reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+         reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
+         reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
+         reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
+         reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
+         reportInfoList.add(reportInfo);
+       }
+     }
+   }*/
+   for (int i = 0; i < deviceInfoList.size(); i++)
+   {
+     deviceInfo = deviceInfoList.get(i);
+       reportInfo = new ReportInfo();
+       reportInfo.setDeviceId(deviceInfo.getDeviceId());
+       reportInfo.setDeviceName(deviceInfo.getDeviceName());
+       reportInfo.setDeviceAvailability(deviceInfo.getDeviceAvailability());
+        reportInfo.setManufacturer(deviceInfo.getManufacturer());
+       reportInfo.setOS(deviceInfo.getOS());
+       reportInfo.setOSVersion(deviceInfo.getOSVersion());
+       reportInfoList.add(reportInfo);
+   }
+   return reportInfoList;
+ }  
+ 
   public JSONObject buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
  // public List<DeviceIssueInfo> buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
   {

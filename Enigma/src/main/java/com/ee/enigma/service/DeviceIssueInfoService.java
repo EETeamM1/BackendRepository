@@ -8,7 +8,8 @@ public interface DeviceIssueInfoService {
 	public EnigmaResponse getDeviceTimeLineReport(Request deviceIssueInfo);
 	public EnigmaResponse submitDevice(Request deviceIssueInfo);
 	public String submitDeviceIssueInfo(String deviceId, String userId);
-	public EnigmaResponse getDeviceIssueReportByStatus(Request deviceIssueInfo);
+	public EnigmaResponse getDeviceIssueReportByStatus();
+	public EnigmaResponse getDeviceReportAvailability();
 	public EnigmaResponse getDeviceIssueTrendReport(Request deviceIssueInfo);
 	public EnigmaResponse getDeviceSubmitTrendReport(Request deviceIssueInfo);
 	

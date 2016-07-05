@@ -19,6 +19,7 @@ public class ReportInfo
   private Timestamp submitTime;
   private Boolean issueByAdmin;
   private Boolean submitByAdmin;
+  private String deviceAvailability;
   private String manufacturer;
   private String OS;
   private String OSVersion;
@@ -128,27 +129,8 @@ public class ReportInfo
     this.issueByAdmin = issueByAdmin;
   }
 
-  public Boolean getSubmitByAdmin()
-  {
-    return submitByAdmin;
-  }
-
-  public void setSubmitByAdmin(Boolean submitByAdmin)
-  {
-    this.submitByAdmin = submitByAdmin;
-  }
-
-  private String isAdminApproved;
   
-  public String getIsAdminApproved()
-  {
-    return isAdminApproved;
-  }
-
-  public void setIsAdminApproved(String isAdminApproved)
-  {
-    this.isAdminApproved = isAdminApproved;
-  }
+  
 
   public String getDeviceName()
   {
@@ -248,6 +230,26 @@ public class ReportInfo
   public void setUserName(String userName)
   {
     this.userName = userName;
+  }
+
+  public String getDeviceAvailability()
+  {
+    return deviceAvailability;
+  }
+
+  public void setDeviceAvailability(String deviceAvailability)
+  {
+    this.deviceAvailability = deviceAvailability;
+  }
+
+  public Boolean getSubmitByAdmin()
+  {
+    return submitByAdmin;
+  }
+
+  public void setSubmitByAdmin(Boolean submitByAdmin)
+  {
+    this.submitByAdmin = submitByAdmin;
   }
 
 }
