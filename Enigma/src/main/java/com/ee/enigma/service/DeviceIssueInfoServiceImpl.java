@@ -265,17 +265,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
           break;
         }
       }
-      if(deviveInfoFound && Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getIsAdminApproved()))
+      if(deviveInfoFound && Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getDeviceAvailability()))
       {
         tempDeviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
         tempDeviceIssueInfo.setSubmitByAdmin(byAdmin);
         deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
      
         deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
-        deviceInfo.setIsAdminApproved(Constants.DEVICE_INFO_ADMIN_AVAILABLE);
+        deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ADMIN_AVAILABLE);
         deviceInfoDao.updateDeviceInfo(deviceInfo);
       }
-      else if(!Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getIsAdminApproved()))
+      else if(!Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getDeviceAvailability()))
       {
         responseCode.setCode(Constants.CODE_SUCCESS);
         responseCode.setMessage(Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED);
@@ -304,7 +304,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
         deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
         
         deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
-        deviceInfo.setIsAdminApproved(Constants.DEVICE_INFO_PENDING_WITH_ADMIN);
+        deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_PENDING_WITH_ADMIN);
         deviceInfoDao.updateDeviceInfo(deviceInfo);
         
         responseCode.setCode(Constants.CODE_SUCCESS);
@@ -445,11 +445,12 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      logger.error(e);
    }
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-   List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueReportListByStatus(beginDate, endDate);
+   //List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueReportListByStatus(beginDate, endDate);
    
    List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
-   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueReportListByStatus(deviceIssueInfoList,deviceInfoList);
-   responseCode.setResultObject(jsonObjectList);
+  // List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueReportListByStatus(deviceInfoList);
+   ReportInfo reportInfo=deviceIssueHelper.buildDeviceIssueReportByStatus(deviceInfoList);
+   responseCode.setResultObject(reportInfo);
    responseCode.setCode(Constants.CODE_SUCCESS);
    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
    response.setResponseCode(responseCode);
@@ -546,7 +547,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
     //Update Device Status
     DeviceInfo deviceInfo=deviceInfoDao.getDeviceInfo(deviceId);
-    deviceInfo.setIsAdminApproved(Constants.DEVICE_INFO_ISSUED_TO_USER);
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ISSUED_TO_USER);
     deviceInfoDao.updateDeviceInfo(deviceInfo);
    }
 

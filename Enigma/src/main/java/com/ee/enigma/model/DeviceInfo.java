@@ -23,7 +23,7 @@ public class DeviceInfo {
 	private String yearOfManufacturing;
 	private boolean isMasterSet;
 	private Time timeoutPeriod;
-	private String isAdminApproved;
+	private String deviceAvailability;
 	
 	@OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "deviceId",insertable =false, updatable=false)
@@ -79,13 +79,13 @@ public class DeviceInfo {
 		this.isMasterSet = isMasterSet;
 	}
 	
-	public String getIsAdminApproved()
+  public String getDeviceAvailability()
   {
-    return isAdminApproved;
+    return deviceAvailability;
   }
-  public void setIsAdminApproved(String isAdminApproved)
+  public void setDeviceAvailability(String deviceAvailability)
   {
-    this.isAdminApproved = isAdminApproved;
+    this.deviceAvailability = deviceAvailability;
   }
   @Override
 	public String toString() {

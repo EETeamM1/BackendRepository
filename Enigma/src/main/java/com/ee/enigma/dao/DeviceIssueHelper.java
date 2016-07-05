@@ -30,7 +30,7 @@ public class DeviceIssueHelper
           reportInfo = new ReportInfo();
           reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
           reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
-          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
+          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
           reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
           reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
           reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
@@ -63,7 +63,7 @@ public class DeviceIssueHelper
           reportInfo = new ReportInfo();
           reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
           reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
-          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
+          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
           reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
           reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
           reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
@@ -84,47 +84,31 @@ public class DeviceIssueHelper
   }  
   
  
- public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceIssueInfo> deviceIssueInfos,List<DeviceInfo> deviceInfoList)
+ public ReportInfo buildDeviceIssueReportByStatus(List<DeviceInfo> deviceInfoList)
   {
-    DeviceIssueInfo deviceIssueInfo = null;
     DeviceInfo deviceInfo = null;
-    List<String> deviceInfoListByissueId = new ArrayList<String>();
-    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
+     int totalDevicesCount=0;
+    int availableDevices=0;
+    int issuedDevices=0;
     ReportInfo reportInfo = null;
-    /*if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
-    {
-      for (int i = 0; i < deviceIssueInfos.size(); i++)
-      {
-        deviceIssueInfo = deviceIssueInfos.get(i);
-        if (!deviceInfoListByissueId.contains(deviceIssueInfo.getDeviceId()))
-        {
-          deviceInfoListByissueId.add(deviceIssueInfo.getDeviceId());
-          reportInfo = new ReportInfo();
-          reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
-          reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
-          reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
-          reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
-          reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
-          reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
-          reportInfoList.add(reportInfo);
-        }
-      }
-    }*/
     for (int i = 0; i < deviceInfoList.size(); i++)
     {
-      deviceInfo = deviceInfoList.get(i);
-      //if (!deviceInfoListByissueId.contains(deviceInfo.getDeviceId())) {
-        reportInfo = new ReportInfo();
-        reportInfo.setDeviceId(deviceInfo.getDeviceId());
-        reportInfo.setDeviceName(deviceInfo.getDeviceName());
-        reportInfo.setIsAdminApproved(deviceInfo.getIsAdminApproved());
-         reportInfo.setManufacturer(deviceInfo.getManufacturer());
-        reportInfo.setOS(deviceInfo.getOS());
-        reportInfo.setOSVersion(deviceInfo.getOSVersion());
-        reportInfoList.add(reportInfo);
-      //}
-    }
-    return reportInfoList;
+        deviceInfo = deviceInfoList.get(i);
+        totalDevicesCount++;
+        if(Constants.DEVICE_INFO_ADMIN_AVAILABLE.equals(deviceInfo.getDeviceAvailability()))
+        {
+          availableDevices++;
+        }
+        if(Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getDeviceAvailability()))
+        {
+          issuedDevices++;
+        }
+     }
+    reportInfo=new ReportInfo();
+    reportInfo.setTotalDevices(totalDevicesCount);
+    reportInfo.setAvailableDevices(availableDevices);
+    reportInfo.setIssuedDevices(issuedDevices);
+    return reportInfo;
   }  
   
   

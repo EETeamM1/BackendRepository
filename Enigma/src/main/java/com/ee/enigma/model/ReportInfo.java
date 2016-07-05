@@ -24,6 +24,40 @@ public class ReportInfo
   private String OSVersion;
   private String issuedBy;
   
+  int totalDevices;
+  int availableDevices;
+  int issuedDevices;
+  
+  public int getTotalDevices()
+  {
+    return totalDevices;
+  }
+
+  public void setTotalDevices(int totalDevices)
+  {
+    this.totalDevices = totalDevices;
+  }
+
+  public int getAvailableDevices()
+  {
+    return availableDevices;
+  }
+
+  public void setAvailableDevices(int availableDevices)
+  {
+    this.availableDevices = availableDevices;
+  }
+
+  public int getIssuedDevices()
+  {
+    return issuedDevices;
+  }
+
+  public void setIssuedDevices(int issuedDevices)
+  {
+    this.issuedDevices = issuedDevices;
+  }
+
   public String getIssuedBy()
   {
     return issuedBy;
