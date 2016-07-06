@@ -136,7 +136,7 @@ public class UserServiceImplTest  {
     parameters.setUserId(null);
     Mockito.doReturn(JunitConstants.COUNT_ONE).when(userInfoDaoImpl)
     .deleteUserInfo(Matchers.any(UserInfo.class));
-    response=userServiceImpl.deleteUserInfo(JunitConstants.USER_ID);
+    response=userServiceImpl.deleteUserInfo(null);
     Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));
   }
   
