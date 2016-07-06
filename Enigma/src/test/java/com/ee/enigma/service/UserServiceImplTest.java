@@ -122,7 +122,7 @@ public class UserServiceImplTest  {
     parameters.setUserId(JunitConstants.USER_ID);
     Mockito.doReturn(JunitConstants.COUNT_ONE).when(userInfoDaoImpl)
     .deleteUserInfo(Matchers.any(UserInfo.class));
-    response=userServiceImpl.deleteUserInfo(requestInfo);
+    response=userServiceImpl.deleteUserInfo(JunitConstants.USER_ID);
     Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_SUCCESSFULLY_DELETED));
   }
   
@@ -136,7 +136,7 @@ public class UserServiceImplTest  {
     parameters.setUserId(null);
     Mockito.doReturn(JunitConstants.COUNT_ONE).when(userInfoDaoImpl)
     .deleteUserInfo(Matchers.any(UserInfo.class));
-    response=userServiceImpl.deleteUserInfo(requestInfo);
+    response=userServiceImpl.deleteUserInfo(JunitConstants.USER_ID);
     Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));
   }
   
@@ -155,7 +155,7 @@ public class UserServiceImplTest  {
     Mockito.doReturn(userInfo).when(userInfoDaoImpl)
     .getUserInfo(Matchers.anyString());
     UserInfo userInfo2=null;
-    userInfo2=userServiceImpl.getUserInfo(requestInfo);
+    userInfo2=userServiceImpl.getUserInfo(JunitConstants.USER_ID);
     Assert.assertTrue(userInfo2.getUserId().equals(JunitConstants.USER_ID));
   }
   
@@ -176,7 +176,7 @@ public class UserServiceImplTest  {
     Mockito.doReturn(userInfo).when(userInfoDaoImpl)
     .getUserInfo(Matchers.anyString());
     UserInfo userInfo2=null;
-    userInfo2=userServiceImpl.getUserInfo(requestInfo);
+    userInfo2=userServiceImpl.getUserInfo(JunitConstants.USER_ID);
    // response=userServiceImpl.getUserInfo(requestInfo);
     Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));
   }

@@ -16,6 +16,7 @@ public interface Constants {
 	String MESSAGE_BAD_REQUEST = "Bad Requeset";
 	String MESSAGE_AUTHENTICATION_FAILD = "UnAuthorized";
 	String MESSAGE_NOT_FOUND_DEVICE = "Device not registered";
+	String MESSAGE_WRONG_PASSWORD = "current Password is wrong";
 	
 	String USER_ACTIVITY_ID_NOT_FOUND = "Provided Session Token is not exist";
 	String USER_ALREADY_LOGOUT = "User already logout for provided Session Token";
