@@ -101,7 +101,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
 		try {
 			userId = loginInfo.getParameters().getUserId().trim();
-			password = loginInfo.getParameters().getPassword().trim();
+			password = loginInfo.getParameters().getPassword();
 			deviceId = loginInfo.getParameters().getDeviceId().trim();
 			latitude = loginInfo.getParameters().getLatitude();
 			longitude = loginInfo.getParameters().getLongitude();

@@ -8,9 +8,9 @@ public interface UserService
 {
   public EnigmaResponse saveUserInfo(Request userInfo);
 
-  public EnigmaResponse deleteUserInfo(Request requestInfo);
+  public EnigmaResponse deleteUserInfo(String userId);
 
   //public EnigmaResponse getUserInfo(Request requestInfo);
   
-  public UserInfo getUserInfo(Request requestInfo);
+  public UserInfo getUserInfo(String userId);
 }

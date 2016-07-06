@@ -33,8 +33,8 @@ public class MasterServiceImpl implements MasterService {
 		String currentMasterPassword = null;
 		String newMasterPassword = null;
 		try {
-			currentMasterPassword = masterInfo.getParameters().getCurrentMasterPassword().trim();
-			newMasterPassword = masterInfo.getParameters().getNewMasterPassword().trim();
+			currentMasterPassword = masterInfo.getParameters().getCurrentMasterPassword();
+			newMasterPassword = masterInfo.getParameters().getNewMasterPassword();
 		} catch (Exception e) {
 			logger.error(e);
 			return CommonUtils.badRequest();
@@ -58,7 +58,7 @@ public class MasterServiceImpl implements MasterService {
 		ResponseCode responseCode = new ResponseCode();
 		EnigmaResponse response = new EnigmaResponse();
 		responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
-		responseCode.setMessage(Constants.MESSAGE_AUTHENTICATION_FAILD);
+		responseCode.setMessage(Constants.MESSAGE_WRONG_PASSWORD);
 		response.setResponseCode(responseCode);
 		return response;
 	}

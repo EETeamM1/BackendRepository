@@ -30,11 +30,10 @@ public class UserServiceImpl implements UserService
   {
     this.userInfoDao = userInfoDao;
   }
-  public UserInfo getUserInfo(Request requestInfo){
-    String userId="";
+  public UserInfo getUserInfo(String userId){
     try
     {
-      userId = requestInfo.getParameters().getUserId().trim();
+      userId = userId.trim();
        }
     catch (Exception e)
     {
@@ -97,16 +96,15 @@ public class UserServiceImpl implements UserService
     return response;
   }
 
-  public EnigmaResponse deleteUserInfo(Request requestInfo)
+  public EnigmaResponse deleteUserInfo(String userId)
   {
-    response = new EnigmaResponse();
-    responseCode = new ResponseCode();
+   
+	responseCode = new ResponseCode();
+	response = new EnigmaResponse();
     result = new ResponseResult();
-    String userId;
-
     try
     {
-      userId = requestInfo.getParameters().getUserId().trim();
+      userId = userId.trim();
     }
     catch (Exception e)
     {
@@ -127,7 +125,6 @@ public class UserServiceImpl implements UserService
     // Success response.
     responseCode.setCode(Constants.CODE_SUCCESS);
     response.setResponseCode(responseCode);
-    response.setResult(result);
     return response;
   }
 

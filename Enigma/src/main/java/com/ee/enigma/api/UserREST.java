@@ -2,6 +2,7 @@ package com.ee.enigma.api;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -44,21 +45,21 @@ public class UserREST
       .status(userResponse.getResponseCode().getCode()).build();
   }
 
-  @POST
-  @Path("/deleteUserInfo")
-  public Response deleteUserInfo(Request userInfo)
+  @DELETE
+  @Path("/{id}")
+  public Response deleteUserInfo(@PathParam("id") String userId)
   {
-    EnigmaResponse userResponse = userService.deleteUserInfo(userInfo);
+    EnigmaResponse userResponse = userService.deleteUserInfo(userId);
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
   }
   
-  @POST
-  @Path("/getUserInfo")
+  @GET
+  @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public UserInfo getUserInfo(Request requestInfo)
+  public UserInfo getUserInfo(@PathParam("id") String userId)
   {
-    UserInfo userInfo=  userService.getUserInfo(requestInfo);
+    UserInfo userInfo=  userService.getUserInfo(userId);
     return userInfo;
   }
 
