@@ -162,6 +162,7 @@
 	<build>
 		<finalName>InventoryManagement</finalName>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -171,6 +172,7 @@
 					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -197,11 +199,13 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>emma-maven-plugin</artifactId>
-				<version>1.0-alpha-3</version>
-				<inherited>true</inherited>
-			</plugin>
+                <groupId>org.sonatype.maven.plugin</groupId>
+                <artifactId>emma-maven-plugin</artifactId>
+                <version>1.3</version>
+                <configuration>
+                    <formats>html,xml,txt</formats>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
