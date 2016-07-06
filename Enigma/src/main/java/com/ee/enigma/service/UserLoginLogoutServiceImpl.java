@@ -144,6 +144,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		// call "GeoLocationService" to get location name from Geo coordinates.
 		String location = getGeoLocation(latitude, longitude);
 
+        //Checking is previous user logout on device
+		userActivityDao.logOutBYDeviceId(deviceId);
 		// make UserActivity entry.
 		Date loginTime = new Date();
 		String activityId = activityIdGenerator(userId, loginTime.getTime());
@@ -251,7 +253,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		if (null == sessionToken) {
 			return badRequest();
 		}
-		String status = userActivityDao.logOutActivity(sessionToken);
+		String status = userActivityDao.logOutBYActivityId(sessionToken);
 		
 		if( status.equals(Constants.MESSAGE_SUCCESS)) {
 		// Success response.

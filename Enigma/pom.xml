@@ -19,7 +19,7 @@
 		<servlet.version>3.1.0</servlet.version>
 		<cxf.version>3.0.4</cxf.version>
 		<spring.security.version>4.0.2.RELEASE</spring.security.version>
-	     <junit.version>1.9.5</junit.version>
+		<junit.version>1.9.5</junit.version>
 	</properties>
 
 	<dependencies>
@@ -45,13 +45,13 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>jsp-api</artifactId>
-    <version>2.0</version>
-    <scope>provided</scope>
-</dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- logging -->
 		<dependency>
@@ -129,7 +129,7 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		
+
 		<!-- Spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -143,10 +143,19 @@
 			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${junit.version}</version>
-        </dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+
+
+		<!-- PMD Plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-pmd-plugin</artifactId>
+			<version>3.6</version>
+			<type>maven-plugin</type>
+		</dependency>
 
 	</dependencies>
 
@@ -163,13 +172,48 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		 <pluginManagement>
-          <plugins>
-            <plugin>
-              <artifactId>maven-resources-plugin</artifactId>
-              <version>2.7</version>
-            </plugin>           
-          </plugins>
-        </pluginManagement>  
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+				<version>1.0-alpha-3</version>
+				<inherited>true</inherited>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

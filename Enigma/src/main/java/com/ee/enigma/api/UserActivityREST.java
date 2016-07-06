@@ -49,6 +49,14 @@ public class UserActivityREST {
 		
 	}
 	
+//	@POST
+//	@Path("/logout")
+//	public Response userReport(Request userReportInfo){
+//		EnigmaResponse logoutResponse = userLoginLogoutService.userReportService(userReportInfo);
+//		return Response.ok(logoutResponse, MediaType.APPLICATION_JSON).status(logoutResponse.getResponseCode().getCode()).build();
+//		
+//	}
+	
 	@GET
 	@Path("/login")
 	public String loginAPITest(){

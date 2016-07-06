@@ -49,7 +49,6 @@ public class UserActivityDaoImpl implements UserActivityDao{
 		try {
 		Session session = this.sessionFactory.getCurrentSession();
 		UserActivity UserActivity = (UserActivity) session.load(UserActivity.class, activityId);
-		logger.info(UserActivity.toString());
 		return UserActivity;
 		}catch(ObjectNotFoundException ex){
 			logger.error(ex.getMessage(), ex);
@@ -58,7 +57,22 @@ public class UserActivityDaoImpl implements UserActivityDao{
 	}
 
 	@Override
-	public String logOutActivity(String activityId) {
+	public List<UserActivity> getUserActivityByDeviceId(String deviceId) {
+		String hql = "FROM UserActivity WHERE deviceId = :deviceId AND logoutTime is NULL";
+		
+		try {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("deviceId", deviceId);
+		return (List<UserActivity>) query.list();
+		}catch(ObjectNotFoundException ex){
+			logger.error(ex.getMessage(), ex);
+		}
+		return null;
+	}
+	
+	@Override
+	public String logOutBYActivityId(String activityId) {
 		UserActivity userActivity = getUserActivityByActivityId(activityId);
 		if (null != userActivity) {
 			if ( null == userActivity.getLogoutTime()) {
@@ -70,6 +84,18 @@ public class UserActivityDaoImpl implements UserActivityDao{
 			}
 		}
 		return Constants.USER_ACTIVITY_ID_NOT_FOUND;
+	}
+	
+	@Override
+	public void logOutBYDeviceId(String deviceId) {
+		List<UserActivity> userActivityList = getUserActivityByDeviceId(deviceId);
+		if (null != userActivityList) {
+			for(UserActivity userActivity : userActivityList)
+			if ( null == userActivity.getLogoutTime()) {
+				userActivity.setLogoutTime(new Date());
+				updateUserActivity(userActivity);
+			}
+		}
 	}
 
 	@Override
