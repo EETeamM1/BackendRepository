@@ -25,9 +25,9 @@ public class DeviceInfo {
 	private Time timeoutPeriod;
 	private String deviceAvailability;
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	/*@OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "deviceId",insertable =false, updatable=false)
-  private Set<DeviceIssueInfo> deviceIssueInfos;
+  private Set<DeviceIssueInfo> deviceIssueInfos;*/
 	
 	/* GETTERS AND SETTERS */
 	public Time getTimeoutPeriod() {

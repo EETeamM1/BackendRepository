@@ -1,4 +1,4 @@
-package com.ee.enigma.model;
+package com.ee.enigma.dto;
 
 public class ReportResultInfo
 {

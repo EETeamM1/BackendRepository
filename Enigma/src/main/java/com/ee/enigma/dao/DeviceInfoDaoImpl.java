@@ -94,4 +94,46 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
       return null;
     }
  }
+  
+  @Override
+  public List<DeviceInfo> getDevicesListByIDAndStatus(String deviceId,String deviceAvailability) {
+    try {
+      String hql = "";
+      Session session = this.sessionFactory.getCurrentSession();
+      Query query = null;
+      if(deviceId!=null && deviceAvailability!=null)
+      {
+        hql = "from DeviceInfo  where deviceId =:deviceId and deviceAvailability=:deviceAvailability ";
+        query = session.createQuery(hql);
+        query.setParameter("deviceId", deviceId);
+        query.setParameter("deviceAvailability", deviceAvailability);
+      }
+      else if(deviceId!=null )
+      {
+        hql = "from DeviceInfo  where deviceId =:deviceId ";
+        query = session.createQuery(hql);
+        query.setParameter("deviceId", deviceId);
+      }
+      else if(deviceAvailability!=null )
+      {
+        hql = "from DeviceInfo  where deviceAvailability =:deviceAvailability ";
+        query = session.createQuery(hql);
+        query.setParameter("deviceAvailability", deviceAvailability);
+      }
+      else
+      {
+        hql = "from DeviceInfo  ";
+        query = session.createQuery(hql);
+      }
+      List<DeviceInfo> deviceInfo = (List<DeviceInfo>) query.list();
+      if(null == deviceInfo || deviceInfo.size() == 0 ){
+        return null;
+      }
+      logger.info(deviceInfo.toString());
+      return deviceInfo;
+    } catch (HibernateException e) {
+      logger.error(e);
+      return null;
+    }
+ }
 }

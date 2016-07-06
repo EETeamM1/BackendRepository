@@ -18,7 +18,8 @@ import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
-import com.ee.enigma.model.ReportInfo;
+import com.ee.enigma.dto.DeviceStatusCountsInfo;
+import com.ee.enigma.dto.ReportInfo;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -430,8 +431,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
    
    List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
-   ReportInfo reportInfo=deviceIssueHelper.buildDeviceReportAvailability(deviceInfoList);
-   responseCode.setResultObject(reportInfo);
+   DeviceStatusCountsInfo info=deviceIssueHelper.buildDeviceReportAvailability(deviceInfoList);
+   responseCode.setResultObject(info);
    responseCode.setCode(Constants.CODE_SUCCESS);
    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
    response.setResponseCode(responseCode);

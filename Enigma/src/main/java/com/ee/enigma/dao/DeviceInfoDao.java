@@ -10,4 +10,5 @@ public interface DeviceInfoDao {
 	public void createDeviceInfo(DeviceInfo deviceInfo) ;
   public int deleteDeviceInfo(DeviceInfo deviceInfo) ;
   public List<DeviceInfo> getDevicesList() ;
+  public List<DeviceInfo> getDevicesListByIDAndStatus(String deviceId,String deviceStatus);
 }

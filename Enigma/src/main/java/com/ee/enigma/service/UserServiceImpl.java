@@ -30,6 +30,20 @@ public class UserServiceImpl implements UserService
   {
     this.userInfoDao = userInfoDao;
   }
+  public UserInfo getUserInfo(Request requestInfo){
+    String userId="";
+    try
+    {
+      userId = requestInfo.getParameters().getUserId().trim();
+       }
+    catch (Exception e)
+    {
+     // logger.error(e);
+     
+    }
+    return  userInfoDao.getUserInfo(userId);
+  }
+  
 
   public EnigmaResponse saveUserInfo(Request requestInfo)
   {
@@ -117,7 +131,7 @@ public class UserServiceImpl implements UserService
     return response;
   }
 
-  public EnigmaResponse getUserInfo(Request requestInfo)
+  /*public EnigmaResponse getUserInfo(Request requestInfo)
   {
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -150,7 +164,7 @@ public class UserServiceImpl implements UserService
     return response;
 
   }
-
+*/
   private EnigmaResponse badRequest()
   {
     responseCode.setCode(Constants.CODE_BAD_REQUEST);

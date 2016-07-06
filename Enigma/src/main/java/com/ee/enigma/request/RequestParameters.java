@@ -22,7 +22,16 @@ public class RequestParameters {
     String yearOfManufacturing;
     private String currentMasterPassword;
 	private String newMasterPassword;
-    
+    String deviceStatus;
+		  
+	public String getDeviceStatus()
+    {
+      return deviceStatus;
+    }
+    public void setDeviceStatus(String deviceStatus)
+    {
+      this.deviceStatus = deviceStatus;
+    }
 	public String getCurrentMasterPassword() {
 		return currentMasterPassword;
 	}

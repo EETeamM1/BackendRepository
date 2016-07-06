@@ -11,13 +11,14 @@ import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
-import com.ee.enigma.model.ReportInfo;
-import com.ee.enigma.model.ReportResultInfo;
+import com.ee.enigma.dto.DeviceStatusCountsInfo;
+import com.ee.enigma.dto.ReportInfo;
+import com.ee.enigma.dto.ReportResultInfo;
 import com.ee.enigma.model.UserActivity;
 
 public class DeviceIssueHelper
 {
-  public List<ReportInfo> buildDeviceIssueTrendList(List<DeviceIssueInfo> deviceIssueInfos)
+  public List<com.ee.enigma.dto.ReportInfo> buildDeviceIssueTrendList(List<DeviceIssueInfo> deviceIssueInfos)
   {
     DeviceIssueInfo deviceIssueInfo = null;
     List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
@@ -84,13 +85,13 @@ public class DeviceIssueHelper
   }  
   
  
- public ReportInfo buildDeviceReportAvailability(List<DeviceInfo> deviceInfoList)
+ public DeviceStatusCountsInfo buildDeviceReportAvailability(List<DeviceInfo> deviceInfoList)
   {
     DeviceInfo deviceInfo = null;
      int totalDevicesCount=0;
     int availableDevices=0;
     int issuedDevices=0;
-    ReportInfo reportInfo = null;
+    DeviceStatusCountsInfo info = null;
     for (int i = 0; i < deviceInfoList.size(); i++)
     {
         deviceInfo = deviceInfoList.get(i);
@@ -104,11 +105,11 @@ public class DeviceIssueHelper
           issuedDevices++;
         }
      }
-    reportInfo=new ReportInfo();
-    reportInfo.setTotalDevices(totalDevicesCount);
-    reportInfo.setAvailableDevices(availableDevices);
-    reportInfo.setIssuedDevices(issuedDevices);
-    return reportInfo;
+    info=new DeviceStatusCountsInfo();
+    info.setTotalDevices(totalDevicesCount);
+    info.setAvailableDevices(availableDevices);
+    info.setIssuedDevices(issuedDevices);
+    return info;
   }  
   
  public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)

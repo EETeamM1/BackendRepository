@@ -1,5 +1,11 @@
 package com.ee.enigma.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
+import com.ee.enigma.dto.DeviceInfoDto;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -33,6 +40,35 @@ public class DeviceServiceImpl implements DeviceService
     this.deviceInfoDao = deviceInfoDao;
   }
 
+  public  List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo)
+  {
+    List<DeviceInfoDto> deviceInfoDtos = new ArrayList<DeviceInfoDto>();
+    String deviceId = null;
+    String deviceStatus = null;
+    try
+    {
+      deviceId = requestInfo.getParameters().getDeviceId().trim();
+      deviceStatus = requestInfo.getParameters().getDeviceStatus().trim();
+    }
+    catch (Exception e)
+    {
+      logger.error(e);
+    }
+    List<DeviceInfo> deviceInfos = deviceInfoDao
+      .getDevicesListByIDAndStatus(deviceId, deviceStatus);
+    DeviceInfoDto deviceInfoDto = new DeviceInfoDto();
+    DeviceInfo deviceInfo = null;
+    if (deviceInfos != null && deviceInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceInfos.size(); i++)
+      {
+        deviceInfo = deviceInfos.get(i);
+        deviceInfoDtos.add(deviceInfoDto.getDeviceInfoDto(deviceInfo));
+      }
+    }
+    return deviceInfoDtos;
+  }
+  
   public EnigmaResponse saveDeviceInfo(Request requestInfo)
   {
     response = new EnigmaResponse();
@@ -99,6 +135,52 @@ public class DeviceServiceImpl implements DeviceService
     return response;
   }
 
+  public EnigmaResponse updateDeviceInfoStatus(Request requestInfo){
+
+    response = new EnigmaResponse();
+    responseCode = new ResponseCode();
+    result = new ResponseResult();
+
+    String deviceId = null;
+    String deviceStatus = null;
+    try
+    {
+      deviceId = requestInfo.getParameters().getDeviceId().trim();
+      deviceStatus = requestInfo.getParameters().getDeviceStatus().trim();
+    }
+    catch (Exception e)
+    {
+      logger.error(e);
+      return badRequest();
+    }
+
+    // Checking whether request contains all require fields or not.
+    if (null == deviceId || null == deviceStatus)
+    {
+      return badRequest();
+    }
+     DeviceInfo deviceInfo=deviceInfoDao.getDeviceInfo(deviceId);
+     if(deviceInfo!=null)
+     {
+     deviceInfo.setDeviceAvailability(deviceStatus);
+     deviceInfoDao.updateDeviceInfo(deviceInfo);
+     responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
+     // Success response.
+     responseCode.setCode(Constants.CODE_SUCCESS);
+     // result.setSessionToken(activityId);
+     response.setResponseCode(responseCode);
+     response.setResult(result);
+     return response;
+     }
+     // Success response.
+     responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
+     responseCode.setCode(Constants.CODE_NOT_FOUND);
+     // result.setSessionToken(activityId);
+     response.setResponseCode(responseCode);
+     response.setResult(result);
+    return response;
+  
+  }
   public EnigmaResponse deleteDeviceInfo(Request requestInfo)
   {
     response = new EnigmaResponse();
@@ -133,7 +215,7 @@ public class DeviceServiceImpl implements DeviceService
     return response;
   }
 
-  public EnigmaResponse getDeviceInfo(Request requestInfo)
+  /*public EnigmaResponse getDeviceInfo(Request requestInfo)
   {
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -165,6 +247,22 @@ public class DeviceServiceImpl implements DeviceService
     response.setResult(result);
     return response;
 
+  }*/
+  
+  public DeviceInfoDto getDeviceInfo(Request requestInfo)
+  {
+     String deviceId="";
+     DeviceInfoDto deviceInfoDto=new DeviceInfoDto();
+    try
+    {
+      deviceId = requestInfo.getParameters().getDeviceId().trim();
+    }
+    catch (Exception e)
+    {
+      logger.error(e);
+    }
+     DeviceInfo  deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
+     return deviceInfoDto.getDeviceInfoDto(deviceInfo);
   }
 
   private EnigmaResponse badRequest()

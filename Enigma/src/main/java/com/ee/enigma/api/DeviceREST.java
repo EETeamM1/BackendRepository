@@ -1,5 +1,7 @@
 package com.ee.enigma.api;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.ee.enigma.dto.DeviceInfoDto;
+import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.DeviceService;
@@ -52,12 +56,27 @@ public class DeviceREST
   
   @POST
   @Path("/getDeviceInfo")
-  public Response getUserInfo(Request requestInfo)
+  public DeviceInfoDto getDeviceInfo(Request requestInfo)
   {
-    EnigmaResponse userResponse = deviceService.getDeviceInfo(requestInfo);
-    Response response= Response.ok(userResponse, MediaType.APPLICATION_JSON)
-      .entity(userResponse.getResponseCode().getResultObject()).build();
-    return response;
+    DeviceInfoDto deviceInfoDto=deviceService.getDeviceInfo(requestInfo);
+    return deviceInfoDto;
   }
-
+  
+  @POST
+  @Path("/getDevicesInfoByStatus")
+  public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo)
+  {
+    List<DeviceInfoDto> deviceInfoDtos=deviceService.getDevicesInfoByStatus(requestInfo);
+    return deviceInfoDtos;
+  }
+  
+  @POST
+  @Path("/updateDeviceInfoStatus")
+  public Response updateDeviceInfoStatus(Request requestInfo)
+  {
+    EnigmaResponse userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+      .status(userResponse.getResponseCode().getCode()).build();
+  }
+  
 }
