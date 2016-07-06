@@ -438,6 +438,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    {
      deviceIssueInfoTemp = deviceIssueInfoList.get(0);
    }
+   else
+   {
+     newDeviceIssueInfo = new DeviceIssueInfo();
+     newDeviceIssueInfo.setDeviceId(deviceId);
+     newDeviceIssueInfo.setUserId(userId);
+     newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
+     newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
+     newDeviceIssueInfo.setIssueByAdmin(false);
+     deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo); 
+     updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+   }
    // If userId is same means same user is logged
    if (userId.equals(deviceIssueInfoTemp.getUserId()))
    {
@@ -455,7 +466,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
        newDeviceIssueInfo.setIssueByAdmin(false);
        deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
        // Update Device status
-       //updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+       updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
      }
    }
    else
@@ -482,7 +493,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      newDeviceIssueInfo.setIssueByAdmin(false);
      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
      // Update Device status
-    // updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+     updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
    }
    deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
    if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
