@@ -32,7 +32,7 @@ public class CommonUtils
     return (date.getTime());
   }
 
-  public static java.sql.Date getSqlDateByString(String dateString)
+  public static java.sql.Date getSqlDateByString(String dateString) throws ParseException
   {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     java.sql.Date sqlDate = null;
@@ -45,6 +45,7 @@ public class CommonUtils
     catch (ParseException e1)
     {
       e1.printStackTrace();
+      throw new ParseException("Parse Exception",0);
     }
     return sqlDate;
   }

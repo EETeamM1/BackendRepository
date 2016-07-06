@@ -10,7 +10,7 @@ public interface DeviceIssueInfoService {
 	public String submitDeviceIssueInfo(String deviceId, String userId);
 	public EnigmaResponse getDeviceIssueReportByStatus();
 	public EnigmaResponse getDeviceReportAvailability();
-	public EnigmaResponse getDeviceIssueTrendReport(Request deviceIssueInfo);
-	public EnigmaResponse getDeviceSubmitTrendReport(Request deviceIssueInfo);
+	public EnigmaResponse getDeviceIssueReport(Request deviceIssueInfo);
+	public EnigmaResponse getDeviceSubmitReport(Request deviceIssueInfo) throws Exception;
 	
 }
