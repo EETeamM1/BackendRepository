@@ -67,10 +67,10 @@ public class UserInfoDaoImpl implements UserInfoDao {
 	@Override
 	public UserInfo getUserInfo(String userId, String password) {
 		try {
-			String hql = "from UserInfo where userId= :userId AND password= :password";
+			String hql = "from UserInfo where lower(userId)= :userId AND password= :password";
 			Session session = this.sessionFactory.getCurrentSession();
 			Criteria criteria = session.createCriteria(UserInfo.class);
-			criteria.add(Restrictions.sqlRestriction("userId = ? collate Latin1_General_CS", userId, new StringType()));
+			criteria.add(Restrictions.sqlRestriction("userId = ? collate Latin1_General_CS", userId.toLowerCase(), new StringType()));
 			criteria.add(Restrictions.sqlRestriction("password = ? collate Latin1_General_CS", password, new StringType()));
 			UserInfo userInfo = (UserInfo) criteria.uniqueResult();			
 			return userInfo;
