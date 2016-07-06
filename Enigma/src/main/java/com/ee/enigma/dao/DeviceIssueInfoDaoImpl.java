@@ -88,7 +88,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	 @Override
 	  public List<DeviceIssueInfo> getDeviceIssueInfoList(String deviceId) {
 	    try {
-	      String hql = "from DeviceIssueInfo where deviceId= :deviceId ";
+	      String hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueTime desc ";
 	      Session session = this.sessionFactory.getCurrentSession();
 	      Query query = session.createQuery(hql);
 	      query.setParameter("deviceId", deviceId);

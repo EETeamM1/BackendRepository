@@ -376,50 +376,132 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   }
   
   
- @Override
+/* @Override
   public String submitDeviceIssueInfo(String deviceId, String userId)
   {
-    String issueId=null;
-    DeviceIssueInfo newDeviceIssueInfo=null;
+    String issueId = null;
+    DeviceIssueInfo newDeviceIssueInfo = null;
     List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
-    boolean deviveInfoFound=false;
-    for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
+    boolean deviveInfoFound = false;
+    if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
     {
-      if(deviceIssueInfo.getIssueId().equals(userId))
+      
+      for (DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
       {
-        deviveInfoFound=true;
+        if (deviceIssueInfo.getUserId().equals(userId))
+        {
+          deviveInfoFound = true;
+        }
       }
     }
-    if(!deviveInfoFound)
+    if (!deviveInfoFound)
     {
-      newDeviceIssueInfo=new DeviceIssueInfo();
+      newDeviceIssueInfo = new DeviceIssueInfo();
       newDeviceIssueInfo.setDeviceId(deviceId);
       newDeviceIssueInfo.setUserId(userId);
       newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
-      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId,userId));
+      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
       deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
     }
     else
     {
-      boolean flag=false;
-      for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
+      boolean flag = false;
+      if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
       {
-        if(deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime()==null)
+        for (DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
         {
-          deviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
-          deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
-          flag=true;
-          break;
+          if (deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime() == null)
+          {
+            deviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
+            deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
+            flag = true;
+            break;
+          }
         }
       }
-      if(!flag)
+      if (!flag)
       {
-        //Need to implement , where submit time is not null
+        // Need to implement , where submit time is not null
       }
     }
     return issueId;
-  } 
+  } */
+  
+ @Override
+ public String populateDeviceIssueInfo(String deviceId, String userId)
+ {
+   String issueId = null;
+   DeviceIssueInfo newDeviceIssueInfo = null;
+   List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+   DeviceIssueInfo deviceIssueInfoTemp = null;
+   if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
+   {
+     deviceIssueInfoTemp = deviceIssueInfoList.get(0);
+   }
+   // If userId is same means same user is logged
+   if (userId.equals(deviceIssueInfoTemp.getUserId()))
+   {
+     if (deviceIssueInfoTemp.getSubmitTime() == null)
+     {
+     //issued to current user
+     }
+     else
+     {
+       newDeviceIssueInfo = new DeviceIssueInfo();
+       newDeviceIssueInfo.setDeviceId(deviceId);
+       newDeviceIssueInfo.setUserId(userId);
+       newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
+       newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
+       newDeviceIssueInfo.setIssueByAdmin(false);
+       deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
+       // Update Device status
+       //updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+     }
+   }
+   else
+   {
+     // Other user logged in
+     // 1. submit device (update submit time)
+     // 2. issue device to new user
+     if (deviceIssueInfoTemp.getSubmitTime() == null)
+     {
+       deviceIssueInfoTemp.setSubmitTime(CommonUtils.getCurrentDateTime());
+       deviceIssueInfoTemp.setSubmitByAdmin(false);
+       deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfoTemp);
+     }
+     else
+     {
+       // Do Nothing
+     }
+     // Issue device to other user
+     newDeviceIssueInfo = new DeviceIssueInfo();
+     newDeviceIssueInfo.setDeviceId(deviceId);
+     newDeviceIssueInfo.setUserId(userId);
+     newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
+     newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
+     newDeviceIssueInfo.setIssueByAdmin(false);
+     deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
+     // Update Device status
+    // updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+   }
+   deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+   if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
+   {
+     deviceIssueInfoTemp = deviceIssueInfoList.get(0);
+     if (deviceIssueInfoTemp != null && deviceIssueInfoTemp.getIssueId() != null)
+     {
+       issueId = deviceIssueInfoTemp.getIssueId();
+     }
+   }
+   return issueId;
+ } 
 
+ protected void updateDeviceInfo(String deviceId, String deviceAvailabilityStatus)
+ {
+   DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
+   deviceInfo.setDeviceAvailability(deviceAvailabilityStatus);
+   deviceInfoDao.updateDeviceInfo(deviceInfo);
+ }
 
  public EnigmaResponse getDeviceReportAvailability(){
    response = new EnigmaResponse();

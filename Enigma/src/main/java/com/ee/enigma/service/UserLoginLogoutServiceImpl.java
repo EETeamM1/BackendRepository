@@ -139,7 +139,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		}
 
 		// call "DeviceIssueInfoService" to get issueId
-		String issueId = deviceIssueInfoService.submitDeviceIssueInfo(deviceId,userId);
+		String issueId = deviceIssueInfoService.populateDeviceIssueInfo(deviceId,userId);
 
 		// call "GeoLocationService" to get location name from Geo coordinates.
 		String location = getGeoLocation(latitude, longitude);
