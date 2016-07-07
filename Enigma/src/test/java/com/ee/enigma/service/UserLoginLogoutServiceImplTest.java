@@ -4,33 +4,20 @@ import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.JunitConstants;
-import com.ee.enigma.dao.UserActivityDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
-import com.ee.enigma.dao.UserInfoDaoImpl;
 import com.ee.enigma.model.UserActivity;
-import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.request.RequestParameters;
 import com.ee.enigma.response.EnigmaResponse;
-import com.ee.enigma.response.ResponseCode;
-import com.ee.enigma.response.ResponseResult;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,9 +34,6 @@ public class UserLoginLogoutServiceImplTest {
 	  @Mock
 	  private Session session;
 	  
-	  private EnigmaResponse response;
-	  private ResponseCode responseCode;
-	  private ResponseResult result;
 	  private Request requestInfo=null;
 	  private RequestParameters parameters;
 

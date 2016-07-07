@@ -7,6 +7,7 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/welcome" access="hasAnyRole ('ROLE_ADMIN', 'ROLE_USER')" />
+		<intercept-url pattern="/entities" access="hasAnyRole ('ROLE_ADMIN')" />
 
 		<form-login login-page="/login" default-target-url="/welcome"
 			login-processing-url="/j_spring_security_check"

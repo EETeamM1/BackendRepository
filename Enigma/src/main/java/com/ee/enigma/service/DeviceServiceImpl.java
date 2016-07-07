@@ -1,11 +1,7 @@
 package com.ee.enigma.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -82,7 +78,6 @@ public class DeviceServiceImpl implements DeviceService
     String manufacturer;
     String oS;
     String osVersion;
-    String timeoutPeriod;
     String yearOfManufacturing;
     DeviceInfo deviceInfo = null;
     try

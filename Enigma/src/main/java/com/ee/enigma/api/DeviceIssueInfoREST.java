@@ -23,7 +23,7 @@ import com.ee.enigma.service.DeviceIssueInfoService;
 @Consumes("application/json")
 @Produces("application/json")
 public class DeviceIssueInfoREST {
-	private Logger logger = Logger.getLogger(DeviceIssueInfoREST.class);
+//	private Logger logger = Logger.getLogger(DeviceIssueInfoREST.class);
 
 	DeviceIssueInfoService deviceIssueInfoService;
 	@Autowired(required = true)

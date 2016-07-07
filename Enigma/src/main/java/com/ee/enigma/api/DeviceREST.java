@@ -9,13 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.dto.DeviceInfoDto;
-import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.DeviceService;
@@ -25,7 +23,7 @@ import com.ee.enigma.service.DeviceService;
 @Produces("application/json")
 public class DeviceREST
 {
-  private Logger logger = Logger.getLogger(DeviceREST.class);
+//  private Logger logger = Logger.getLogger(DeviceREST.class);
 
   private DeviceService deviceService;
 
