@@ -353,6 +353,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      newDeviceIssueInfo.setIssueByAdmin(false);
      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo); 
      updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+     deviceIssueInfoTemp=newDeviceIssueInfo;
    }
    // If userId is same means same user is logged
    if (userId.equals(deviceIssueInfoTemp.getUserId()))
