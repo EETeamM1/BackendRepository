@@ -22,10 +22,10 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="welcome">Home</a></li>
+					<li ><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
 					<li><a href="#">Reports</a></li>
-					<li><a href="entities">Entities</a></li>
+					<li class="active"><a href="entities">Entities</a></li>
 					<li><a href="#">Requests<span class="badge"
 							id="requestCount">4</span></a></li>
 				</ul>
