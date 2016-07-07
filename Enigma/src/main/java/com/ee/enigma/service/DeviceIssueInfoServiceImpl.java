@@ -116,7 +116,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     catch (Exception e)
     {
-      logger.error(e);
+     // logger.error(e);
       return badRequest();
     }
 
@@ -321,52 +321,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
         response.setResult(result);
         return response;  
       }
-      /*else
-      {
-        tempDeviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
-        tempDeviceIssueInfo.setSubmitByAdmin(false);
-        deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
-        
-        createDeviceIssueInfo(deviceId, userId, false);
-        flag=true;
-      }*/
-      
      
-    //}
-    
-    /*for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-    {
-      if(deviceIssueInfo.getIssueId().equals(userId))
-      {
-        deviveInfoFound=true;
-      }
-    }
-    if(!deviveInfoFound)
-    {
-      newDeviceIssueInfo=new DeviceIssueInfo();
-      newDeviceIssueInfo.setDeviceId(deviceId);
-      newDeviceIssueInfo.setUserId(userId);
-      newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
-      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId,userId));
-      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
-    }
-    else
-    {
-      boolean flag=false;
-      for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-      {
-        if(deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime()==null)
-        {
-          deviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
-          deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
-          flag=true;
-          break;
-        }
-      }
-      if(!flag)
-      {
-        //Need to implement , where submit time is not null
-      }*/
     }
     responseCode.setCode(Constants.CODE_SUCCESS);
     responseCode.setMessage(Constants.MESSAGE_DEVICE_SUBMITTED);
@@ -375,57 +330,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return response;
   }
   
-  
-/* @Override
-  public String submitDeviceIssueInfo(String deviceId, String userId)
-  {
-    String issueId = null;
-    DeviceIssueInfo newDeviceIssueInfo = null;
-    List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
-    boolean deviveInfoFound = false;
-    if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
-    {
-      
-      for (DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-      {
-        if (deviceIssueInfo.getUserId().equals(userId))
-        {
-          deviveInfoFound = true;
-        }
-      }
-    }
-    if (!deviveInfoFound)
-    {
-      newDeviceIssueInfo = new DeviceIssueInfo();
-      newDeviceIssueInfo.setDeviceId(deviceId);
-      newDeviceIssueInfo.setUserId(userId);
-      newDeviceIssueInfo.setIssueTime(CommonUtils.getCurrentDateTime());
-      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
-      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
-    }
-    else
-    {
-      boolean flag = false;
-      if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
-      {
-        for (DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-        {
-          if (deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime() == null)
-          {
-            deviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
-            deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
-            flag = true;
-            break;
-          }
-        }
-      }
-      if (!flag)
-      {
-        // Need to implement , where submit time is not null
-      }
-    }
-    return issueId;
-  } */
+ 
   
  @Override
  public String populateDeviceIssueInfo(String deviceId, String userId)
@@ -535,24 +440,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
-   
-   /*String beginDateString;
-   String endDateString;
-   Date beginDate=null;
-   Date endDate=null;
-   try
-   {
-     beginDateString = deviceIssueInfo.getParameters().getBeginDate();
-     endDateString = deviceIssueInfo.getParameters().getEndDate();
-     beginDate= CommonUtils.getSqlDateByString(beginDateString);
-     endDate= CommonUtils.getSqlDateByString(endDateString);
-     if(beginDate==null)
-       endDate=null;
-   }
-   catch (Exception e)
-   {
-     logger.error(e);
-   }*/
+  
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
    //List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueReportListByStatus(beginDate, endDate);
    
@@ -677,7 +565,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   }
  
 
-  private void createDeviceIssueInfo(String deviceId, String userId, boolean byAdmin)
+  protected void createDeviceIssueInfo(String deviceId, String userId, boolean byAdmin)
   {
     DeviceIssueInfo newDeviceIssueInfo = new DeviceIssueInfo();
     newDeviceIssueInfo.setDeviceId(deviceId);
