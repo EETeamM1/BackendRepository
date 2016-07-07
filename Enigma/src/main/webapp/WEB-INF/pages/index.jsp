@@ -1,12 +1,16 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page isELIgnored="true" %>
 <html>
 <head>
 <link href="resources/lib/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css">
 <link href="resources/lib/css/enigma.css" rel="stylesheet"
 	type="text/css">
+	<link href="resources/lib/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
 <script src="resources/lib/js/jquery.js"></script>
 <script src="resources/lib/js/bootstrap.min.js"></script>
+ 
 </head>
 <body>
 
@@ -36,7 +40,7 @@
 	<!---Header ends--->
 
 	<div class="body-content" style="margin-top: -40px;">
-		<div class="row" style="border: 1px solid #ddd; padding: 10px;"vertical-align:center;"">
+		<div class="row">
 			<div class="col-sm-3">
 				<table class="table borderless">
 					<tr>
@@ -46,14 +50,15 @@
 					</tr>
 					</tr>
 					<tr>
-						<td>100</td>
-						<td>40</td>
-						<td>60</td>
+						<td><span id="totalDevices"></span></td>
+						<td><span id="availableDevices"></span></td>
+						<td><span id="issuedDevices"></span></td>
 					</tr>
 				</table>
 			</div>
-			<div align="right" style="vertical-align: center;">
-				<div class="form-group col-md-8">
+			<div align="right" style=""vertical-align:center;"">
+				<div class="form-group col-md-8"
+					style="border: 1px solid #ddd; padding: 10px;">
 					<a class="btn" href="#"><i class="fa fa-windows"
 						style="font-size: 30px;"></i></a> <a class="btn" href="#"><i
 						class="fa fa-android" style="font-size: 30px;"></i></a> <a class="btn"
@@ -61,8 +66,8 @@
 
 					<div class="input-group">
 						<input type="text" name="username" id="search_box" tabindex="1"
-							class="form-control" placeholder="Search" value="" autofocus>
-						<span class="input-group-addon"><i
+							class="form-control" placeholder="Search" value=""> <span
+							class="input-group-addon"><i
 							class="glyphicon glyphicon-search"></i></span>
 					</div>
 				</div>
@@ -71,27 +76,23 @@
 		<div style="margin-top: 20px;"></div>
 
 		<div id="device_list">
-			<div class="col-sm-4 list-group-item">
-				<img src="http://placehold.it/400x250/000/fff"
-					class="img-thumbnail col-sm-3" alt="apple" width="100" height="50">
-				<label class="control-label">Device:
-					<button type="button" class="btn btn-link" data-toggle="modal"
-						data-target="#Iphone6">Iphone6</button>
-				</label> <br> <label class="control-label">Status:Available</label></br>
-				<button type="button" class="btn btn-default" data-toggle="modal"
-					data-target="#myModal">Issue</button>
-			</div>
-
-			<div class="col-sm-4 list-group-item">
-				<img src="resources/lib/images/android.png"
-					class="img-thumbnail col-sm-3" alt="apple" width="100" height="50">
-				<label class="control-label">Device:
-					<button type="button" class="btn btn-link" data-toggle="modal"
-						data-target="#Android">Android 4.3</button>
-				</label> <br> <label class="control-label">Status:On Repair</label></br>
-			</div>
+			<!-- Device list from server -->
 		</div>
 	</div>
+	
+	<!-- device template -->
+	<script id="deviceStatusTemplate" type="text/x-jQuery-tmpl">
+		<div class="col-sm-4 list-group-item" style="margin:5px;">
+				<img src="resources/lib/images/${img}"
+					class="img-thumbnail col-sm-3 list_thumbnail" alt="${img}" width="100" height="50">
+				<label class="control-label">Device:
+					<button type="button" class="btn btn-link list_device_name" data-toggle="modal"
+						data-target="#Iphone6">${device_name}</button>
+				</label> <br> <label class="control-label">Status: <span class="list_status">${status}</span></label></br>
+				<button type="button" class="btn btn-default" data-toggle="modal"
+					data-target="#myModal">${button}</button>
+			</div>
+	</script>
 
 	<!-- Modal -->
 
@@ -166,5 +167,9 @@
 		</div>
 
 	</div>
+	 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+ 
+	<script language="javascript" src="resources/app/js/index.js"></script>
 </body>
 </html>

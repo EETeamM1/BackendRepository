@@ -7,6 +7,7 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/welcome" access="hasAnyRole ('ROLE_ADMIN', 'ROLE_USER')" />
+		<intercept-url pattern="/entities" access="hasAnyRole ('ROLE_ADMIN')" />
 
 		<form-login login-page="/login" default-target-url="/welcome"
 			login-processing-url="/j_spring_security_check"
@@ -19,8 +20,8 @@
 	<authentication-manager>
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource"
-				users-by-username-query="select userId,password,enabled from user_info where userId=?"
-				authorities-by-username-query="select userId, role from user_roles where userId =?  " />
+				users-by-username-query="select userId,password,enabled from USER_INFO where userId=?"
+				authorities-by-username-query="select userId, role from USER_ROLES where userId =?  " />
 		</authentication-provider>
 	</authentication-manager>
 
