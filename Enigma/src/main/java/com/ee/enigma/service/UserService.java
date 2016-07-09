@@ -12,4 +12,6 @@ public interface UserService
   public EnigmaResponse getAllUser();
   
   public EnigmaResponse getUserInfo(String userId);
+  
+  public EnigmaResponse searchUserResult(String searchQuery);
 }

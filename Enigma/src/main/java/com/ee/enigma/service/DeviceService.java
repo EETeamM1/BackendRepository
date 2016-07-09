@@ -3,6 +3,7 @@ package com.ee.enigma.service;
 import java.util.List;
 
 import com.ee.enigma.dto.DeviceInfoDto;
+import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 
@@ -19,4 +20,5 @@ public interface DeviceService {
 
 	public EnigmaResponse approveDevice(Request requestInfo);
 
+        public EnigmaResponse searchDevice(String searchQuery);
 }

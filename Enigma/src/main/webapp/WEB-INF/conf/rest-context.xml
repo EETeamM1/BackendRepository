@@ -106,6 +106,14 @@
 			<ref bean='jsonProvider' />
 		</jaxrs:providers>
 	</jaxrs:server>
+	<jaxrs:server id="searchManage" address="/search">
+		<jaxrs:serviceBeans>
+			<ref bean="searchAPI" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+	</jaxrs:server>
 	<!-- <jaxrs:server address="/" basePackages="com.ee.enigma.api"/> -->
 
 </beans>

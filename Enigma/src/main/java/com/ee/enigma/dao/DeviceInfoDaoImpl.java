@@ -136,4 +136,20 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
       return null;
     }
  }
+ 
+  @Override
+	public List<DeviceInfo> getDeviceFields(String searchText) {
+		logger.info(searchText);
+		String hql = "select deviceName, deviceId from DeviceInfo where deviceId like :searchText or deviceName like :searchText or manufacturer like :searchText or OS like :searchText or OSVersion like :searchText";
+	      Session session = this.sessionFactory.getCurrentSession();
+	      Query query = session.createQuery(hql);
+	      query.setString("searchText","%"+searchText+"%");
+	      
+	      List<DeviceInfo> deviceInfoList = (List<DeviceInfo>) query.list();
+	      if(null == deviceInfoList || deviceInfoList.size() == 0 ){
+	        return null;
+	      }
+		return deviceInfoList;
+  	}
+  
 }
