@@ -233,7 +233,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     //IS -->already issed
  
     DeviceIssueInfo tempDeviceIssueInfo=null;
-    DeviceIssueInfo newDeviceIssueInfo=null;
     List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
     boolean deviveInfoFound=false;
    // Checking whether request contains all require fields or not.
@@ -265,17 +264,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
           break;
         }
       }
-      if(deviveInfoFound && Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getDeviceAvailability()))
+      if(deviveInfoFound && Constants.DEVICE_STATUS_ISSUED.equals(deviceInfo.getDeviceAvailability()))
       {
         tempDeviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
         tempDeviceIssueInfo.setSubmitByAdmin(byAdmin);
         deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
      
         deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
-        deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ADMIN_AVAILABLE);
+        deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_AVAILABLE);
         deviceInfoDao.updateDeviceInfo(deviceInfo);
       }
-      else if(!Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getDeviceAvailability()))
+      else if(!Constants.DEVICE_STATUS_ISSUED.equals(deviceInfo.getDeviceAvailability()))
       {
         responseCode.setCode(Constants.CODE_SUCCESS);
         responseCode.setMessage(Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED);
@@ -304,7 +303,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
         deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
         
         deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
-        deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_PENDING_WITH_ADMIN);
+        deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_PENDING);
         deviceInfoDao.updateDeviceInfo(deviceInfo);
         
         responseCode.setCode(Constants.CODE_SUCCESS);
@@ -352,7 +351,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      newDeviceIssueInfo.setIssueId(issueIdGenerator(deviceId, userId));
      newDeviceIssueInfo.setIssueByAdmin(false);
      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo); 
-     updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+     updateDeviceInfo(deviceId, Constants.DEVICE_STATUS_ISSUED);
      deviceIssueInfoTemp=newDeviceIssueInfo;
    }
    // If userId is same means same user is logged
@@ -372,7 +371,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
        newDeviceIssueInfo.setIssueByAdmin(false);
        deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
        // Update Device status
-       updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+       updateDeviceInfo(deviceId, Constants.DEVICE_STATUS_ISSUED);
      }
    }
    else
@@ -399,7 +398,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      newDeviceIssueInfo.setIssueByAdmin(false);
      deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
      // Update Device status
-     updateDeviceInfo(deviceId, Constants.DEVICE_INFO_ISSUED_TO_USER);
+     updateDeviceInfo(deviceId, Constants.DEVICE_STATUS_ISSUED);
    }
    deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
    if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
@@ -577,7 +576,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     deviceIssueInfoDao.createDeviceIssueInfo(newDeviceIssueInfo);
     //Update Device Status
     DeviceInfo deviceInfo=deviceInfoDao.getDeviceInfo(deviceId);
-    deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ISSUED_TO_USER);
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
     deviceInfoDao.updateDeviceInfo(deviceInfo);
    }
 

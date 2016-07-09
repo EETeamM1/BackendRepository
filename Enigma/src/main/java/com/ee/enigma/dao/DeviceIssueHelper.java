@@ -38,11 +38,11 @@ public class DeviceIssueHelper
           reportInfo.setIssueTime(deviceIssueInfo.getIssueTime());
           if(reportInfo.getIssueByAdmin()!=null && reportInfo.getIssueByAdmin())
           {
-            reportInfo.setIssuedBy(Constants.ISSUED_BY_ADMIN);
+            reportInfo.setIssuedBy(Constants.DEVICE_STATUS_ISSUED);
           }
           else
           {
-            reportInfo.setIssuedBy(Constants.ISSUED_BY_SYSTEM);
+            reportInfo.setIssuedBy(Constants.DEVICE_STATUS_ISSUED);
           }
           reportInfo.setSubmitTime(deviceIssueInfo.getSubmitTime());
           reportInfoList.add(reportInfo);
@@ -96,11 +96,11 @@ public class DeviceIssueHelper
     {
         deviceInfo = deviceInfoList.get(i);
         totalDevicesCount++;
-        if(Constants.DEVICE_INFO_ADMIN_AVAILABLE.equals(deviceInfo.getDeviceAvailability()))
+        if(Constants.DEVICE_STATUS_AVAILABLE.equals(deviceInfo.getDeviceAvailability()))
         {
           availableDevices++;
         }
-        if(Constants.DEVICE_INFO_ISSUED_TO_USER.equals(deviceInfo.getDeviceAvailability()))
+        if(Constants.DEVICE_STATUS_ISSUED.equals(deviceInfo.getDeviceAvailability()))
         {
           issuedDevices++;
         }
