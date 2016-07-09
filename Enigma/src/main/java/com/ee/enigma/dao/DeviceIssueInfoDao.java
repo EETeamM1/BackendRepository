@@ -3,6 +3,7 @@ package com.ee.enigma.dao;
 import java.sql.Date;
 import java.util.List;
 
+import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceIssueInfo;
 
 public interface DeviceIssueInfoDao {
@@ -28,4 +29,6 @@ public interface DeviceIssueInfoDao {
 	// beginDate,Date endDate);
 	// public List<DeviceIssueInfo> getDeviceSubmitTrendList(String
 	// deviceId,Date beginDate,Date endDate);
+
+	public List<TopDeviceDto> getTopDevices(java.util.Date lastMonthDate);
 }

@@ -106,6 +106,15 @@
 			<ref bean='jsonProvider' />
 		</jaxrs:providers>
 	</jaxrs:server>
+	
+	<jaxrs:server id="deviceReportRest" address="/deviceReport">
+		<jaxrs:serviceBeans>
+			<ref bean="deviceReport" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+	</jaxrs:server>
 	<!-- <jaxrs:server address="/" basePackages="com.ee.enigma.api"/> -->
 
 </beans>

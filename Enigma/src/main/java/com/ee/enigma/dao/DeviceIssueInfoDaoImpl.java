@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserInfo;
 
@@ -228,6 +229,29 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	       }
 	       logger.info(deviceIssueInfoList.toString());
 	       return deviceIssueInfoList.get(0);
+	     } catch (HibernateException e) {
+	       logger.error(e);
+	       return null;
+	     }
+	}
+
+	@Override
+	public List<TopDeviceDto> getTopDevices(java.util.Date lastMonthDate) {
+		try {
+		     String hql=null;
+		     Query query=null;
+		     Session session = this.sessionFactory.getCurrentSession();
+		       hql = "SELECT dif.deviceId,d.deviceName, COUNT(*) AS count FROM DeviceIssueInfo dif , DeviceInfo d "
+		       		+ "WHERE dif.deviceId=d.deviceId AND dif.issueTime > :lastMonthDate GROUP BY dif.deviceId";
+		     query = session.createQuery(hql);
+	       query.setParameter("lastMonthDate", lastMonthDate);
+	       query.setMaxResults(5);
+	       List<TopDeviceDto> topDeviceDtoList = (List<TopDeviceDto>) query.list();
+	       if(null == topDeviceDtoList || topDeviceDtoList.size() == 0 ){
+	         return null;
+	       }
+	       logger.info(topDeviceDtoList.toString());
+	       return topDeviceDtoList;
 	     } catch (HibernateException e) {
 	       logger.error(e);
 	       return null;

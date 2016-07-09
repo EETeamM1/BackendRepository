@@ -1,6 +1,7 @@
 package com.ee.enigma.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
 import com.ee.enigma.dto.DeviceInfoDto;
+import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.request.Request;
@@ -288,6 +291,13 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceIssueInfo.setSubmitByAdmin(null);
 			deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
 		}
+	}
+
+	@Override
+	public List<TopDeviceDto> getTopDevices() {
+		Date lastMonthDate = CommonUtils.getLastMonthAndDate();
+		List<TopDeviceDto> topDeviceDtoList = deviceIssueInfoDao.getTopDevices(lastMonthDate);
+		return topDeviceDtoList;
 	}
 
 }
