@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -37,10 +39,20 @@ public class UserREST
   }
 
   @POST
-  @Path("/saveUserInfo")
+  @Path("/")
   public Response saveUserInfo(Request userInfo)
   {
-    EnigmaResponse userResponse = userService.saveUserInfo(userInfo);
+    EnigmaResponse userResponse = userService.saveUserInfo(userInfo,"save");
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+      .status(userResponse.getResponseCode().getCode()).build();
+  }
+  
+  @PUT
+  @Path("/{id}")
+  public Response updateUserInfo(@PathParam("id") String userId, Request userInfo)
+  {
+	 userInfo.getParameters().setUserId(userId);
+	 EnigmaResponse userResponse = userService.saveUserInfo(userInfo,"update");
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
   }
@@ -57,10 +69,19 @@ public class UserREST
   @GET
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public UserInfo getUserInfo(@PathParam("id") String userId)
+  public Response getUserInfo(@PathParam("id") String userId)
   {
-    UserInfo userInfo=  userService.getUserInfo(userId);
-    return userInfo;
+	EnigmaResponse userResponse =  userService.getUserInfo(userId);
+	return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+		      .status(userResponse.getResponseCode().getCode()).build();
   }
 
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUserInfo()
+  {
+	EnigmaResponse userResponse=  userService.getAllUser();
+	return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+		      .status(userResponse.getResponseCode().getCode()).build();
+  }
 }

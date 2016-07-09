@@ -1,10 +1,13 @@
 package com.ee.enigma.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.UserInfo;
@@ -15,159 +18,164 @@ import com.ee.enigma.response.ResponseResult;
 
 @Service(value = "userService")
 @Transactional
-public class UserServiceImpl implements UserService
-{
+public class UserServiceImpl implements UserService {
 
-  //private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
-  private UserInfoDao userInfoDao;
-  private EnigmaResponse response;
-  private ResponseCode responseCode;
-  private ResponseResult result;
+	// private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
+	private UserInfoDao userInfoDao;
+	private EnigmaResponse response;
+	private ResponseCode responseCode;
+	private ResponseResult result;
 
-  @Autowired
-  @Qualifier(value = "userInfoDao")
-  public void setUserInfoDao(UserInfoDao userInfoDao)
-  {
-    this.userInfoDao = userInfoDao;
-  }
-  public UserInfo getUserInfo(String userId){
-    try
-    {
-      userId = userId.trim();
-       }
-    catch (Exception e)
-    {
-     // logger.error(e);
-     
-    }
-    return  userInfoDao.getUserInfo(userId);
-  }
-  
+	@Autowired
+	@Qualifier(value = "userInfoDao")
+	public void setUserInfoDao(UserInfoDao userInfoDao) {
+		this.userInfoDao = userInfoDao;
+	}
 
-  public EnigmaResponse saveUserInfo(Request requestInfo)
-  {
-    response = new EnigmaResponse();
-    responseCode = new ResponseCode();
-    result = new ResponseResult();
+	public EnigmaResponse getUserInfo(String userId) {
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
+		result = new ResponseResult();
 
-    String userId;
-    String password;
-    String userName;
-    String opration;
-    try
-    {
-      userId = requestInfo.getParameters().getUserId().trim();
-      password = requestInfo.getParameters().getPassword().trim();
-      userName = requestInfo.getParameters().getUserName().trim();
-      opration = requestInfo.getParameters().getOpration().trim();
+		try {
+			userId = userId.trim();
+		} catch (Exception e) {
+			return CommonUtils.badRequest();
+		}
 
-    }
-    catch (Exception e)
-    {
-     // logger.error(e);
-      return badRequest();
-    }
+		UserInfo userInfo = userInfoDao.getUserInfo(userId);
+		
+		if(null == userInfo){
+			return userNotFound();
+		}
+		
+		// Success response.
+		result.setUser(userInfo);
+		responseCode.setCode(Constants.CODE_SUCCESS);
+		response.setResponseCode(responseCode);
+		response.setResult(result);		
+		return response;		
+	}
 
-    // Checking whether request contains all require fields or not.
-    if (null == userId || null == userName || null == password || null == opration)
-    {
-      return badRequest();
-    }
-    UserInfo userInfo = new UserInfo();
-    userInfo.setPassword(password);
-    userInfo.setUserId(userId);
-    userInfo.setUserName(userName);
-    if (opration.equals("save"))
-    {
-      userInfoDao.createUserInfo(userInfo);
-      responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
-    }
-    else if (opration.equals("update"))
-    {
-      userInfoDao.updateUserInfo(userInfo);
-      responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
-    }
+	public EnigmaResponse saveUserInfo(Request requestInfo, String operation) {
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
 
-    // Success response.
-    responseCode.setCode(Constants.CODE_SUCCESS);
-    // result.setSessionToken(activityId);
-    response.setResponseCode(responseCode);
-    response.setResult(result);
-    return response;
-  }
+		String userId;
+		String password;
+		String userName;
+		try {
+			userId = requestInfo.getParameters().getUserId().trim().toLowerCase();
+			password = requestInfo.getParameters().getPassword();
+			userName = requestInfo.getParameters().getUserName().trim();
 
-  public EnigmaResponse deleteUserInfo(String userId)
-  {
-   
-	responseCode = new ResponseCode();
-	response = new EnigmaResponse();
-    result = new ResponseResult();
-    try
-    {
-      userId = userId.trim();
-    }
-    catch (Exception e)
-    {
-     // logger.error(e);
-      return badRequest();
-    }
+		} catch (Exception e) {
+			return CommonUtils.badRequest();
+		}
 
-    // Checking whether request contains all require fields or not.
-    if (null == userId)
-    {
-      return badRequest();
-    }
-    UserInfo userInfo = new UserInfo();
-    userInfo.setUserId(userId);
-    userInfoDao.deleteUserInfo(userInfo);
-    responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_DELETED);
+		// Checking whether request contains all require fields or not.
+		if (null == userId || null == userName || null == password || null == operation) {
+			return CommonUtils.badRequest();
+		}
+		UserInfo userInfo = new UserInfo();
+		userInfo.setPassword(password);
+		userInfo.setUserId(userId);
+		userInfo.setUserName(userName);
+		if (operation.equals("save")) {
+			if(isUserExists(userId) == true){
+				return duplicateRequest();
+			}
+			userInfoDao.createUserInfo(userInfo);
+			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
+		} else if (operation.equals("update")) {
+			/*if(isUserExists(userId) == false){
+				return userNotFound();
+			}*/
+			userInfoDao.updateUserInfo(userInfo);
+			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
+		}
 
-    // Success response.
-    responseCode.setCode(Constants.CODE_SUCCESS);
-    response.setResponseCode(responseCode);
-    return response;
-  }
+		// Success response.
+		responseCode.setCode(Constants.CODE_SUCCESS);
+		response.setResponseCode(responseCode);
+		return response;
+	}
 
-  /*public EnigmaResponse getUserInfo(Request requestInfo)
-  {
-    response = new EnigmaResponse();
-    responseCode = new ResponseCode();
-    result = new ResponseResult();
-    String userId;
+	public EnigmaResponse deleteUserInfo(String userId) {
 
-    try
-    {
-      userId = requestInfo.getParameters().getUserId().trim();
-    }
-    catch (Exception e)
-    {
-     // logger.error(e);
-      return badRequest();
-    }
+		responseCode = new ResponseCode();
+		response = new EnigmaResponse();
+		try {
+			userId = userId.trim();
+		} catch (Exception e) {
+			// logger.error(e);
+			return CommonUtils.badRequest();
+		}
 
-    // Checking whether request contains all require fields or not.
-    if (null == userId)
-    {
-      return badRequest();
-    }
-    UserInfo userInfo=  userInfoDao.getUserInfo(userId);
-    responseCode.setResultObject(userInfo);
-    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+		// Checking whether request contains all require fields or not.
+		if (null == userId) {
+			return CommonUtils.badRequest();
+		}
+		if(isUserExists(userId) == false){
+			return userNotFound();
+		}
+		
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUserId(userId);
+		userInfoDao.deleteUserInfo(userInfo);
+		responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_DELETED);
 
-    // Success response.
-    responseCode.setCode(Constants.CODE_SUCCESS);
-    response.setResponseCode(responseCode);
-    response.setResult(result);
-    return response;
+		// Success response.
+		responseCode.setCode(Constants.CODE_SUCCESS);
+		response.setResponseCode(responseCode);
+		return response;
+	}
 
-  }
-*/
-  private EnigmaResponse badRequest()
-  {
-    responseCode.setCode(Constants.CODE_BAD_REQUEST);
-    responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
-    response.setResponseCode(responseCode);
-    return response;
-  }
+	public EnigmaResponse getAllUser() {
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
+		result = new ResponseResult();
+
+		List<UserInfo> userInfoList = userInfoDao.getAllUserInfo();
+		if(null == userInfoList){
+			return userNotFound();
+		}
+
+		// Success response.
+		result.setUserList(userInfoList);
+		responseCode.setCode(Constants.CODE_SUCCESS);
+		responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+		response.setResponseCode(responseCode);
+		response.setResult(result);
+		return response;
+
+	}
+	
+	private EnigmaResponse userNotFound(){
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
+		
+		responseCode.setCode(Constants.CODE_BAD_REQUEST);
+		responseCode.setMessage(Constants.USER_NOT_EXISTING);
+		response.setResponseCode(responseCode);		
+		return response;
+	}
+	
+	private EnigmaResponse duplicateRequest(){
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
+		
+		responseCode.setCode(Constants.CODE_BAD_REQUEST);
+		responseCode.setMessage(Constants.USER_ALREADY_EXISTS);
+		response.setResponseCode(responseCode);		
+		return response;
+	}
+	
+	private boolean isUserExists(String userId){
+		if(null != userInfoDao.getUserInfo(userId)){
+			return true;
+		}
+		return false;
+	}
 
 }

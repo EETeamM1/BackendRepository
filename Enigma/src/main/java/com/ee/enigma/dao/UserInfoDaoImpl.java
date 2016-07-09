@@ -101,4 +101,16 @@ public class UserInfoDaoImpl implements UserInfoDao {
     }
   }
 
+	@Override
+	public List<UserInfo> getAllUserInfo() {
+		String hql = "from UserInfo";
+		Session session = this.sessionFactory.getCurrentSession();
+	    Query query = session.createQuery(hql);
+	    List<UserInfo> userInfoList = (List<UserInfo>) query.list();
+	    if(null == userInfoList || userInfoList.size() == 0 ){
+	      return null;
+	    }
+	    return userInfoList;
+	}
+
 }
