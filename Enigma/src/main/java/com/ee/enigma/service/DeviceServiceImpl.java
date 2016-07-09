@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
+import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
 import com.ee.enigma.dto.DeviceInfoDto;
 import com.ee.enigma.model.DeviceInfo;
+import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
@@ -24,6 +26,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 	private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
 	private DeviceInfoDao deviceInfoDao;
+	private DeviceIssueInfoDao deviceIssueInfoDao;
 	private EnigmaResponse response;
 	private ResponseCode responseCode;
 	private ResponseResult result;
@@ -32,6 +35,12 @@ public class DeviceServiceImpl implements DeviceService {
 	@Qualifier(value = "deviceInfoDao")
 	public void setDeviceInfoDao(DeviceInfoDao deviceInfoDao) {
 		this.deviceInfoDao = deviceInfoDao;
+	}
+	
+	@Autowired
+	@Qualifier(value = "deviceIssueInfoDao")
+	public void setDeviceIssueInfoDao(DeviceIssueInfoDao deviceIssueInfoDao) {
+		this.deviceIssueInfoDao = deviceIssueInfoDao;
 	}
 
 	public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo) {
@@ -258,7 +267,8 @@ public class DeviceServiceImpl implements DeviceService {
 				deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_AVAILABLE);
 				approveResponseCode.setMessage(Constants.MESSAGE_DEVICE_SUBMITTED);
 			} else {
-				deviceInfo.setDeviceAvailability(Constants.MESSAGE_DEVICE_SUBMISSION_IS_REJECTED);
+				deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
+				approveResponseCode.setMessage(Constants.MESSAGE_DEVICE_SUBMISSION_IS_REJECTED);
 				cancelSubmitDevice(deviceId);
 			}
 			deviceInfoDao.updateDeviceInfo(deviceInfo);
@@ -272,8 +282,12 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	private void cancelSubmitDevice(String deviceId) {
-		// TODO Auto-generated method stub
-		
+		DeviceIssueInfo deviceIssueInfo = deviceIssueInfoDao.getDeviceIssueInfoByDeviceId(deviceId);
+		if(null != deviceIssueInfo) {
+			deviceIssueInfo.setSubmitTime(null);
+			deviceIssueInfo.setSubmitByAdmin(null);
+			deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
+		}
 	}
 
 }

@@ -211,6 +211,28 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
       return null;
     }
   }
+
+	@Override
+	public DeviceIssueInfo getDeviceIssueInfoByDeviceId(String deviceId) {
+		try {
+		     String hql=null;
+		     Query query=null;
+		     Session session = this.sessionFactory.getCurrentSession();
+		       hql = "from DeviceIssueInfo where deviceId= :deviceId AND submitByAdmin=0 order by submitTime desc";
+		     query = session.createQuery(hql);
+	       query.setParameter("deviceId", deviceId);
+	       query.setMaxResults(1);
+	       List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
+	       if(null == deviceIssueInfoList || deviceIssueInfoList.size() == 0 ){
+	         return null;
+	       }
+	       logger.info(deviceIssueInfoList.toString());
+	       return deviceIssueInfoList.get(0);
+	     } catch (HibernateException e) {
+	       logger.error(e);
+	       return null;
+	     }
+	}
 	
 	
 	/*@Override
