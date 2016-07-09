@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.dto.DeviceIssueTrendLineDto;
+import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.DeviceIssueInfoService;
@@ -72,33 +74,33 @@ public class DeviceIssueInfoREST {
   }
   
   
- /* @POST
+  /*@POST
   @Path("/deviceIssueTrendReport")
   public Response getDeviceIssueTrendReport(Request deviceIssueInfo){
     EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReport(deviceIssueInfo);
     Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
     return response;
-  }
-  
-  @POST
-  @Path("/deviceSubmitTrendReport")
-  public Response deviceSubmitTrendReport(Request deviceIssueInfo) throws Exception{
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceSubmitTrendReport(deviceIssueInfo);
-    Response response=null;
-    if(deviceIssueResponse.getResponseCode().getCode()==Constants.CODE_BAD_REQUEST)
-    {
-      response=Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode()).build();
-    }
-    else
-    {
-      response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-    }
-    return response;
   }*/
   
   @POST
+  @Path("/deviceIssueTimeLineTrendReport")
+  public Response getDeviceIssueTimeLineTrendReport(Request deviceIssueInfo) throws Exception{
+    DeviceIssueTrendLineDto deviceIssueTimeLineTrendReport= deviceIssueInfoService.getDeviceIssueTimeLineTrendReport(deviceIssueInfo);
+    Response response=null;
+    if(deviceIssueTimeLineTrendReport==null)
+    {
+      response=Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity("No data").build();
+    }
+    else
+    {
+      response= Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity(deviceIssueTimeLineTrendReport).build();
+    }
+    return response;
+  }
+  
+  /*@POST
   @Path("/deviceIssueReport")
-  public Response getDeviceIssueTrendReport(Request deviceIssueInfo){
+  public Response getDeviceIssueReport(Request deviceIssueInfo){
     EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReport(deviceIssueInfo);  Response response=null;
     if(deviceIssueResponse.getResponseCode().getCode()==Constants.CODE_BAD_REQUEST)
     {
@@ -124,6 +126,6 @@ public class DeviceIssueInfoREST {
       response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
     }
     return response;
-  }
+  }*/
 	
 }

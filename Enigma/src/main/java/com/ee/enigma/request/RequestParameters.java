@@ -1,30 +1,40 @@
 package com.ee.enigma.request;
 
 public class RequestParameters {
-	private String userId;
-	private String password;
-	private String deviceId;
-	private String osVersion;
-	private float latitude;
-	private float longitude;
-	private String sessionToken;
-	private Boolean byAdmin;
-	 private String beginDate;
-	  private String endDate;
-	  private String userName;
-	  private String opration;
-	
-    String deviceName;
-    String isAdminApproved;
-    String manufacturer;
-    String oS;
-    String timeoutPeriod;
-    String yearOfManufacturing;
-    private String currentMasterPassword;
-	private String newMasterPassword;
-    String deviceStatus;
+  private String userId;
+  private String password;
+  private String deviceId;
+  private String osVersion;
+  private float latitude;
+  private float longitude;
+  private String sessionToken;
+  private Boolean byAdmin;
+  private String beginDate;
+  private String endDate;
+  private String userName;
+  private String opration;
+
+  private String deviceName;
+  private String isAdminApproved;
+  private String manufacturer;
+  private String oS;
+  private String timeoutPeriod;
+  private String yearOfManufacturing;
+  private String currentMasterPassword;
+  private String newMasterPassword;
+  private String deviceStatus;
+  private String issueType;
 		  
-	public String getDeviceStatus()
+	
+  public String getIssueType()
+  {
+    return issueType;
+  }
+  public void setIssueType(String issueType)
+  {
+    this.issueType = issueType;
+  }
+  public String getDeviceStatus()
     {
       return deviceStatus;
     }

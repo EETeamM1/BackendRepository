@@ -1,6 +1,7 @@
 package com.ee.enigma.service;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,7 +19,9 @@ import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
+import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
+import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.dto.ReportInfo;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
@@ -38,6 +41,11 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   private DeviceIssueInfoDao deviceIssueInfoDao;
   private DeviceInfoDao deviceInfoDao;
   private UserInfoDao userInfoDao;
+  String reportType=null;
+  String beginDateString=null;
+  String endDateString=null;
+  Date beginDate=null;
+  Date endDate=null;
   
   @Autowired
   @Qualifier(value = "deviceIssueInfoDao")
@@ -57,6 +65,58 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   public void setUserInfoDao(UserInfoDao userInfoDao) {
     this.userInfoDao = userInfoDao;
   }
+  
+  public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(Request deviceIssueInfo){
+   //for both issue and submit 
+    DeviceIssueTrendLineDto deviceIssueTrendLineDto=null;
+    try
+    {
+      reportType = deviceIssueInfo.getParameters().getIssueType();
+      if(reportType==null)
+        reportType=Constants.DEVICE_ISSUE_ALL;
+      beginDateString = deviceIssueInfo.getParameters().getBeginDate();
+      endDateString = deviceIssueInfo.getParameters().getEndDate();
+      beginDate= CommonUtils.getSqlDateByString(beginDateString);
+      endDate= CommonUtils.getSqlDateByString(endDateString);
+      if(beginDate==null)
+        endDate=null;
+    }
+    catch (Exception e)
+    {
+     // logger.error(e);
+    }
+    if(beginDate==null)
+    {
+      endDate=CommonUtils.getCurrentDate();
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.MONTH, -1);
+      beginDate=new java.sql.Date(cal.getTimeInMillis()); 
+    }
+    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+    List<DeviceIssueInfo> deviceIssueInfoList=null;
+    deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueList(beginDate,endDate,reportType);
+    if(Constants.DEVICE_ISSUE.equalsIgnoreCase(reportType))
+    {
+      deviceIssueTrendLineDto=deviceIssueHelper.buildDeviceIssueTimeLineTrendReport(deviceIssueInfoList);
+    }
+    else if(Constants.DEVICE_SUBMIT.equalsIgnoreCase(reportType))
+    {
+      
+    }
+    if(deviceIssueTrendLineDto!=null)
+    {
+      deviceIssueTrendLineDto.setStartDate(beginDate);
+      deviceIssueTrendLineDto.setEndDate(endDate);
+    }
+    return deviceIssueTrendLineDto;
+  }
+  
+  public EnigmaResponse getDeviceSubmitTrendReport(Request deviceIssueInfo) throws Exception
+  {
+    return response;
+  }
+  
+  
   
   public EnigmaResponse getDeviceTimeLineReport(Request deviceIssueInfo){
     response = new EnigmaResponse();
@@ -85,7 +145,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     JSONObject jsonObject=null;
     DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-    List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueInfoListByDate(deviceId, beginDate, endDate);
+    List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueList(deviceId, beginDate, endDate);
     jsonObject=deviceIssueHelper.buildJSONObjectForDateWiseDeviceReport(jsonObjectList);
     //response.getResult().setJsonObject(jsonObject);
     responseCode.setCode(Constants.CODE_SUCCESS);
@@ -497,7 +557,14 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      return  badRequest();
    }
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-   List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueTrendList(deviceId,beginDate, endDate);
+   List<DeviceIssueInfo> deviceIssueInfoList=null;
+   if(beginDate==null)
+    deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+   else
+   {
+     
+   }
+   
    List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueTrendList(deviceIssueInfoList);
    responseCode.setResultObject(jsonObjectList);
    responseCode.setCode(Constants.CODE_SUCCESS);
@@ -507,7 +574,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    return response;
  }
  
- public EnigmaResponse getDeviceSubmitReport(Request deviceIssueInfo) throws Exception{
+ /*public EnigmaResponse getDeviceSubmitReport(Request deviceIssueInfo) throws Exception{
     response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
@@ -558,7 +625,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response.setResponseCode(responseCode);
    response.setResult(result);
    return response;
- }
+ }*/
  
   private String issueIdGenerator(String deviceId, String userId)
   {
