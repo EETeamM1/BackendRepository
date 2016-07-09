@@ -23,13 +23,22 @@ public class RequestParameters {
 	private String currentMasterPassword;
 	private String newMasterPassword;
 	private String deviceStatus;
-	
+	private String issueType;
+
 	public String getDeviceStatus() {
 		return deviceStatus;
 	}
 
 	public void setDeviceStatus(String deviceStatus) {
 		this.deviceStatus = deviceStatus;
+	}
+
+	public String getIssueType() {
+		return issueType;
+	}
+
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
 	}
 
 	public String getCurrentMasterPassword() {

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
+import com.ee.enigma.common.Constants;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserInfo;
 
@@ -30,7 +31,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	}
 	
 	 @Override
-	 public List<DeviceIssueInfo> getDeviceIssueInfoListByDate(String deviceId,Date beginDate,Date  endDate) {
+	 public List<DeviceIssueInfo> getDeviceIssueList(String deviceId,Date beginDate,Date  endDate) {
 	   try {
 	     String hql=null;
 	     Query query=null;
@@ -62,13 +63,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
      }
 	 }
 	
-	@Override
+	/*@Override
 	public DeviceIssueInfo getDeviceIssueInfo(String deviceId) {
 		Session session = this.sessionFactory.getCurrentSession();
 		DeviceIssueInfo deviceIssueInfo = (DeviceIssueInfo) session.load(DeviceIssueInfo.class, deviceId);
 		logger.info(deviceIssueInfo.toString());
 		return deviceIssueInfo;
-	}
+	}*/
 	
 	 @Override
 	 public void createDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo) {
@@ -136,7 +137,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 		return deviceIssueInfo;
 	}
 	
-	@Override
+	/*@Override
   public List<DeviceIssueInfo> getDeviceIssueReportListByStatus(Date beginDate,Date  endDate) {
     try {
       String hql=null;
@@ -170,24 +171,30 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
       return null;
     }
   }
-	
+	*/
 	@Override
-  public List<DeviceIssueInfo> getDeviceIssueTrendList(String deviceId,Date beginDate,Date  endDate) {
+  public List<DeviceIssueInfo> getDeviceIssueList(Date beginDate,Date  endDate,String issueType) {
     try {
       String hql=null;
       Query query=null;
       Session session = this.sessionFactory.getCurrentSession();
-      if(beginDate==null)
+      if(beginDate!=null)
       {  
-        hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueTime desc";
-       
+        if(issueType.equals(Constants.DEVICE_ISSUE))
+          hql = "from DeviceIssueInfo where (issueTime between :beginDate and :endDate) order by issueTime desc";
+        else if(issueType.equals(Constants.DEVICE_SUBMIT))
+          hql = "from DeviceIssueInfo where (submitTime between :beginDate and :endDate) order by submitTime desc";
+        else
+          hql = "from DeviceIssueInfo order by issueTime desc"; 
+        
+        query = session.createQuery(hql); 
       }
       else
       {
-        hql = "from DeviceIssueInfo where deviceId= :deviceId and (issueTime between :beginDate and :endDate) order by issueTime desc ";
+        hql = "from DeviceIssueInfo order by issueTime desc"; 
+        query = session.createQuery(hql);
       }
       query = session.createQuery(hql);
-      query.setParameter("deviceId", deviceId);
       if(beginDate!=null)
       {
         query.setParameter("beginDate", beginDate);
@@ -205,7 +212,8 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
     }
   }
 	
-	@Override
+	
+	/*@Override
   public List<DeviceIssueInfo> getDeviceSubmitTrendList(String deviceId,Date beginDate,Date  endDate) {
     try {
       String hql=null;
@@ -236,5 +244,5 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
       logger.error(e);
       return null;
     }
-  }
+  }*/
 }

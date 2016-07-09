@@ -43,4 +43,9 @@ public interface Constants {
 	String MESSAGE_SUCCESSFULLY_UPDATED = "Successfully updated.";
 	String MESSAGE_SUCCESSFULLY_DELETED = "Successfully deleted";
 	String MESSAGE_DEVICE_IS_NOT_PENDING = "Device is not found or Device is not in pending status";
+	 
+   String DEVICE_ISSUE = "issue";
+   String DEVICE_SUBMIT = "submit";
+   String DEVICE_ISSUE_ALL = "all";
+   
 }

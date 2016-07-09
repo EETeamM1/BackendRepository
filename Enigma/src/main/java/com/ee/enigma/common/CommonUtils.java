@@ -1,5 +1,6 @@
 package com.ee.enigma.common;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -114,5 +115,11 @@ public class CommonUtils
 	response.setResponseCode(responseCode);
     return response;
   }
+  
+  public static String getDateFromTemeStamp(Timestamp timestamp) {
+    
+    Date date = new Date (timestamp.getTime());
+    return new SimpleDateFormat("yyyy-MM-dd").format(date);
+}
 
 }

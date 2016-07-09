@@ -1,5 +1,7 @@
 package com.ee.enigma.dao;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,13 +13,68 @@ import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
+import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
+import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.dto.ReportInfo;
 import com.ee.enigma.dto.ReportResultInfo;
 import com.ee.enigma.model.UserActivity;
 
 public class DeviceIssueHelper
 {
+  public DeviceIssueTrendLineDto buildDeviceIssueTimeLineTrendReport(List<DeviceIssueInfo> deviceIssueInfos)
+  {
+    DeviceIssueInfo deviceIssueInfo = null;
+    DeviceIssueTrendLineDto deviceIssueTrendLineDto = new DeviceIssueTrendLineDto();
+    List<String> deviceIssueDateList = new ArrayList<String>();
+    String date = "";
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceIssueInfos.size(); i++)
+      {
+        deviceIssueInfo = deviceIssueInfos.get(i);
+        date = CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getIssueTime());
+        if (date != null && !deviceIssueDateList.contains(date))
+        {
+          deviceIssueDateList.add(date);
+        }
+      }
+    }
+    IssueTrendLineData issueTrendLineData = null;
+    List<IssueTrendLineData> issueTrendLineList = new ArrayList<IssueTrendLineData>();
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (String issueDate : deviceIssueDateList)
+      {
+        int issuedByAdmin = 0;
+        int issuedBySystem = 0;
+        issueTrendLineData = new IssueTrendLineData();
+        for (int i = 0; i < deviceIssueInfos.size(); i++)
+        {
+          deviceIssueInfo = deviceIssueInfos.get(i);
+          if (deviceIssueInfo.getIssueByAdmin() != null
+            && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getIssueTime())))
+          {
+            if (deviceIssueInfo.getIssueByAdmin())
+            {
+              issuedByAdmin++;
+            }
+            if (!deviceIssueInfo.getIssueByAdmin())
+            {
+              issuedBySystem++;
+            }
+          }
+        }
+        issueTrendLineData.setDate(issueDate);
+        issueTrendLineData.setIssedByAdmin(issuedByAdmin);
+        issueTrendLineData.setIssedBySystem(issuedBySystem);
+        issueTrendLineList.add(issueTrendLineData);
+      }
+    }
+    deviceIssueTrendLineDto.setIssueTrendLineData(issueTrendLineList);
+    return deviceIssueTrendLineDto;
+  }  
+  
   public List<com.ee.enigma.dto.ReportInfo> buildDeviceIssueTrendList(List<DeviceIssueInfo> deviceIssueInfos)
   {
     DeviceIssueInfo deviceIssueInfo = null;
