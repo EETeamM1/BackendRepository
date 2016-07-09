@@ -113,4 +113,19 @@ public class UserInfoDaoImpl implements UserInfoDao {
 	    return userInfoList;
 	}
 
+	@Override
+	public List<UserInfo> getUsersByIdAndName(String searchText) {
+		logger.info(searchText);
+		String hql = "select userId, userName from UserInfo where userId like :searchText or userName like :searchText";
+	      Session session = this.sessionFactory.getCurrentSession();
+	      Query query = session.createQuery(hql);
+	      query.setString("searchText","%"+searchText+"%");
+	      
+	      List<UserInfo> userInfoList = (List<UserInfo>) query.list();
+	      if(null == userInfoList || userInfoList.size() == 0 ){
+	        return null;
+	      }
+		return userInfoList;
+	}
+
 }

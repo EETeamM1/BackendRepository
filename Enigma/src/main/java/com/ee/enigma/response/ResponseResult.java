@@ -3,6 +3,7 @@ package com.ee.enigma.response;
 import java.util.List;
 
 import com.ee.enigma.dto.TopDeviceDto;
+import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.UserInfo;
 
 public class ResponseResult {
@@ -12,6 +13,7 @@ public class ResponseResult {
 	private UserInfo user;
 	private List<UserInfo> userList;
 	private List<TopDeviceDto> topDeviceDtoList;
+	private List<DeviceInfo> deviceList;
 
 	public UserInfo getUser() {
 		return user;
@@ -48,6 +50,12 @@ public class ResponseResult {
 	}
 	public void setTopDeviceDto(List<TopDeviceDto> topDeviceDtoList) {
 		this.topDeviceDtoList = topDeviceDtoList;
+	}
+	public List<DeviceInfo> getDeviceList() {
+		return deviceList;
+	}
+	public void setDeviceList(List<DeviceInfo> deviceList) {
+		this.deviceList = deviceList;
 	}
 		
 }

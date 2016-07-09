@@ -151,6 +151,27 @@ public class UserServiceImpl implements UserService {
 
 	}
 	
+	@Override
+	public EnigmaResponse searchUserResult(String searchQuery) {
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
+		result = new ResponseResult();
+		
+		if(null == searchQuery ||searchQuery.trim().isEmpty()){
+	    	return CommonUtils.badRequest();
+	    }
+		
+		List<UserInfo> userInfoList = userInfoDao.getUsersByIdAndName(searchQuery);
+
+		// Success response.
+		result.setUserList(userInfoList);
+		responseCode.setCode(Constants.CODE_SUCCESS);
+		responseCode.setMessage(Constants.MESSAGE_SUCCESS);
+		response.setResponseCode(responseCode);
+		response.setResult(result);
+		return response;
+	}
+	
 	private EnigmaResponse userNotFound(){
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();

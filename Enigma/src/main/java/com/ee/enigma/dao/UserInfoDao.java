@@ -12,5 +12,5 @@ public interface UserInfoDao {
 	public void createUserInfo(UserInfo userInfo) ;
 	public void updateUserInfo(UserInfo userInfo) ;
 	public int deleteUserInfo(UserInfo userInfo) ;
-	
+	public List<UserInfo> getUsersByIdAndName(String searchText);
 }

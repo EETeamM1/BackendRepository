@@ -300,4 +300,23 @@ public class DeviceServiceImpl implements DeviceService {
 		return topDeviceDtoList;
 	}
 
+@Override
+public EnigmaResponse searchDevice(String searchQuery) {	
+	response = new EnigmaResponse();
+    responseCode = new ResponseCode();
+    result = new ResponseResult();
+    
+    if(null == searchQuery ||searchQuery.trim().isEmpty()){
+    	return badRequest();
+    }
+    
+	List<DeviceInfo> deviceInfoList = deviceInfoDao.getDeviceFields(searchQuery);
+    
+	result.setDeviceList(deviceInfoList);
+    responseCode.setCode(Constants.CODE_SUCCESS);
+    response.setResponseCode(responseCode);
+    response.setResult(result);
+    return response;
+}
+
 }
