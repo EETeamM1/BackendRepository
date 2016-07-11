@@ -29,7 +29,7 @@
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
-					<li><a href="#">Reports</a></li>
+					<li><a href="reports">Reports</a></li>
 					<li><a href="entities">Entities</a></li>
 					<li><a href="#">Requests<span class="badge"
 							id="requestCount">4</span></a></li>
@@ -40,8 +40,8 @@
 	<!---Header ends--->
 
 	<div class="body-content" style="margin-top: -40px;">
-		<div class="row">
-			<div class="col-sm-3">
+		<div class="col-sm-12 row">
+			<div class="col-sm-2">
 				<table class="table borderless">
 					<tr>
 						<td>Total</td>
@@ -56,15 +56,12 @@
 					</tr>
 				</table>
 			</div>
-			<div align="right" style=""vertical-align:center;"">
-				<div class="form-group col-md-8"
-					style="border: 1px solid #ddd; padding: 10px;">
-					<a class="btn" href="#"><i class="fa fa-windows"
-						style="font-size: 30px;"></i></a> <a class="btn" href="#"><i
-						class="fa fa-android" style="font-size: 30px;"></i></a> <a class="btn"
-						href="#"><i class="fa fa-apple" style="font-size: 30px;"></i></a>
-
+			<div class="col-sm-3"></div>
+			<div class="col-sm-7" style="border: 1px solid #ddd; padding: 10px;">
 					<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-windows"></i></span>
+					<span class="input-group-addon"><i class="fa fa-android"></i></span>
+					<span class="input-group-addon"><i class="fa fa-apple"></i></span>
 						<input type="text" name="username" id="search_box" tabindex="1"
 							class="form-control" placeholder="Search" value=""> <span
 							class="input-group-addon"><i
@@ -72,19 +69,17 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div style="margin-top: 20px;"></div>
-
-		<div id="device_list">
+		<div style="margin: 20px;" class="row"></div>
+		<div id="device_list"  style="margin:auto;">
 			<!-- Device list from server -->
 		</div>
 	</div>
 	
 	<!-- device template -->
 	<script id="deviceStatusTemplate" type="text/x-jQuery-tmpl">
-		<div class="col-sm-4 list-group-item" style="margin:5px;">
+		<div class="col-sm-3 list-group-item" style="margin: 10px; padding: 10px;">
 				<img src="resources/lib/images/${img}"
-					class="img-thumbnail col-sm-3 list_thumbnail" alt="${img}" width="100" height="50">
+					class="img-thumbnail col-sm-1 list_thumbnail" alt="${img}" width="100" height="50">
 				<label class="control-label">Device:
 					<button type="button" class="btn btn-link list_device_name" data-toggle="modal"
 						data-target="#Iphone6">${device_name}</button>
@@ -167,8 +162,10 @@
 		</div>
 
 	</div>
-	 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.4.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+	<script type="text/javascript"
+		src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.4.js"></script>
+	<script type="text/javascript"
+		src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
  
 	<script language="javascript" src="resources/app/js/index.js"></script>
 </body>
