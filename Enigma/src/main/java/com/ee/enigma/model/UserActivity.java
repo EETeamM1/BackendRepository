@@ -27,17 +27,17 @@ public class UserActivity {
 	String issueId;
 	String deviceId;
 	
-	  @ManyToOne(fetch = FetchType.EAGER)
+	 /* @ManyToOne(fetch = FetchType.EAGER)
 	  @JoinColumn(name = "issueId" ,insertable =false, updatable=false)
-	  private DeviceIssueInfo deviceIssueInfo;
+	  private DeviceIssueInfo deviceIssueInfo;*/
 	 
-	  @ManyToOne(fetch = FetchType.EAGER)
+	/*  @ManyToOne(fetch = FetchType.EAGER)
 	  @JoinColumn(name = "deviceId" ,insertable =false, updatable=false)
 	  private DeviceInfo deviceInfo;
 	   
 	  @ManyToOne(fetch = FetchType.EAGER)
 	  @JoinColumn(name = "userId",insertable =false, updatable=false)
-	  private UserInfo userInfo;
+	  private UserInfo userInfo;*/
 		  
 	/*GETTERS AND SETTERS*/	
 	public String getActivityId() {
@@ -96,7 +96,7 @@ public class UserActivity {
 		this.deviceId = deviceId;
 	}
 	
-	public DeviceIssueInfo getDeviceIssueInfo()
+	/*public DeviceIssueInfo getDeviceIssueInfo()
   {
     return deviceIssueInfo;
   }
@@ -104,9 +104,9 @@ public class UserActivity {
   public void setDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo)
   {
     this.deviceIssueInfo = deviceIssueInfo;
-  }
+  }*/
 
-  public DeviceInfo getDeviceInfo()
+  /*public DeviceInfo getDeviceInfo()
   {
     return deviceInfo;
   }
@@ -124,7 +124,7 @@ public class UserActivity {
   public void setUserInfo(UserInfo userInfo)
   {
     this.userInfo = userInfo;
-  }
+  }*/
 
   @Override
 	public String toString() {

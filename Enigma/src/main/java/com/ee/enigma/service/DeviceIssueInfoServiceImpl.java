@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.ws.rs.PathParam;
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,16 +68,58 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     this.userInfoDao = userInfoDao;
   }
   
-  public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(Request deviceIssueInfo){
-   //for both issue and submit 
-    DeviceIssueTrendLineDto deviceIssueTrendLineDto=null;
+  public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(
+    String beginDateString,
+    String endDateString,
+    String reportType)
+  {
+    DeviceIssueTrendLineDto deviceIssueTrendLineDto = null;
     try
     {
-      reportType = deviceIssueInfo.getParameters().getIssueType();
-      if(reportType==null)
-        reportType=Constants.DEVICE_ISSUE_ALL;
-      beginDateString = deviceIssueInfo.getParameters().getBeginDate();
-      endDateString = deviceIssueInfo.getParameters().getEndDate();
+      if (reportType == null) reportType = Constants.DEVICE_ISSUE_ALL;
+      beginDate = CommonUtils.getSqlDateByString(beginDateString);
+      endDate = CommonUtils.getSqlDateByString(endDateString);
+      if (beginDate == null) endDate = null;
+    }
+    catch (Exception e)
+    {
+      // logger.error(e);
+    }
+    if (beginDate == null)
+    {
+      endDate = CommonUtils.getCurrentDate();
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.MONTH, -1);
+      beginDate = new java.sql.Date(cal.getTimeInMillis());
+    }
+    DeviceIssueHelper deviceIssueHelper = new DeviceIssueHelper();
+    List<DeviceIssueInfo> deviceIssueInfoList = null;
+    deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueList(beginDate, endDate, reportType);
+    if (Constants.DEVICE_ISSUE.equalsIgnoreCase(reportType))
+    {
+      deviceIssueTrendLineDto = deviceIssueHelper
+        .buildDeviceIssueTimeLineTrendReport(deviceIssueInfoList);
+    }
+    else if (Constants.DEVICE_SUBMIT.equalsIgnoreCase(reportType))
+    {
+      deviceIssueTrendLineDto = deviceIssueHelper
+        .buildDeviceSubmitTimeLineTrendReport(deviceIssueInfoList);
+
+    }
+    if (deviceIssueTrendLineDto != null)
+    {
+      deviceIssueTrendLineDto.setStartDate(beginDate);
+      deviceIssueTrendLineDto.setEndDate(endDate);
+    }
+    return deviceIssueTrendLineDto;
+  }
+  
+    public JSONObject getDeviceTimeLineReport(
+    String beginDateString,
+    String endDateString,
+    String deviceId){
+    try
+    {
       beginDate= CommonUtils.getSqlDateByString(beginDateString);
       endDate= CommonUtils.getSqlDateByString(endDateString);
       if(beginDate==null)
@@ -92,68 +136,13 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       cal.add(Calendar.MONTH, -1);
       beginDate=new java.sql.Date(cal.getTimeInMillis()); 
     }
-    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-    List<DeviceIssueInfo> deviceIssueInfoList=null;
-    deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueList(beginDate,endDate,reportType);
-    if(Constants.DEVICE_ISSUE.equalsIgnoreCase(reportType))
-    {
-      deviceIssueTrendLineDto=deviceIssueHelper.buildDeviceIssueTimeLineTrendReport(deviceIssueInfoList);
-    }
-    else if(Constants.DEVICE_SUBMIT.equalsIgnoreCase(reportType))
-    {
-      
-    }
-    if(deviceIssueTrendLineDto!=null)
-    {
-      deviceIssueTrendLineDto.setStartDate(beginDate);
-      deviceIssueTrendLineDto.setEndDate(endDate);
-    }
-    return deviceIssueTrendLineDto;
-  }
-  
-  public EnigmaResponse getDeviceSubmitTrendReport(Request deviceIssueInfo) throws Exception
-  {
-    return response;
-  }
-  
-  
-  
-  public EnigmaResponse getDeviceTimeLineReport(Request deviceIssueInfo){
-    response = new EnigmaResponse();
-    responseCode = new ResponseCode();
-    result = new ResponseResult();
-    
-    String deviceId;
-    String beginDateString;
-    String endDateString;
-    Date beginDate;
-    Date endDate;
-    try
-    {
-      deviceId = deviceIssueInfo.getParameters().getDeviceId();
-      beginDateString = deviceIssueInfo.getParameters().getBeginDate();
-      endDateString = deviceIssueInfo.getParameters().getEndDate();
-      beginDate= CommonUtils.getSqlDateByString(beginDateString);
-      endDate= CommonUtils.getSqlDateByString(endDateString);
-      if(beginDate==null)
-        endDate=null;
-    }
-    catch (Exception e)
-    {
-      logger.error(e);
-      return badRequest();
-    }
+    if(endDate==null)
+      endDate=beginDate;
     JSONObject jsonObject=null;
     DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
     List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueList(deviceId, beginDate, endDate);
-    jsonObject=deviceIssueHelper.buildJSONObjectForDateWiseDeviceReport(jsonObjectList);
-    //response.getResult().setJsonObject(jsonObject);
-    responseCode.setCode(Constants.CODE_SUCCESS);
-   // responseCode.setResultObject(deviceIssueHelper.buildJSONObjectForDateWiseDeviceReport(jsonObjectList));
-    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
-    response.setResponseCode(responseCode);
-    response.setResult(result);
-    return response;
+    jsonObject=deviceIssueHelper.buildDeviceTimeLineReport(jsonObjectList);
+    return jsonObject;
   }
   
 
@@ -291,7 +280,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     //submitted by user  -->> PD device is submmited but entry pending with admin ,
     //AV--> available
     //IS -->already issed
- 
     DeviceIssueInfo tempDeviceIssueInfo=null;
     List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
     boolean deviveInfoFound=false;
@@ -311,7 +299,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     if (!isUserExisting(userId)) {
       return userNotExistingResponse();
     }
-    
     
     if(byAdmin)
     {
@@ -496,7 +483,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    return response;
  }
  
- public EnigmaResponse getDeviceIssueReportByStatus(){
+ /*public EnigmaResponse getDeviceIssueReportByStatus(){
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
@@ -512,9 +499,9 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response.setResponseCode(responseCode);
    response.setResult(result);
    return response;
- }
+ }*/
  
- public EnigmaResponse getDeviceIssueReport(Request deviceIssueInfo){
+ /*public EnigmaResponse getDeviceIssueReport(Request deviceIssueInfo){
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
@@ -572,66 +559,14 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response.setResult(result);
    return response;
  }
+ */
  
- /*public EnigmaResponse getDeviceSubmitReport(Request deviceIssueInfo) throws Exception{
-    response = new EnigmaResponse();
-   responseCode = new ResponseCode();
-   result = new ResponseResult();
-   
-   String beginDateString;
-   String endDateString;
-   Date beginDate=null;
-   Date endDate=null;
-   String deviceId=null;
-   try
-   {
-     deviceId = deviceIssueInfo.getParameters().getDeviceId();
-     beginDateString = deviceIssueInfo.getParameters().getBeginDate();
-     endDateString = deviceIssueInfo.getParameters().getEndDate();
-      if (beginDateString != null)
-      {
-        beginDate = CommonUtils.getSqlDateByString(beginDateString);
-        if (endDateString == null)
-        {
-          endDate = beginDate;
-        }
-        else
-        {
-          endDate = CommonUtils.getSqlDateByString(endDateString);
-        }
-      }
-   }
-   catch (Exception e)
-   {
-     if(beginDate==null)
-     {
-       endDate=null;
-     }
-     logger.error(e);
-    return  badRequest();
-   }
-   if(beginDate==null && endDateString!=null)
-   {
-     return  badRequest();
-   }
-   
-   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-   List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceSubmitTrendList(deviceId,beginDate, endDate);
-   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceSubmitTrendList(deviceIssueInfoList);
-   responseCode.setResultObject(jsonObjectList);
-   responseCode.setCode(Constants.CODE_SUCCESS);
-   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
-   response.setResponseCode(responseCode);
-   response.setResult(result);
-   return response;
- }*/
  
   private String issueIdGenerator(String deviceId, String userId)
   {
     return deviceId+"_"+CommonUtils.getTime();
   }
  
-
   protected void createDeviceIssueInfo(String deviceId, String userId, boolean byAdmin)
   {
     DeviceIssueInfo newDeviceIssueInfo = new DeviceIssueInfo();

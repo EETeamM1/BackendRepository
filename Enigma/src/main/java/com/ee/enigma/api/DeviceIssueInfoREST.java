@@ -5,11 +5,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -44,19 +47,21 @@ public class DeviceIssueInfoREST {
 	}
 
 	@POST
-	@Path("/deviceIssueInfo")
+	@Path("/")
 	public Response deviceIssueInfoService(Request deviceIssueInfo) {
 		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
-		Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-				.entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-		return response;
+	  return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
+      .status(deviceIssueResponse.getResponseCode().getCode()).build();
+	
 	}
-
-	@POST
+  //TODO
+	@GET
 	@Path("/deviceTimeLineReport")
-	public EnigmaResponse deviceIssueReportService(Request deviceIssueInfo) {
-		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceTimeLineReport(deviceIssueInfo);
-		return deviceIssueResponse;
+	@Produces(MediaType.APPLICATION_JSON)
+	public JSONObject deviceIssueReportService(@PathParam("beginDate") String beginDate,@PathParam("endDate") String endDate,
+    @PathParam("deviceId") String deviceId) {
+	  JSONObject deviceTimeLineReport = deviceIssueInfoService.getDeviceTimeLineReport(beginDate,endDate,deviceId);
+		return deviceTimeLineReport;
 	}
 
 	@POST
@@ -68,6 +73,7 @@ public class DeviceIssueInfoREST {
 
 	@GET
 	@Path("/deviceReportByAvailability")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDeviceReportAvailability() {
 		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceReportAvailability();
 		Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
@@ -75,70 +81,15 @@ public class DeviceIssueInfoREST {
 		return response;
 	}
 
-	@GET
+	/*@GET
 	@Path("/deviceReportByStatus")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDeviceIssueReportByStatus() {
 		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReportByStatus();
 		Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
 				.entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
 		return response;
-	}
-
-	/*
-	 * @POST
-	 * 
-	 * @Path("/deviceIssueTrendReport") public Response
-	 * getDeviceIssueTrendReport(Request deviceIssueInfo){ EnigmaResponse
-	 * deviceIssueResponse =
-	 * deviceIssueInfoService.getDeviceIssueReport(deviceIssueInfo); Response
-	 * response= Response.ok(deviceIssueResponse,
-	 * MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().
-	 * getResultObject()).build(); return response; }
-	 * 
-	 * @POST
-	 * 
-	 * @Path("/deviceSubmitTrendReport") public Response
-	 * deviceSubmitTrendReport(Request deviceIssueInfo) throws Exception{
-	 * EnigmaResponse deviceIssueResponse =
-	 * deviceIssueInfoService.getDeviceSubmitTrendReport(deviceIssueInfo);
-	 * Response response=null;
-	 * if(deviceIssueResponse.getResponseCode().getCode()==Constants.
-	 * CODE_BAD_REQUEST) { response=Response.ok(deviceIssueResponse,
-	 * MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode())
-	 * .build(); } else { response= Response.ok(deviceIssueResponse,
-	 * MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().
-	 * getResultObject()).build(); } return response; }
-	 */
-
-//	@POST
-//	@Path("/deviceIssueReport")
-//	public Response getDeviceIssueTrendReport(Request deviceIssueInfo) {
-//		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReport(deviceIssueInfo);
-//		Response response = null;
-//		if (deviceIssueResponse.getResponseCode().getCode() == Constants.CODE_BAD_REQUEST) {
-//			response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-//					.entity(deviceIssueResponse.getResponseCode()).build();
-//		} else {
-//			response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-//					.entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-//		}
-//		return response;
-//	}
-//
-//	@POST
-//	@Path("/deviceSubmitReport")
-//	public Response deviceSubmitReport(Request deviceIssueInfo) throws Exception {
-//		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceSubmitReport(deviceIssueInfo);
-//		Response response = null;
-//		if (deviceIssueResponse.getResponseCode().getCode() == Constants.CODE_BAD_REQUEST) {
-//			response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-//					.entity(deviceIssueResponse.getResponseCode()).build();
-//		} else {
-//			response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-//					.entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-//		}
-//		return response;
-//	}
+	}*/
 
 	@PUT
 	@Path("/approveDevice")
@@ -149,18 +100,12 @@ public class DeviceIssueInfoREST {
 	}
 
   
-  /*@POST
-  @Path("/deviceIssueTrendReport")
-  public Response getDeviceIssueTrendReport(Request deviceIssueInfo){
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReport(deviceIssueInfo);
-    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-    return response;
-  }*/
-  
-  @POST
+	@GET
   @Path("/deviceIssueTimeLineTrendReport")
-  public Response getDeviceIssueTimeLineTrendReport(Request deviceIssueInfo) throws Exception{
-    DeviceIssueTrendLineDto deviceIssueTimeLineTrendReport= deviceIssueInfoService.getDeviceIssueTimeLineTrendReport(deviceIssueInfo);
+	@Produces(MediaType.APPLICATION_JSON)
+  public Response getDeviceIssueTimeLineTrendReport(@QueryParam("beginDate") String beginDate,@QueryParam("endDate") String endDate,
+    @QueryParam("reportType") String reportType) throws Exception{
+    DeviceIssueTrendLineDto deviceIssueTimeLineTrendReport= deviceIssueInfoService.getDeviceIssueTimeLineTrendReport(beginDate,endDate,reportType);
     Response response=null;
     if(deviceIssueTimeLineTrendReport==null)
     {
@@ -172,35 +117,5 @@ public class DeviceIssueInfoREST {
     }
     return response;
   }
-  
-  /*@POST
-  @Path("/deviceIssueReport")
-  public Response getDeviceIssueReport(Request deviceIssueInfo){
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReport(deviceIssueInfo);  Response response=null;
-    if(deviceIssueResponse.getResponseCode().getCode()==Constants.CODE_BAD_REQUEST)
-    {
-      response=Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode()).build();
-    }
-    else
-    {
-      response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-    }
-    return response;
-  }
-  @POST
-  @Path("/deviceSubmitReport")
-  public Response deviceSubmitReport(Request deviceIssueInfo) throws Exception{
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceSubmitReport(deviceIssueInfo);
-    Response response=null;
-    if(deviceIssueResponse.getResponseCode().getCode()==Constants.CODE_BAD_REQUEST)
-    {
-      response=Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode()).build();
-    }
-    else
-    {
-      response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-    }
-    return response;
-  }*/
 	
 }

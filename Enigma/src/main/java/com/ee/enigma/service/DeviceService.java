@@ -10,11 +10,11 @@ import com.ee.enigma.response.EnigmaResponse;
 public interface DeviceService {
 	public EnigmaResponse saveDeviceInfo(Request userInfo);
 
-	public EnigmaResponse deleteDeviceInfo(Request requestInfo);
+	public EnigmaResponse deleteDeviceInfo(String deviceId);
 
-	public DeviceInfoDto getDeviceInfo(Request requestInfo);
+	public DeviceInfoDto getDeviceInfo(String deviceId);
 
-	public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo);
+	public List<DeviceInfoDto> getDevicesInfoByStatus(String deviceId,String deviceStatus);
 
 	public EnigmaResponse updateDeviceInfoStatus(Request requestInfo);
 

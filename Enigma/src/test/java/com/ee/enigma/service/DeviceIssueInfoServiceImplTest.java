@@ -1,6 +1,8 @@
 package com.ee.enigma.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -23,6 +25,7 @@ import com.ee.enigma.common.JunitConstants;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueInfoDaoImpl;
 import com.ee.enigma.dao.UserInfoDaoImpl;
+import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserInfo;
@@ -57,7 +60,7 @@ public class DeviceIssueInfoServiceImplTest
   private RequestParameters parameters;
   private UserInfo userInfo;
   private DeviceInfo deviceInfo;
-
+  EnigmaResponse enigmaResponse =null;
   @Before
   public void setUp() throws Exception
   {
@@ -84,7 +87,7 @@ public class DeviceIssueInfoServiceImplTest
 
     deviceInfo = new DeviceInfo();
     deviceInfo.setDeviceId(JunitConstants.DEVICE_ID);
-    deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ISSUED_TO_USER);
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_ISSUE);
     Mockito.doReturn(userInfo).when(userInfoDaoImpl).getUserInfo(Matchers.anyString());
     Mockito.doNothing().when(deviceIssueInfoDao)
       .createDeviceIssueInfo(Matchers.any(DeviceIssueInfo.class));
@@ -97,7 +100,160 @@ public class DeviceIssueInfoServiceImplTest
   public static void init() throws Exception
   {
   }
-
+  
+  @Test
+  public void testGetDeviceIssueTimeLineTrendReportForSubmitDevice() throws Exception
+  {
+    initializeDeviceIssueInfoService();
+    String beginDateString="";
+    String endDateString="";
+    String reportType= Constants.DEVICE_SUBMIT;
+     List<DeviceIssueInfo> deviceIssueInfoList = null;
+    DeviceIssueInfo deviceIssueInfo = null;
+    
+    deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
+    DeviceInfo deviceInfo=null;
+    deviceInfo=new DeviceInfo();
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
+    deviceIssueInfo.setDeviceInfo(deviceInfo);
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfo.setSubmitTime(new Timestamp(1111));
+    deviceIssueInfo.setSubmitByAdmin(new Boolean(true));
+    deviceIssueInfoList.add(deviceIssueInfo);
+    
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
+    deviceIssueInfo.setDeviceInfo(deviceInfo);
+    deviceIssueInfo.setIssueTime(new Timestamp(1111));
+       deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfo.setSubmitTime(new Timestamp(1111));
+    deviceIssueInfo.setSubmitByAdmin(new Boolean(false));
+    deviceIssueInfoList.add(deviceIssueInfo);
+    
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao)
+      .getDeviceIssueList(Mockito.any(java.sql.Date.class),Mockito.any(java.sql.Date.class),Matchers.anyString());
+    
+    DeviceIssueTrendLineDto deviceIssueTrendLineDto = deviceIssueInfoServiceImpl.getDeviceIssueTimeLineTrendReport(beginDateString,endDateString,reportType);
+    Assert.assertTrue(deviceIssueTrendLineDto.getEndDate()!=null);
+    Assert.assertTrue(deviceIssueTrendLineDto.getStartDate()!=null);
+    Assert.assertTrue(deviceIssueTrendLineDto.getIssueTrendLineData()!=null && deviceIssueTrendLineDto.getIssueTrendLineData().size()>0);
+  }
+  @Test
+  public void testGetDeviceIssueTimeLineTrendReportForIssueDevice() throws Exception
+  {
+    initializeDeviceIssueInfoService();
+    String beginDateString="";
+    String endDateString="";
+    String reportType= Constants.DEVICE_ISSUE;
+     List<DeviceIssueInfo> deviceIssueInfoList = null;
+    DeviceIssueInfo deviceIssueInfo = null;
+    
+    deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
+    DeviceInfo deviceInfo=null;
+    deviceInfo=new DeviceInfo();
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
+    deviceIssueInfo.setDeviceInfo(deviceInfo);
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfo.setIssueTime(new Timestamp(1111));
+    deviceIssueInfo.setIssueByAdmin(new Boolean(true));
+    deviceIssueInfo.setSubmitTime(null);
+    deviceIssueInfoList.add(deviceIssueInfo);
+    
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
+    deviceIssueInfo.setDeviceInfo(deviceInfo);
+    deviceIssueInfo.setIssueTime(new Timestamp(1111));
+    deviceIssueInfo.setIssueByAdmin(new Boolean(false));
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfo.setSubmitTime(null);
+    deviceIssueInfoList.add(deviceIssueInfo);
+    
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao)
+      .getDeviceIssueList(Mockito.any(java.sql.Date.class),Mockito.any(java.sql.Date.class),Matchers.anyString());
+    
+    DeviceIssueTrendLineDto deviceIssueTrendLineDto = deviceIssueInfoServiceImpl.getDeviceIssueTimeLineTrendReport(beginDateString,endDateString,reportType);
+    Assert.assertTrue(deviceIssueTrendLineDto.getEndDate()!=null);
+    Assert.assertTrue(deviceIssueTrendLineDto.getStartDate()!=null);
+    Assert.assertTrue(deviceIssueTrendLineDto.getIssueTrendLineData()!=null && deviceIssueTrendLineDto.getIssueTrendLineData().size()>0);
+  }
+  
+  
+  @Test
+  public void testSubmitDeviceNotFountDevice() throws Exception
+  {
+    initializeDeviceIssueInfoService();
+    List<DeviceIssueInfo> deviceIssueInfoList = null;
+    
+    DeviceIssueInfo deviceIssueInfo = null;
+    parameters.setByAdmin(JunitConstants.BY_ADMIN_TRUE);
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert.assertTrue(enigmaResponse.getResponseCode().getMessage() == Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED);
+    
+    deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfoList.add(deviceIssueInfo);
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao)
+      .getDeviceIssueInfoList(Matchers.anyString());
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert.assertTrue(enigmaResponse.getResponseCode().getMessage() == Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED);
+    
+    deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
+    DeviceInfo deviceInfo=null;
+    deviceInfo=new DeviceInfo();
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
+    deviceIssueInfo.setDeviceInfo(deviceInfo);
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfo.setSubmitTime(null);
+    deviceIssueInfoList.add(deviceIssueInfo);
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao)
+      .getDeviceIssueInfoList(Matchers.anyString());
+    
+    Mockito.doReturn(deviceInfo).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Mockito.verify(deviceIssueInfoDao, Mockito.atLeast(1)).updateDeviceIssueInfo(
+      Matchers.any(DeviceIssueInfo.class));
+  }
+  
+   @Test
+  public void testSubmitDevice() throws Exception
+  {
+    initializeDeviceIssueInfoService();
+    EnigmaResponse enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert.assertTrue(enigmaResponse.getResponseCode().getCode() == Constants.CODE_SUCCESS);
+    
+    List<DeviceIssueInfo> deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
+    DeviceIssueInfo deviceIssueInfo = null;
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfoList.add(deviceIssueInfo);
+    deviceIssueInfo = new DeviceIssueInfo();
+    deviceIssueInfo.setUserId(JunitConstants.USER_ID);
+    deviceIssueInfoList.add(deviceIssueInfo);
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao)
+      .getDeviceIssueInfoList(Matchers.anyString());
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert.assertTrue(enigmaResponse.getResponseCode().getMessage() == Constants.MESSAGE_DEVICE_SUBMITTED_TO_ADMIN_FOR_APPROVAL); 
+    
+    Mockito.doReturn(null).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert.assertTrue(enigmaResponse.getResponseCode().getCode() == Constants.CODE_NOT_FOUND);
+    
+    requestInfo.getParameters().setDeviceId(null);
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert.assertTrue(enigmaResponse.getResponseCode().getMessage() == Constants.MESSAGE_BAD_REQUEST);
+  
+    Mockito.doReturn(deviceInfo).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
+    requestInfo.getParameters().setDeviceId(JunitConstants.DEVICE_ID);
+    Mockito.doReturn(null).when(userInfoDaoImpl).getUserInfo(Matchers.anyString());
+    enigmaResponse = deviceIssueInfoServiceImpl.submitDevice(requestInfo);
+    Assert
+      .assertTrue(enigmaResponse.getResponseCode().getCode() == Constants.CODE_AUTHENTICATION_FAILD);
+  }
+  
   @Test
   public void testDeviceIssueInfoService() throws Exception
   {
@@ -169,7 +325,7 @@ public class DeviceIssueInfoServiceImplTest
     parameters.setByAdmin(JunitConstants.BY_ADMIN_FALSE);
     userInfo.setUserId(JunitConstants.USER_ID + "1");
     deviceInfo.setDeviceId(JunitConstants.DEVICE_ID);
-    deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ISSUED_TO_USER);
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_ISSUE);
     List<DeviceIssueInfo> deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
     DeviceIssueInfo deviceIssueInfo = null;
     deviceIssueInfo = new DeviceIssueInfo();
@@ -212,7 +368,7 @@ public class DeviceIssueInfoServiceImplTest
   {
     initializeDeviceIssueInfoService();
     userInfo.setUserId(JunitConstants.USER_ID + "1");
-    deviceInfo.setDeviceAvailability(Constants.DEVICE_INFO_ISSUED_TO_USER);
+    deviceInfo.setDeviceAvailability(Constants.DEVICE_ISSUE);
     List<DeviceIssueInfo> deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
     Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao)
       .getDeviceIssueInfoList(Matchers.anyString());

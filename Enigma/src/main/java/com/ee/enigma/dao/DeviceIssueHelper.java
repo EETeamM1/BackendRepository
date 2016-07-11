@@ -1,7 +1,5 @@
 package com.ee.enigma.dao;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,13 +9,13 @@ import org.json.simple.JSONObject;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.model.DeviceInfo;
-import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
 import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.dto.ReportInfo;
 import com.ee.enigma.dto.ReportResultInfo;
+import com.ee.enigma.model.DeviceInfo;
+import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserActivity;
 
 public class DeviceIssueHelper
@@ -68,6 +66,64 @@ public class DeviceIssueHelper
         issueTrendLineData.setDate(issueDate);
         issueTrendLineData.setIssedByAdmin(issuedByAdmin);
         issueTrendLineData.setIssedBySystem(issuedBySystem);
+        issueTrendLineList.add(issueTrendLineData);
+      }
+    }
+    deviceIssueTrendLineDto.setIssueTrendLineData(issueTrendLineList);
+    return deviceIssueTrendLineDto;
+  }  
+  
+
+  public DeviceIssueTrendLineDto buildDeviceSubmitTimeLineTrendReport(List<DeviceIssueInfo> deviceIssueInfos)
+  {
+    DeviceIssueInfo deviceIssueInfo = null;
+    DeviceIssueTrendLineDto deviceIssueTrendLineDto = new DeviceIssueTrendLineDto();
+    List<String> deviceIssueDateList = new ArrayList<String>();
+    String date = "";
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceIssueInfos.size(); i++)
+      {
+        deviceIssueInfo = deviceIssueInfos.get(i);
+        date = CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime());
+        if(date==null)
+        {
+          date="Not Submitted";
+        }
+        if (!deviceIssueDateList.contains(date))
+        {
+          deviceIssueDateList.add(date);
+        }
+      }
+    }
+    IssueTrendLineData issueTrendLineData = null;
+    List<IssueTrendLineData> issueTrendLineList = new ArrayList<IssueTrendLineData>();
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (String issueDate : deviceIssueDateList)
+      {
+        int submitByAdmin = 0;
+        int submitBySystem = 0;
+        issueTrendLineData = new IssueTrendLineData();
+        for (int i = 0; i < deviceIssueInfos.size(); i++)
+        {
+          deviceIssueInfo = deviceIssueInfos.get(i);
+          if (deviceIssueInfo.getSubmitByAdmin() != null
+            && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime())))
+          {
+            if (deviceIssueInfo.getSubmitByAdmin())
+            {
+              submitByAdmin++;
+            }
+            if (!deviceIssueInfo.getSubmitByAdmin())
+            {
+              submitBySystem++;
+            }
+          }
+        }
+        issueTrendLineData.setDate(issueDate);
+        issueTrendLineData.setIssedByAdmin(submitByAdmin);
+        issueTrendLineData.setIssedBySystem(submitBySystem);
         issueTrendLineList.add(issueTrendLineData);
       }
     }
@@ -169,32 +225,11 @@ public class DeviceIssueHelper
     return info;
   }  
   
- public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
+ /*public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
  {
-   //DeviceIssueInfo deviceIssueInfo = null;
    DeviceInfo deviceInfo = null;
-   //List<String> deviceInfoListByissueId = new ArrayList<String>();
    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
    ReportInfo reportInfo = null;
-   /*if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
-   {
-     for (int i = 0; i < deviceIssueInfos.size(); i++)
-     {
-       deviceIssueInfo = deviceIssueInfos.get(i);
-       if (!deviceInfoListByissueId.contains(deviceIssueInfo.getDeviceId()))
-       {
-         deviceInfoListByissueId.add(deviceIssueInfo.getDeviceId());
-         reportInfo = new ReportInfo();
-         reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
-         reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
-         reportInfo.setIsAdminApproved(deviceIssueInfo.getDeviceInfo().getIsAdminApproved());
-         reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
-         reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
-         reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
-         reportInfoList.add(reportInfo);
-       }
-     }
-   }*/
    for (int i = 0; i < deviceInfoList.size(); i++)
    {
      deviceInfo = deviceInfoList.get(i);
@@ -208,10 +243,9 @@ public class DeviceIssueHelper
        reportInfoList.add(reportInfo);
    }
    return reportInfoList;
- }  
+ }  */
  
-  public JSONObject buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
- // public List<DeviceIssueInfo> buildJSONObjectForDateWiseDeviceReport(List<DeviceIssueInfo> deviceIssueInfos)
+  public JSONObject buildDeviceTimeLineReport(List<DeviceIssueInfo> deviceIssueInfos)
   {
     JSONObject deviceJson = new JSONObject();
     ReportResultInfo reportResultInfo = null;
@@ -291,7 +325,6 @@ public class DeviceIssueHelper
           for(int k=0;k<reportResultInfoList.size();k++)
           {
             reportResultInfo=reportResultInfoList.get(k);
-           
             userActivityJson=null;
             if(k==0)
             {
@@ -370,7 +403,6 @@ public class DeviceIssueHelper
       System.out.println("jsonObject: " + deviceJson);
     }
     return deviceJson;
-    //return deviceIssueInfos;
   }
  
 

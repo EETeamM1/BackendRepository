@@ -3,9 +3,14 @@ package com.ee.enigma.api;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,43 +40,48 @@ public class DeviceREST
   }
 
   @POST
-  @Path("/saveDeviceInfo")
-  public Response saveUserInfo(Request requestInfo)
+  @Path("/")
+  public Response saveDeviceInfo(Request requestInfo)
   {
     EnigmaResponse userResponse = deviceService.saveDeviceInfo(requestInfo);
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
   }
 
-  @POST
-  @Path("/deleteDeviceInfo")
-  public Response deleteUserInfo(Request requestInfo)
+
+  @DELETE
+  @Path("/{id}")
+  public Response deleteUserInfo(@PathParam("id") String deviceId)
   {
-    EnigmaResponse userResponse = deviceService.deleteDeviceInfo(requestInfo);
+    EnigmaResponse userResponse = deviceService.deleteDeviceInfo(deviceId);
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
   }
   
-  @POST
-  @Path("/getDeviceInfo")
-  public DeviceInfoDto getDeviceInfo(Request requestInfo)
+  @GET
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public DeviceInfoDto getDeviceInfo(@PathParam("id") String deviceId)
   {
-    DeviceInfoDto deviceInfoDto=deviceService.getDeviceInfo(requestInfo);
+    DeviceInfoDto deviceInfoDto=deviceService.getDeviceInfo(deviceId);
     return deviceInfoDto;
   }
   
-  @POST
+
+  @GET
   @Path("/getDevicesInfoByStatus")
-  public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<DeviceInfoDto> getDevicesInfoByStatus(@QueryParam("deviceId") String deviceId, @QueryParam("deviceStatus") String deviceStatus)
   {
-    List<DeviceInfoDto> deviceInfoDtos=deviceService.getDevicesInfoByStatus(requestInfo);
+    List<DeviceInfoDto> deviceInfoDtos=deviceService.getDevicesInfoByStatus(deviceId,deviceStatus);
     return deviceInfoDtos;
   }
   
-  @POST
-  @Path("/updateDeviceInfoStatus")
-  public Response updateDeviceInfoStatus(Request requestInfo)
+  @PUT
+  @Path("/{id}")
+  public Response updateDeviceInfoStatus(@PathParam("id") String deviceId, Request requestInfo)
   {
+    requestInfo.getParameters().setDeviceId(deviceId);
     EnigmaResponse userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();

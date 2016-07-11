@@ -92,6 +92,13 @@
 	<jaxrs:server id="deviceIssueREST" address="/deviceIssue">
 		<jaxrs:serviceBeans>
 			<ref bean="deviceIssueInfoREST" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+	</jaxrs:server>
+	<jaxrs:server id="deviceREST" address="/device">
+		<jaxrs:serviceBeans>
 			<ref bean="devicInfoREST" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>

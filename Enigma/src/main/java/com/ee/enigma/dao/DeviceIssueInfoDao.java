@@ -7,7 +7,6 @@ import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceIssueInfo;
 
 public interface DeviceIssueInfoDao {
-	// public DeviceIssueInfo getDeviceIssueInfo(String deviceId);
 	public DeviceIssueInfo getDeviceIssueInfoByIssueID(String issueId);
 
 	public void createDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo);
@@ -23,12 +22,6 @@ public interface DeviceIssueInfoDao {
 	public List<DeviceIssueInfo> getDeviceIssueList(String deviceId, Date beginDate, Date endDate);
 
 	public List<DeviceIssueInfo> getDeviceIssueList(Date beginDate, Date endDate, String issueType);
-	// public List<DeviceIssueInfo> getDeviceIssueReportListByStatus(Date
-	// beginDate,Date endDate);
-	// public List<DeviceIssueInfo> getDeviceIssueTrendList(String deviceId,Date
-	// beginDate,Date endDate);
-	// public List<DeviceIssueInfo> getDeviceSubmitTrendList(String
-	// deviceId,Date beginDate,Date endDate);
 
 	public List<TopDeviceDto> getTopDevices(java.util.Date lastMonthDate);
 }

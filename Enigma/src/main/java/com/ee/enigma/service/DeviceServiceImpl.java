@@ -46,16 +46,16 @@ public class DeviceServiceImpl implements DeviceService {
 		this.deviceIssueInfoDao = deviceIssueInfoDao;
 	}
 
-	public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo) {
+	//public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo) {
+	public List<DeviceInfoDto> getDevicesInfoByStatus(String deviceId,String deviceStatus) {
+	
 		List<DeviceInfoDto> deviceInfoDtos = new ArrayList<DeviceInfoDto>();
-		String deviceId = null;
-		String deviceStatus = null;
-		try {
+		/*try {
 			deviceId = requestInfo.getParameters().getDeviceId().trim();
 			deviceStatus = requestInfo.getParameters().getDeviceStatus().trim();
 		} catch (Exception e) {
 			logger.error(e);
-		}
+		}*/
 		List<DeviceInfo> deviceInfos = deviceInfoDao.getDevicesListByIDAndStatus(deviceId, deviceStatus);
 		DeviceInfoDto deviceInfoDto = new DeviceInfoDto();
 		DeviceInfo deviceInfo = null;
@@ -168,18 +168,18 @@ public class DeviceServiceImpl implements DeviceService {
 
 	}
 
-	public EnigmaResponse deleteDeviceInfo(Request requestInfo) {
+	public EnigmaResponse deleteDeviceInfo(String deviceId) {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-		String deviceId;
+		/*String deviceId;
 
 		try {
 			deviceId = requestInfo.getParameters().getDeviceId().trim();
 		} catch (Exception e) {
 			logger.error(e);
 			return badRequest();
-		}
+		}*/
 
 		// Checking whether request contains all require fields or not.
 		if (null == deviceId) {
@@ -197,35 +197,15 @@ public class DeviceServiceImpl implements DeviceService {
 		return response;
 	}
 
-	/*
-	 * public EnigmaResponse getDeviceInfo(Request requestInfo) { response = new
-	 * EnigmaResponse(); responseCode = new ResponseCode(); result = new
-	 * ResponseResult(); String deviceId;
-	 * 
-	 * try { deviceId = requestInfo.getParameters().getDeviceId().trim(); }
-	 * catch (Exception e) { logger.error(e); return badRequest(); }
-	 * 
-	 * // Checking whether request contains all require fields or not. if (null
-	 * == deviceId) { return badRequest(); } DeviceInfo deviceInfo=
-	 * deviceInfoDao.getDeviceInfo(deviceId);
-	 * 
-	 * responseCode.setResultObject(deviceInfo);
-	 * responseCode.setMessage(Constants.MESSAGE_SUCCESS); // Success response.
-	 * responseCode.setCode(Constants.CODE_SUCCESS);
-	 * response.setResponseCode(responseCode); response.setResult(result);
-	 * return response;
-	 * 
-	 * }
-	 */
-
-	public DeviceInfoDto getDeviceInfo(Request requestInfo) {
-		String deviceId = "";
+	public DeviceInfoDto getDeviceInfo(String deviceId) {
+		//String deviceId = "";
 		DeviceInfoDto deviceInfoDto = new DeviceInfoDto();
-		try {
+		/*try {
 			deviceId = requestInfo.getParameters().getDeviceId().trim();
 		} catch (Exception e) {
 			logger.error(e);
-		}
+		}*/
+		
 		DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
 		return deviceInfoDto.getDeviceInfoDto(deviceInfo);
 	}

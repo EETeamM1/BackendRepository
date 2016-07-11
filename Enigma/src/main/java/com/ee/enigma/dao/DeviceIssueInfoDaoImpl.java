@@ -17,7 +17,6 @@ import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceIssueInfo;
-import com.ee.enigma.model.UserInfo;
 
 @Repository(value="deviceIssueInfoDao")
 @Transactional
@@ -43,7 +42,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
        }
 	     else
 	     {
-	       hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueId ";
+	       hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueId desc";
 	     }
 	     query = session.createQuery(hql);
        query.setParameter("deviceId", deviceId);
@@ -63,14 +62,6 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
        return null;
      }
 	 }
-	
-	/*@Override
-	public DeviceIssueInfo getDeviceIssueInfo(String deviceId) {
-		Session session = this.sessionFactory.getCurrentSession();
-		DeviceIssueInfo deviceIssueInfo = (DeviceIssueInfo) session.load(DeviceIssueInfo.class, deviceId);
-		logger.info(deviceIssueInfo.toString());
-		return deviceIssueInfo;
-	}*/
 	
 	 @Override
 	 public void createDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo) {
@@ -137,42 +128,6 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 		logger.info(deviceIssueInfo.toString());
 		return deviceIssueInfo;
 	}
-	
-	/*@Override
-  public List<DeviceIssueInfo> getDeviceIssueReportListByStatus(Date beginDate,Date  endDate) {
-    try {
-      String hql=null;
-      Query query=null;
-      Session session = this.sessionFactory.getCurrentSession();
-      if(beginDate==null)
-      {  
-        //hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueTime desc";
-        hql = "from DeviceIssueInfo  order by issueTime desc";
-      }
-      else
-      {
-       // hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueTime desc ";
-        hql = "from DeviceIssueInfo where  ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueTime desc ";
-      }
-      query = session.createQuery(hql);
-     // query.setParameter("deviceId", deviceId);
-      if(beginDate!=null)
-      {
-        query.setParameter("beginDate", beginDate);
-        query.setParameter("endDate", endDate);
-      }
-      List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
-      if(null == deviceIssueInfoList || deviceIssueInfoList.size() == 0 ){
-        return null;
-      }
-      logger.info(deviceIssueInfoList.toString());
-      return deviceIssueInfoList;
-    } catch (HibernateException e) {
-      logger.error(e);
-      return null;
-    }
-  }
-	*/
 	@Override
   public List<DeviceIssueInfo> getDeviceIssueList(Date beginDate,Date  endDate,String issueType) {
     try {
@@ -258,37 +213,4 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	     }
 	}
 	
-	
-	/*@Override
-  public List<DeviceIssueInfo> getDeviceSubmitTrendList(String deviceId,Date beginDate,Date  endDate) {
-    try {
-      String hql=null;
-      Query query=null;
-      Session session = this.sessionFactory.getCurrentSession();
-      if(beginDate==null)
-      {  
-        hql = "from DeviceIssueInfo where deviceId= :deviceId order by submitTime desc";
-      }
-      else
-      {
-        hql = "from DeviceIssueInfo where deviceId= :deviceId and ((submitTime between :beginDate and :endDate) and submitTime!=null) order by submitTime desc ";
-      }
-      query = session.createQuery(hql);
-      query.setParameter("deviceId", deviceId);
-      if(beginDate!=null)
-      {
-        query.setParameter("beginDate", beginDate);
-        query.setParameter("endDate", endDate);
-      }
-      List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
-      if(null == deviceIssueInfoList || deviceIssueInfoList.size() == 0 ){
-        return null;
-      }
-      logger.info(deviceIssueInfoList.toString());
-      return deviceIssueInfoList;
-    } catch (HibernateException e) {
-      logger.error(e);
-      return null;
-    }
-  }*/
 }
