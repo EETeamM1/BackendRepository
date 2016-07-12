@@ -187,4 +187,14 @@ body {
     clear: both;
 }
 
+.apple_icon, .windows_icon, .android_icon{
+	color : #555;
+	background-color:#eee;
+	border: 1px solid #ccc;
+}
+.apple_icon.active , .windows_icon.active, .android_icon.active{
+	color : #eee;
+	background-color:#555;
+	border: 1px solid #555;
+}
 /*css for login screen end*/
