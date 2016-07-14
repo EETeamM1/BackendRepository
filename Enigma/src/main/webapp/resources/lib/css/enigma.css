@@ -197,4 +197,17 @@ body {
 	background-color:#555;
 	border: 1px solid #555;
 }
+
+
+
+/* Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    overflow-y: auto;
+}
+.ui-autocomplete {
+    z-index: 5000 !important;
+}
 /*css for login screen end*/

@@ -13,7 +13,7 @@
 			login-processing-url="/j_spring_security_check"
 			authentication-failure-url="/login?error" username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/login?logout" />
+		<logout logout-success-url="/login?logout" logout-url="/j_spring_security_logout"/>
 		<csrf disabled="true"/>
 	</http>
 

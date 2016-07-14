@@ -1,3 +1,6 @@
+var devicesList;
+var userList;
+
 $.ajax({
 			type : 'GET',
 			url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/deviceReportByAvailability',
@@ -28,6 +31,7 @@ $.ajax({
 			contentType : 'application/json; charset=utf-8',
 			success : function(response_status) {
 				var responseData = [];
+				devicesList = response_status;
 				$.each(response_status, function(key, value) {
 					var osType = 'mobile';
 					switch (value.os) {
@@ -44,11 +48,14 @@ $.ajax({
 					responseData.push({
 						'img' : '' + osType + '',
 						'searchKeywords' : '' + value.os.toLowerCase() + ' '+ value.deviceName.toLowerCase(),
+						'deviceId' : value.deviceId,
 						'device_name' : value.deviceName,
 						'status' : 'Available',
 						'button' : 'issue'
 					});
 				});
+				var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
+				var template = $('#deviceStatusTemplate').text(temp);
 				$("#deviceStatusTemplate").tmpl(responseData).appendTo(
 						"#device_list");
 			},
@@ -76,11 +83,19 @@ $("#search_box").keyup(function() {
 		searchText = searchText.concat(" windows ");
 	}
 	searchText = searchText.concat($("#search_box").val().trim());
-	
 	searchText = searchText.toLowerCase();
+	
 	if (searchText.length > 0) { 	
+		var divToShow = "div.device_block";
+		// tokenize searchText on space
+		var searchArray = searchText.split(" ");
+		searchArray.forEach(function(key) {
+			if (key) {
+				divToShow = divToShow.concat(":contains(" + key + ")");
+			}
+		});
 		$(".device_block").hide();
-		$("div.device_block:contains("+searchText+")").show();
+		$(divToShow).show();
 	}else{
 		$(".device_block").show();
 	}
@@ -88,13 +103,111 @@ $("#search_box").keyup(function() {
 
 $(".apple_icon").click(function(){
 	$( this ).toggleClass("active");
+	if ($(".windows_icon").hasClass("active")) {
+		$(".windows_icon").toggleClass("active")
+	}
+	if ($(".android_icon").hasClass("active")) {
+		$(".android_icon").toggleClass("active")
+	}
 	$("#search_box").trigger("keyup");
 });
 $(".android_icon").click(function(){
 	$( this ).toggleClass("active");
+	if ($(".windows_icon").hasClass("active")) {
+		$(".windows_icon").toggleClass("active")
+	}
+	if ($(".apple_icon").hasClass("active")) {
+		$(".apple_icon").toggleClass("active")
+	}
 	$("#search_box").trigger("keyup");
 });
 $(".windows_icon").click(function(){
 	$( this ).toggleClass("active");
+	if ($(".apple_icon").hasClass("active")) {
+		$(".apple_icon").toggleClass("active")
+	}
+	if ($(".android_icon").hasClass("active")) {
+		$(".android_icon").toggleClass("active")
+	}
 	$("#search_box").trigger("keyup");
 });
+
+$(".list_device_name").click(function(e) {
+	e.preventDefault();
+	var id = this.id;
+	console.log(devicesList);
+	$.each(devicesList, function(i, v) {
+		if (v.deviceId == id) {
+			$("#device_detail_modal_name").html(v.deviceName);
+			$("#device_detail_modal_id").html(v.deviceId);
+			$("#device_detail_modal_manufacturer").html(v.manufacturer);
+			$("#device_detail_modal_os").html(v.os);
+			$("#device_detail_modal_os_version").html(v.osversion);
+			$("#deviceDetailModal").modal('show');
+		}
+	});
+});
+
+$(".issue_device_modal").click(function(e) {
+	e.preventDefault();
+	if (!userList) {
+		getUserList();
+		setAutocompleteList();
+	}
+	var id = $(this).attr("device-id");
+	var deviceName = $(this).attr("device-name");
+	$("#issue_modal_name").html(deviceName);
+	$("#issue_modal_device_id").html(id);
+	$("#deviceIssueModal").modal('show');
+});
+
+var getUserList = function() {
+	$.ajax({
+		type : 'GET',
+		url : 'http://172.26.60.21:9000/InventoryManagement/api/user',
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(response) {
+			userList = response.result.userList;
+			userList = JSON.parse(JSON.stringify(userList).split('"userName":').join('"label":'));
+			userList = JSON.parse(JSON.stringify(userList).split('"userId":').join('"value":'));
+			console.log(userList);
+		},
+		error : function(xhr, status, error) {
+			try {
+				errorResponse = JSON.parse(xhr.responseText);
+				alert(errorResponse.responseCode.message);
+			} catch (e) {
+				alert("some error occurred, please try later.");
+			}
+		}
+
+	});
+}
+
+var setAutocompleteList = function() {
+	$("#userAutocomplete").autocomplete({
+		minLength : 0,
+		source : userList,
+		focus : function(event, ui) {
+			$("#project").val(ui.item.label);
+			return false;
+		},
+		select : function(event, ui) {
+			$("#userAutocomplete").val("");
+			$("#issue_modal_issued_to").html(ui.item.label);
+			$("#issue_modal_user_id").html(ui.item.value);
+			$("#issue_btn").removeClass("hide");
+			return false;
+		}
+	});
+};
+
+$('#deviceIssueModal').on('hidden.bs.modal', function () {
+	if(!$("#issue_btn").hasClass("hide")){
+		$("#issue_btn").addClass("hide");
+		$("#issue_modal_issued_to").html("");
+		$("#issue_modal_user_id").html("");
+	}
+})

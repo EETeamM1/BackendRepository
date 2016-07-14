@@ -1,5 +1,6 @@
 package com.ee.enigma.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -103,13 +104,23 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
 	@Override
 	public List<UserInfo> getAllUserInfo() {
-		String hql = "from UserInfo";
+		String hql = "select userId, userName from UserInfo";
 		Session session = this.sessionFactory.getCurrentSession();
 	    Query query = session.createQuery(hql);
-	    List<UserInfo> userInfoList = (List<UserInfo>) query.list();
-	    if(null == userInfoList || userInfoList.size() == 0 ){
+	    List<UserInfo> userInfoList = new ArrayList<UserInfo>();
+	    
+	    List<Object[]> objs= query.list();
+	    if(null == objs || objs.size() == 0 ){
 	      return null;
 	    }
+	    for(Object[] obj : objs){
+	    	UserInfo user = new UserInfo();
+	    	user.setUserId((String) obj[0]);
+	    	user.setUserName((String) obj[1]);
+	    	System.out.println(user.toString());
+	    	userInfoList.add(user);
+	    }
+	   
 	    return userInfoList;
 	}
 
