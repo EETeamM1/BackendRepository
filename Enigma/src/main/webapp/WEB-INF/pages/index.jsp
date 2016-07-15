@@ -17,7 +17,6 @@
 
 </head>
 <body>
-	<c:url value="/j_spring_security_logout" var="logoutUrl" />
 	<!---Header start--->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
@@ -33,7 +32,7 @@
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
-					<li><a href="reports">Reports</a></li>
+					<li><a href="report">Reports</a></li>
 					<li><a href="entities">Entities</a></li>
 					<li><a href="#">Requests<span class="badge"
 							id="requestCount">4</span></a></li>
@@ -95,8 +94,11 @@
 				<div class="col-sm-3"><i class="fa fa-@{img}" style="font-size:30px;"></i></div>
 				<div class="col-sm-9"><label class="control-label">Device:
 					<button type="button" class="btn btn-link list_device_name" id="@{deviceId}" data-toggle="modal">@{device_name}</button>
-				</label><label class="control-label">DeviceId: @{deviceId}</label><label class="control-label">Status  : <span class="list_status">@{status}</span></label></br></div>
-				<button type="button" class="btn btn-default issue_device_modal" device-id="@{deviceId}" device-name="@{device_name}" data-toggle="modal">@{button}</button>
+				</label><br/><label class="control-label">DeviceId: @{deviceId}</label><br/><label class="control-label">Status  : <span class="list_status">@{status}</span><span class="@{hideIssued}"> - ( @{user_name} )</span></label></br></div>
+				<div style="text-align:right; margin-right: 20px;">
+				<button type="button" class="btn btn-primary issue_device_modal @{hideAvailable}" device-id="@{deviceId}" device-name="@{device_name}" data-toggle="modal">Issue</button>
+				<button type="button" class="btn btn-danger submit_device @{hideIssued}" device-id="@{deviceId}" device-name="@{device_name}" user-id="@{user_id}" data-toggle="modal">Submit</button>
+				</div>
 			</div>
 	</script>
 

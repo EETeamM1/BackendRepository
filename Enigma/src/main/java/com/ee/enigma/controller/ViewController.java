@@ -24,6 +24,12 @@ public class ViewController {
 		ModelAndView mav = new ModelAndView("entities");
 		return mav;
 	}
+	
+	@RequestMapping(value = "/report")
+	public ModelAndView reportPage() {
+		ModelAndView mav = new ModelAndView("reports");
+		return mav;
+	}
 
 	@RequestMapping("/login")
 	public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error,

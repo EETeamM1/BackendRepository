@@ -1,6 +1,6 @@
 var devicesList;
 var userList;
-
+var deviceIssueObj;
 $.ajax({
 			type : 'GET',
 			url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/deviceReportByAvailability',
@@ -14,7 +14,7 @@ $.ajax({
 			},
 			error : function(xhr, status, error) {
 				try {
-					errorResponse = JSON.parse(xhr.responseText);
+					var errorResponse = JSON.parse(xhr.responseText);
 					alert(errorResponse.responseCode.message);
 				} catch (e) {
 					alert("some error occurred, please try later.");
@@ -34,30 +34,46 @@ $.ajax({
 				devicesList = response_status;
 				$.each(response_status, function(key, value) {
 					var osType = 'mobile';
-					switch (value.os) {
+					switch (value.os.toLowerCase()) {
 					case 'android':
 						osType = 'android';
 						break;
-					case 'iOS':
+					case 'ios':
 						osType = 'apple';
 						break;
 					default:
 						osType = 'mobile';
 					}
+					var hideAvailable = "hide";
+					var userId = "";
+					var userName = "";
+					var searchUser = "";
+					var hideIssued = "hide";
+					if(value.deviceAvailability == "Available"){
+						hideAvailable = "";
+					}
+					if(value.deviceAvailability == "Issued"){
+						userId = value.userId;
+						userName = value.userName;
+						searchUser = value.userName.toLowerCase();
+						hideIssued = "";
+					}
 
 					responseData.push({
 						'img' : '' + osType + '',
-						'searchKeywords' : '' + value.os.toLowerCase() + ' '+ value.deviceName.toLowerCase(),
+						'searchKeywords' : '' + value.os.toLowerCase() + ' '+ value.deviceName.toLowerCase()+' '+value.deviceAvailability.toLowerCase()+' '+searchUser,
 						'deviceId' : value.deviceId,
 						'device_name' : value.deviceName,
-						'status' : 'Available',
-						'button' : 'issue'
+						'status' : value.deviceAvailability,
+						'user_id': userId,
+						'user_name' : userName,
+						'hideAvailable' : hideAvailable,
+						'hideIssued' : hideIssued						
 					});
 				});
 				var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
 				var template = $('#deviceStatusTemplate').text(temp);
-				$("#deviceStatusTemplate").tmpl(responseData).appendTo(
-						"#device_list");
+				$("#deviceStatusTemplate").tmpl(responseData).appendTo("#device_list");
 			},
 			error : function(xhr, status, error) {
 				try {
@@ -150,6 +166,7 @@ $(".list_device_name").click(function(e) {
 
 $(".issue_device_modal").click(function(e) {
 	e.preventDefault();
+	deviceIssueObj = this;
 	if (!userList) {
 		getUserList();
 		setAutocompleteList();
@@ -209,5 +226,103 @@ $('#deviceIssueModal').on('hidden.bs.modal', function () {
 		$("#issue_btn").addClass("hide");
 		$("#issue_modal_issued_to").html("");
 		$("#issue_modal_user_id").html("");
+		$("#issue_modal_device_id").html("");
 	}
 })
+
+$("#issue_btn").click(function(e) {
+	e.preventDefault();
+	var userId = $("#issue_modal_user_id").html();
+	var deviceId = $("#issue_modal_device_id").html();
+	
+	$.ajax({
+		type : 'POST',
+		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/',
+		data : JSON.stringify({
+			  "parameters": {
+			      "userId": userId,
+			      "deviceId": deviceId,
+			      "byAdmin": true
+			  }
+		}),
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(response) {			
+			$('#deviceIssueModal').modal('hide');
+			$(deviceIssueObj).addClass("hide");
+			$(deviceIssueObj).siblings().removeClass("hide");
+			$(deviceIssueObj).siblings().attr("user-id",userId);
+			alert(response.responseCode.message);
+		},
+		error : function(xhr, status, error) {
+			try {
+				errorResponse = JSON.parse(xhr.responseText);
+				alert(errorResponse.responseCode.message);
+			} catch (e) {
+				alert("some error occurred, please try later.");
+			}
+		}
+
+	});
+});
+
+$(".submit_device").click(function(e){
+	e.preventDefault();
+	var self = this;
+	var userId =  $(this).attr("user-id");
+	var deviceId =  $(this).attr("device-id");
+	
+	$('<div></div>').appendTo('body')
+    .html('<div><h6>Are you sure?</h6></div>')
+    .dialog({
+        modal: true,
+        title: 'Delete message',
+        zIndex: 10000,
+        autoOpen: true,
+        width: 'auto',
+        resizable: false,
+        buttons: {
+            Yes: function () {
+
+                $(this).dialog("close");
+            	$.ajax({
+            		type : 'POST',
+            		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/submitDevice',
+            		data : JSON.stringify({
+            			  "parameters": {
+            			      "userId": userId,
+            			      "deviceId": deviceId,
+            			      "byAdmin": true
+            			  }
+            		}),
+            		dataType : 'json',
+            		async : false,
+            		contentType : 'application/json; charset=utf-8',
+            		success : function(response) {			
+            			$(self).addClass("hide");
+            			$(self).siblings().removeClass("hide");            			
+            			alert(response.responseCode.message);
+            			
+            		},
+            		error : function(xhr, status, error) {
+            			try {
+            				errorResponse = JSON.parse(xhr.responseText);
+            				alert(errorResponse.responseCode.message);
+            			} catch (e) {
+            				alert("some error occurred, please try later.");
+            			}
+            		}
+
+            	});
+            },
+            No: function () {
+                $(this).dialog("close");
+            }
+        },
+        close: function (event, ui) {
+            $(this).remove();
+        }
+    });
+	
+});
