@@ -25,7 +25,7 @@ $.ajax({
 
 $.ajax({
 			type : 'GET',
-			url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/deviceReportByStatus',
+			url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/devicesIssueReportByStatus',
 			dataType : 'json',
 			async : false,
 			contentType : 'application/json; charset=utf-8',
