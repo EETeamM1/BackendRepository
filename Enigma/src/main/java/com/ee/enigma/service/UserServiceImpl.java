@@ -88,13 +88,9 @@ public class UserServiceImpl implements UserService {
 			userInfoDao.createUserInfo(userInfo);
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
 		} else if (operation.equals("update")) {
-			/*if(isUserExists(userId) == false){
-				return userNotFound();
-			}*/
 			userInfoDao.updateUserInfo(userInfo);
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
 		}
-
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
@@ -124,7 +120,6 @@ public class UserServiceImpl implements UserService {
 		userInfo.setUserId(userId);
 		userInfoDao.deleteUserInfo(userInfo);
 		responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_DELETED);
-
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);

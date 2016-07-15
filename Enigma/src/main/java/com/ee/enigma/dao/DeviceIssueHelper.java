@@ -225,7 +225,7 @@ public class DeviceIssueHelper
     return info;
   }  
   
- /*public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
+ public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
  {
    DeviceInfo deviceInfo = null;
    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
@@ -240,16 +240,17 @@ public class DeviceIssueHelper
         reportInfo.setManufacturer(deviceInfo.getManufacturer());
        reportInfo.setOS(deviceInfo.getOS());
        reportInfo.setOSVersion(deviceInfo.getOSVersion());
+       reportInfo.setYearOfManufacturing(deviceInfo.getYearOfManufacturing());
        reportInfoList.add(reportInfo);
    }
    return reportInfoList;
- }  */
+ }  
  
   public JSONObject buildDeviceTimeLineReport(List<DeviceIssueInfo> deviceIssueInfos)
   {
     JSONObject deviceJson = new JSONObject();
     ReportResultInfo reportResultInfo = null;
-    List<ReportResultInfo> reportResultInfoList = new ArrayList<ReportResultInfo>();
+    List<ReportResultInfo> reportResultInfoList = null;
     List<ReportInfo> reportInfoList = null;
     ReportInfo reportInfo = null;
     JSONArray userActityJsonArray = null;
@@ -266,10 +267,11 @@ public class DeviceIssueHelper
       {
         deviceIssueInfo = deviceIssueInfos.get(i);
         deviceId = deviceIssueInfo.getDeviceId();
+        reportResultInfoList = new ArrayList<ReportResultInfo>();
         issueIdJson = new JSONObject();
         issueIdJson.put("issueId", deviceIssueInfo.getIssueId());
-        issueIdJson.put("issueTime", CommonUtils.getDayBeginTime(deviceIssueInfo.getIssueTime()));
-        issueIdJson.put("submitTime", CommonUtils.getDayEndTime(deviceIssueInfo.getSubmitTime()));
+        issueIdJson.put("issueTime", CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime()));
+        issueIdJson.put("submitTime",CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime()));
         userActityJsonArray = null;
         if (deviceIssueInfo.getUserActivity() != null)
         {
@@ -280,8 +282,10 @@ public class DeviceIssueHelper
           {
             userActivity = iterator.next();
             reportInfo = new ReportInfo();
-            reportInfo.setLoginTime(userActivity.getLoginTime());
-            reportInfo.setLogoutTime(userActivity.getLogoutTime());
+            reportInfo.setLoginTime(CommonUtils.getTimeStampFormatedString(userActivity.getLoginTime()));
+            reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(userActivity.getLogoutTime()));
+            reportInfo.setInDate(userActivity.getLoginTime());
+            reportInfo.setOutDate(userActivity.getLogoutTime());
             reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
             reportInfoList.add(reportInfo);
           }
@@ -296,8 +300,8 @@ public class DeviceIssueHelper
                 reportResultInfo = new ReportResultInfo();
                 reportResultInfo.setReportInfoNext(reportInfo);
                 reportInfo = new ReportInfo();
-                reportInfo.setLoginTime(deviceIssueInfo.getIssueTime());
-                reportInfo.setLogoutTime(userActivity.getLogoutTime());
+                reportInfo.setLoginTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime()));
+                reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(userActivity.getLogoutTime()));
                 reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
                 reportInfo.setFromTable("DIINFO");
                 reportResultInfo.setReportInfo(reportInfo);
@@ -308,7 +312,7 @@ public class DeviceIssueHelper
                 reportResultInfo.setReportInfo(reportInfoList.get(j));
                 reportInfo = new ReportInfo();
                 reportInfo.setLoginTime(null);
-                reportInfo.setLogoutTime(deviceIssueInfo.getSubmitTime());
+                reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime()));
                 reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
                 reportInfo.setFromTable("DIINFO");
                 reportResultInfo.setReportInfoNext(reportInfo);
@@ -341,7 +345,7 @@ public class DeviceIssueHelper
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLogoutTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfoNext().getLoginTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getLogoutTime(), reportResultInfo.getReportInfoNext().getLoginTime()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
               
@@ -361,7 +365,7 @@ public class DeviceIssueHelper
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLogoutTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfoNext().getLoginTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getLogoutTime(), reportResultInfo.getReportInfoNext().getLoginTime()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
               //Last
@@ -388,7 +392,7 @@ public class DeviceIssueHelper
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLogoutTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfoNext().getLoginTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getLogoutTime(), reportResultInfo.getReportInfoNext().getLoginTime()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
             }
@@ -404,8 +408,55 @@ public class DeviceIssueHelper
     }
     return deviceJson;
   }
- 
-
+  
+  
+  
+  public List<ReportInfo> buildDevicesListByStatus(List<DeviceIssueInfo> deviceIssueInfos,List<DeviceInfo> deviceInfoList)
+  {
+    DeviceIssueInfo deviceIssueInfo = null;
+    DeviceInfo deviceInfo = null;
+    List<String> deviceInfoListByDeviceId = new ArrayList<String>();
+    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
+    ReportInfo reportInfo = null;
+    if (deviceIssueInfos != null && deviceIssueInfos.size() > 0)
+    {
+      for (int i = 0; i < deviceIssueInfos.size(); i++)
+      {
+        deviceIssueInfo = deviceIssueInfos.get(i);
+        if (!deviceInfoListByDeviceId.contains(deviceIssueInfo.getDeviceId()))
+        {
+          deviceInfoListByDeviceId.add(deviceIssueInfo.getDeviceId());
+          reportInfo = new ReportInfo();
+          reportInfo.setDeviceId(deviceIssueInfo.getDeviceInfo().getDeviceId());
+          reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+          reportInfo.setDeviceAvailability(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
+          reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
+          reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
+          reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
+          reportInfo.setUserId(deviceIssueInfo.getUserId());
+          reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
+          reportInfoList.add(reportInfo);
+        }
+      }
+    }
+    for (int i = 0; i < deviceInfoList.size(); i++)
+    {
+      deviceInfo = deviceInfoList.get(i);
+      if (!deviceInfoListByDeviceId.contains(deviceInfo.getDeviceId()))
+      {
+        reportInfo = new ReportInfo();
+        reportInfo.setDeviceId(deviceInfo.getDeviceId());
+        reportInfo.setDeviceName(deviceInfo.getDeviceName());
+        reportInfo.setDeviceAvailability(deviceInfo.getDeviceAvailability());
+         reportInfo.setManufacturer(deviceInfo.getManufacturer());
+        reportInfo.setOS(deviceInfo.getOS());
+        reportInfo.setOSVersion(deviceInfo.getOSVersion());
+        reportInfoList.add(reportInfo);
+      }
+    }
+    return reportInfoList;
+  }  
+  
 }
 
 

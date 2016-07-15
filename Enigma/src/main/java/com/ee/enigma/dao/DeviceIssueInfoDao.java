@@ -24,4 +24,6 @@ public interface DeviceIssueInfoDao {
 	public List<DeviceIssueInfo> getDeviceIssueList(Date beginDate, Date endDate, String issueType);
 
 	public List<TopDeviceDto> getTopDevices(java.util.Date lastMonthDate);
+	
+	 public List<DeviceIssueInfo> getAllDeviceIssueInfoList() ;
 }

@@ -21,6 +21,7 @@ import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
+import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
 import com.ee.enigma.dto.IssueTrendLineData;
@@ -483,84 +484,48 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    return response;
  }
  
- /*public EnigmaResponse getDeviceIssueReportByStatus(){
-   response = new EnigmaResponse();
-   responseCode = new ResponseCode();
-   result = new ResponseResult();
-  
-   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-   //List<DeviceIssueInfo> deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueReportListByStatus(beginDate, endDate);
-   
-   List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
-   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueReportListByStatus(deviceInfoList);
-   responseCode.setResultObject(jsonObjectList);
-   responseCode.setCode(Constants.CODE_SUCCESS);
-   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
-   response.setResponseCode(responseCode);
-   response.setResult(result);
-   return response;
- }*/
- 
- /*public EnigmaResponse getDeviceIssueReport(Request deviceIssueInfo){
-   response = new EnigmaResponse();
-   responseCode = new ResponseCode();
-   result = new ResponseResult();
-   
-   String beginDateString;
-   String endDateString;
-   Date beginDate=null;
-   Date endDate=null;
-   String deviceId=null;
-   try
-   {
-     deviceId = deviceIssueInfo.getParameters().getDeviceId();
-     beginDateString = deviceIssueInfo.getParameters().getBeginDate();
-     endDateString = deviceIssueInfo.getParameters().getEndDate();
-      if (beginDateString != null)
+  public DeviceIssueStatusDto getDeviceIssueStatusForDevice(String deviceId)
+  {
+    DeviceIssueStatusDto deviceIssueStatusDto = null;
+    List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+    DeviceIssueInfo deviceIssueInfo = null;
+    UserInfo userInfo = null;
+    DeviceInfo deviceInfo = null;
+    if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
+    {
+      deviceIssueInfo = deviceIssueInfoList.get(0);
+    }
+    deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
+    if (deviceIssueInfo != null && deviceIssueInfo.getUserId() != null)
+    {
+      userInfo = userInfoDao.getUserInfo(deviceIssueInfo.getUserId());
+    }
+    if (deviceIssueInfo != null)
+    {
+      deviceIssueStatusDto = new DeviceIssueStatusDto();
+      deviceIssueStatusDto.setDeviceId(deviceId);
+      deviceIssueStatusDto.setAvailablityStatus(deviceInfo.getDeviceAvailability());
+      if (userInfo != null)
       {
-        beginDate = CommonUtils.getSqlDateByString(beginDateString);
-        if (endDateString == null)
-        {
-          endDate = beginDate;
-        }
-        else
-        {
-          endDate = CommonUtils.getSqlDateByString(endDateString);
-        }
+        deviceIssueStatusDto.setUserId(userInfo.getUserId());
+        deviceIssueStatusDto.setUserName(userInfo.getPassword());
       }
-   }
-   catch (Exception e)
-   {
-     if(beginDate==null)
-     {
-       endDate=null;
-     }
-     logger.error(e);
-    return  badRequest();
-   }
-   if(beginDate==null && endDateString!=null)
-   {
-     return  badRequest();
-   }
+    }
+    return deviceIssueStatusDto;
+  }
+ public EnigmaResponse getDevicesIssueReportByStatus(){
+   response = new EnigmaResponse();
+   responseCode = new ResponseCode();
+   result = new ResponseResult();
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-   List<DeviceIssueInfo> deviceIssueInfoList=null;
-   if(beginDate==null)
-    deviceIssueInfoList= deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
-   else
-   {
-     
-   }
-   
-   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDeviceIssueTrendList(deviceIssueInfoList);
+   List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
+   List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getAllDeviceIssueInfoList();
+   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDevicesListByStatus(deviceIssueInfoList,deviceInfoList);
    responseCode.setResultObject(jsonObjectList);
-   responseCode.setCode(Constants.CODE_SUCCESS);
-   responseCode.setMessage(Constants.MESSAGE_SUCCESS);
-   response.setResponseCode(responseCode);
+   CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_SUCCESS, Constants.CODE_SUCCESS);
    response.setResult(result);
    return response;
  }
- */
- 
  
   private String issueIdGenerator(String deviceId, String userId)
   {
@@ -580,6 +545,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     DeviceInfo deviceInfo=deviceInfoDao.getDeviceInfo(deviceId);
     deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_ISSUED);
     deviceInfoDao.updateDeviceInfo(deviceInfo);
+    
+    responseCode.setCode(Constants.CODE_SUCCESS);
+    responseCode.setMessage(Constants.MESSAGE_DEVICE_SUCCESSFULLY_ISSUED);
+    response.setResponseCode(responseCode); 
    }
 
   

@@ -6,8 +6,12 @@ import java.util.Date;
 public class ReportInfo
 {
   String activityId;
-  Date loginTime;
-  Date logoutTime;
+  String loginTime;
+  String logoutTime;
+  
+  Date inDate;
+  Date outDate;
+  
   String location;
   String userId;
   String issueId;
@@ -24,7 +28,18 @@ public class ReportInfo
   private String OS;
   private String OSVersion;
   private String issuedBy;
+  private String yearOfManufacturing;
   
+   public String getYearOfManufacturing()
+  {
+    return yearOfManufacturing;
+  }
+
+  public void setYearOfManufacturing(String yearOfManufacturing)
+  {
+    this.yearOfManufacturing = yearOfManufacturing;
+  }
+
     public String getIssuedBy()
   {
     return issuedBy;
@@ -118,22 +133,22 @@ public class ReportInfo
     this.activityId = activityId;
   }
 
-  public Date getLoginTime()
+  public String getLoginTime()
   {
     return loginTime;
   }
 
-  public void setLoginTime(Date loginTime)
+  public void setLoginTime(String loginTime)
   {
     this.loginTime = loginTime;
   }
 
-  public Date getLogoutTime()
+  public String getLogoutTime()
   {
     return logoutTime;
   }
 
-  public void setLogoutTime(Date logoutTime)
+  public void setLogoutTime(String logoutTime)
   {
     this.logoutTime = logoutTime;
   }
@@ -216,6 +231,26 @@ public class ReportInfo
   public void setSubmitByAdmin(Boolean submitByAdmin)
   {
     this.submitByAdmin = submitByAdmin;
+  }
+
+  public Date getInDate()
+  {
+    return inDate;
+  }
+
+  public void setInDate(Date inDate)
+  {
+    this.inDate = inDate;
+  }
+
+  public Date getOutDate()
+  {
+    return outDate;
+  }
+
+  public void setOutDate(Date outDate)
+  {
+    this.outDate = outDate;
   }
 
 }

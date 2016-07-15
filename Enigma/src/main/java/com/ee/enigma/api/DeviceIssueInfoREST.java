@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.request.Request;
@@ -58,8 +59,8 @@ public class DeviceIssueInfoREST {
 	@GET
 	@Path("/deviceTimeLineReport")
 	@Produces(MediaType.APPLICATION_JSON)
-	public JSONObject deviceIssueReportService(@PathParam("beginDate") String beginDate,@PathParam("endDate") String endDate,
-    @PathParam("deviceId") String deviceId) {
+	public JSONObject deviceIssueReportService(@QueryParam("beginDate") String beginDate,@QueryParam("endDate") String endDate,
+	  @QueryParam("deviceId") String deviceId) {
 	  JSONObject deviceTimeLineReport = deviceIssueInfoService.getDeviceTimeLineReport(beginDate,endDate,deviceId);
 		return deviceTimeLineReport;
 	}
@@ -117,5 +118,35 @@ public class DeviceIssueInfoREST {
     }
     return response;
   }
+	
+  @GET
+  @Path("/deviceIssueStatusForDevice")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDeviceIssueStatusForDevice(@QueryParam("deviceId") String deviceId)
+  {
+    DeviceIssueStatusDto deviceIssueStatusDto = deviceIssueInfoService
+      .getDeviceIssueStatusForDevice(deviceId);
+    Response response = null;
+    if (deviceIssueStatusDto != null)
+    {
+      response = Response.ok(deviceIssueStatusDto, MediaType.APPLICATION_JSON)
+        .entity(deviceIssueStatusDto).build();
+    }
+    else
+    {
+      return Response.ok(new DeviceIssueStatusDto(), MediaType.APPLICATION_JSON).status(400)
+        .build();
+    }
+    return response;
+  }
+  @GET
+  @Path("/devicesIssueReportByStatus")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDevicesIssueReportByStatus(){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDevicesIssueReportByStatus();
+    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
+  
 	
 }

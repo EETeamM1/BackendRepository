@@ -22,5 +22,5 @@ public interface DeviceService {
 	
 	public List<TopDeviceDto> getTopDevices();
 
-        public EnigmaResponse searchDevice(String searchQuery);
+    public EnigmaResponse searchDevice(String searchQuery);
 }

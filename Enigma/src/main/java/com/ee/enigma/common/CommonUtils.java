@@ -84,19 +84,52 @@ public class CommonUtils {
 	}
 
 	public static EnigmaResponse badRequest() {
-		ResponseCode responseCode = new ResponseCode();
-		EnigmaResponse response = new EnigmaResponse();
+	  EnigmaResponse response=new EnigmaResponse();
+	  ResponseCode responseCode=new ResponseCode();
 		responseCode.setCode(Constants.CODE_BAD_REQUEST);
 		responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
 		response.setResponseCode(responseCode);
 		return response;
 	}
+	
+	public static EnigmaResponse badRequest(EnigmaResponse response,ResponseCode responseCode) {
+    responseCode.setCode(Constants.CODE_BAD_REQUEST);
+    responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
+    response.setResponseCode(responseCode);
+    return response;
+  }
 
 	public static String getDateFromTemeStamp(Timestamp timestamp) {
 
 		Date date = new Date(timestamp.getTime());
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
+	
+  public static String getTimeStampFormatedString(java.util.Date date)
+  {
+    try
+    {
+      Date formattedDate = new Date(date.getTime());
+      return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(formattedDate);
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
+  }
+  
+  public static String getTimeStampFormatedString(Timestamp timestamp)
+  {
+    try
+    {
+      Date date = new Date(timestamp.getTime());
+      return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(date);
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
+  }
 
 	public static Date getLastMonthAndDate() {
 		Calendar calendar = Calendar.getInstance();
@@ -104,5 +137,33 @@ public class CommonUtils {
 		return calendar.getTime();
 
 	}
+	
+	public static EnigmaResponse deviceNotRegisteredResponse(EnigmaResponse response,ResponseCode responseCode)
+  {
+    responseCode.setCode(Constants.CODE_NOT_FOUND);
+    responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
+    response.setResponseCode(responseCode);
+    return response;
+  }
 
+	public static EnigmaResponse userNotExistingResponse(EnigmaResponse response,ResponseCode responseCode)
+  {
+    responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
+    responseCode.setMessage(Constants.USER_NOT_EXISTING);
+    response.setResponseCode(responseCode);
+    return response;
+  }
+	public static EnigmaResponse duplicateRequest(EnigmaResponse response,ResponseCode responseCode, String message){
+      responseCode.setCode(Constants.CODE_BAD_REQUEST);
+    responseCode.setMessage(message);
+    response.setResponseCode(responseCode);   
+    return response;
+  }
+	
+	 public static void updateResponse(EnigmaResponse response,ResponseCode responseCode, String message,int code){
+	   responseCode.setCode(code);
+     responseCode.setMessage(message);
+     response.setResponseCode(responseCode); 
+   
+ }
 }

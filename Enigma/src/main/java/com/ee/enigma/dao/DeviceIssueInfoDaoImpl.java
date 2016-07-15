@@ -38,11 +38,11 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	     Session session = this.sessionFactory.getCurrentSession();
 	     if(beginDate==null)
 	     {  
-	       hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueId desc";
+	       hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueTime desc";
        }
 	     else
 	     {
-	       hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueId desc";
+	       hql = "from DeviceIssueInfo where deviceId= :deviceId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueTime desc";
 	     }
 	     query = session.createQuery(hql);
        query.setParameter("deviceId", deviceId);
@@ -212,5 +212,24 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	       return null;
 	     }
 	}
+	
+	@Override
+  public List<DeviceIssueInfo> getAllDeviceIssueInfoList() {
+    try {
+      String hql = "from DeviceIssueInfo order by issueTime desc ";
+      Session session = this.sessionFactory.getCurrentSession();
+      Query query = session.createQuery(hql);
+      List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
+      if(null == deviceIssueInfoList || deviceIssueInfoList.size() == 0 ){
+        return null;
+      }
+      logger.info(deviceIssueInfoList.toString());
+      return deviceIssueInfoList;
+    } catch (HibernateException e) {
+      logger.error(e);
+      return null;
+    }
+ }
+
 	
 }

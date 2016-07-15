@@ -32,6 +32,9 @@ public interface Constants {
 	String MESSAGE_DEVICE_SUBMITTED_TO_ADMIN_FOR_APPROVAL = "Device is submitted to admin, approval is pending.";
 	String MESSAGE_DEVICE_ALREADY_SUBMITTED = "Device is already submitted.";
 	String MESSAGE_DEVICE_SUBMITTED = "Device is submitted.";
+	 String DEVICE_ALREADY_EXISTS = "Device already exists.";
+	 String MESSAGE_DEVICE_WAS_NOT_ISSUED = "Device was not issued.";
+	 String MESSAGE_DEVICE_NOT_AUTHORIZE_TO_SUBMIT = "You are not authorize to submit the device.";
 	
 	String MESSAGE_DEVICE_SUBMISSION_IS_REJECTED = "Device submition is rejected. Again issue to same user";
 	

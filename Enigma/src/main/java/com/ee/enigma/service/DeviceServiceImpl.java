@@ -46,16 +46,9 @@ public class DeviceServiceImpl implements DeviceService {
 		this.deviceIssueInfoDao = deviceIssueInfoDao;
 	}
 
-	//public List<DeviceInfoDto> getDevicesInfoByStatus(Request requestInfo) {
 	public List<DeviceInfoDto> getDevicesInfoByStatus(String deviceId,String deviceStatus) {
 	
 		List<DeviceInfoDto> deviceInfoDtos = new ArrayList<DeviceInfoDto>();
-		/*try {
-			deviceId = requestInfo.getParameters().getDeviceId().trim();
-			deviceStatus = requestInfo.getParameters().getDeviceStatus().trim();
-		} catch (Exception e) {
-			logger.error(e);
-		}*/
 		List<DeviceInfo> deviceInfos = deviceInfoDao.getDevicesListByIDAndStatus(deviceId, deviceStatus);
 		DeviceInfoDto deviceInfoDto = new DeviceInfoDto();
 		DeviceInfo deviceInfo = null;
@@ -75,7 +68,6 @@ public class DeviceServiceImpl implements DeviceService {
 
 		String deviceId;
 		String deviceName;
-		// String isAdminApproved;
 		String opration;
 		String manufacturer;
 		String oS;
@@ -89,29 +81,28 @@ public class DeviceServiceImpl implements DeviceService {
 			manufacturer = requestInfo.getParameters().getManufacturer().trim();
 			oS = requestInfo.getParameters().getoS().trim();
 			osVersion = requestInfo.getParameters().getOsVersion().trim();
-			// timeoutPeriod =
-			// requestInfo.getParameters().getTimeoutPeriod().trim();
 			yearOfManufacturing = requestInfo.getParameters().getYearOfManufacturing().trim();
 		} catch (Exception e) {
 			logger.error(e);
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 
 		// Checking whether request contains all require fields or not.
 		if (null == deviceId || null == deviceName || null == opration || null == manufacturer || null == oS
 				|| null == osVersion || null == yearOfManufacturing) {
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 		deviceInfo = new DeviceInfo();
 		deviceInfo.setDeviceId(deviceId);
 		deviceInfo.setDeviceName(deviceName);
-		// deviceInfo.setIsAdminApproved(isAdminApproved);
 		deviceInfo.setManufacturer(manufacturer);
 		deviceInfo.setOS(oS);
 		deviceInfo.setOSVersion(osVersion);
-		// deviceInfo.setTimeoutPeriod(timeoutPeriod);
 		deviceInfo.setYearOfManufacturing(yearOfManufacturing);
 		if (opration.equals("save")) {
+		  if(isDeviceExists(deviceId) == true){
+        return CommonUtils.duplicateRequest(response,responseCode,Constants.DEVICE_ALREADY_EXISTS);
+      }
 			deviceInfoDao.createDeviceInfo(deviceInfo);
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
 		} else if (opration.equals("update")) {
@@ -120,7 +111,6 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
-		// result.setSessionToken(activityId);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
 		return response;
@@ -139,12 +129,12 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceStatus = requestInfo.getParameters().getDeviceStatus().trim();
 		} catch (Exception e) {
 			logger.error(e);
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 
 		// Checking whether request contains all require fields or not.
 		if (null == deviceId || null == deviceStatus) {
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 		DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
 		if (deviceInfo != null) {
@@ -153,7 +143,6 @@ public class DeviceServiceImpl implements DeviceService {
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
 			// Success response.
 			responseCode.setCode(Constants.CODE_SUCCESS);
-			// result.setSessionToken(activityId);
 			response.setResponseCode(responseCode);
 			response.setResult(result);
 			return response;
@@ -161,7 +150,6 @@ public class DeviceServiceImpl implements DeviceService {
 		// Success response.
 		responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
 		responseCode.setCode(Constants.CODE_NOT_FOUND);
-		// result.setSessionToken(activityId);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
 		return response;
@@ -172,18 +160,9 @@ public class DeviceServiceImpl implements DeviceService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-		/*String deviceId;
-
-		try {
-			deviceId = requestInfo.getParameters().getDeviceId().trim();
-		} catch (Exception e) {
-			logger.error(e);
-			return badRequest();
-		}*/
-
 		// Checking whether request contains all require fields or not.
 		if (null == deviceId) {
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 		DeviceInfo deviceInfo = new DeviceInfo();
 		deviceInfo.setDeviceId(deviceId);
@@ -198,26 +177,12 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	public DeviceInfoDto getDeviceInfo(String deviceId) {
-		//String deviceId = "";
 		DeviceInfoDto deviceInfoDto = new DeviceInfoDto();
-		/*try {
-			deviceId = requestInfo.getParameters().getDeviceId().trim();
-		} catch (Exception e) {
-			logger.error(e);
-		}*/
-		
 		DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
 		return deviceInfoDto.getDeviceInfoDto(deviceInfo);
 	}
 
-	private EnigmaResponse badRequest() {
-		responseCode.setCode(Constants.CODE_BAD_REQUEST);
-		responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
-		response.setResponseCode(responseCode);
-		return response;
-	}
-
-	@Override
+		@Override
 	public EnigmaResponse approveDevice(Request requestInfo) {
 		String deviceId = null;
 		boolean isAdminApproved = false;
@@ -228,11 +193,11 @@ public class DeviceServiceImpl implements DeviceService {
 			isAdminApproved = requestInfo.getParameters().getIsAdminApproved();
 		} catch (Exception e) {
 			logger.error(e);
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 		// Checking whether request contains require field deviceId or not.
 		if (null == deviceId) {
-			return badRequest();
+			return CommonUtils.badRequest(response,responseCode);
 		}
 		
 		approveDeviceOperation(deviceId, isAdminApproved, responseCode);
@@ -287,7 +252,7 @@ public EnigmaResponse searchDevice(String searchQuery) {
     result = new ResponseResult();
     
     if(null == searchQuery ||searchQuery.trim().isEmpty()){
-    	return badRequest();
+    	return CommonUtils.badRequest(response,responseCode);
     }
     
 	List<DeviceInfo> deviceInfoList = deviceInfoDao.getDeviceFields(searchQuery);
@@ -297,6 +262,13 @@ public EnigmaResponse searchDevice(String searchQuery) {
     response.setResponseCode(responseCode);
     response.setResult(result);
     return response;
+}
+
+private boolean isDeviceExists(String deviceId){
+  if(null != deviceInfoDao.getDeviceInfo(deviceId)){
+    return true;
+  }
+  return false;
 }
 
 }
