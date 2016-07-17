@@ -4,8 +4,9 @@ package com.ee.enigma.dto;
 public class IssueTrendLineData
 {
   String date;
-  int issedByAdmin;
-  int issedBySystem;
+  int byAdmin;
+  int bySystem;
+  int byUser;
 
   public String getDate()
   {
@@ -17,23 +18,35 @@ public class IssueTrendLineData
     this.date = date;
   }
 
-  public int getIssedByAdmin()
+  public int getByAdmin()
   {
-    return issedByAdmin;
+    return byAdmin;
   }
 
-  public void setIssedByAdmin(int issedByAdmin)
+  public void setByAdmin(int byAdmin)
   {
-    this.issedByAdmin = issedByAdmin;
+    this.byAdmin = byAdmin;
   }
 
-  public int getIssedBySystem()
+  public int getBySystem()
   {
-    return issedBySystem;
+    return bySystem;
   }
 
-  public void setIssedBySystem(int issedBySystem)
+  public void setBySystem(int bySystem)
   {
-    this.issedBySystem = issedBySystem;
+    this.bySystem = bySystem;
   }
+
+  public int getByUser()
+  {
+    return byUser;
+  }
+
+  public void setByUser(int byUser)
+  {
+    this.byUser = byUser;
+  }
+
+  
 }

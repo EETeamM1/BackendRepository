@@ -10,6 +10,7 @@ public interface Constants {
 	String ISSUED_BY_SYSTEM = "Issued By System";
 	String SUBMITTED_BY_ADMIN = "Submitted By Admin";
 	String SUBMITTED_BY_SYSTEM = "Submitted By System";
+	String SUBMITTED_BY_USER = "Submitted By User";
 
 	String MESSAGE_SUCCESS = "Success";
 	String LOGOUT_SUCCESS = "Successfully LogOut";

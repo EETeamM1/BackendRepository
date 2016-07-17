@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +17,12 @@ import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueHelper;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
-import com.ee.enigma.model.DeviceInfo;
-import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
-import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.dto.ReportInfo;
+import com.ee.enigma.model.DeviceInfo;
+import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -147,239 +144,254 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   }
   
 
-   
-  public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest)
-  {
-    response = new EnigmaResponse();
-    responseCode = new ResponseCode();
-    result = new ResponseResult();
-    String userId;
-    String deviceId;
-    Boolean byAdmin;
-
-    try
-    {
-      deviceId = deviceIssueInfoRequest.getParameters().getDeviceId();
-      userId = deviceIssueInfoRequest.getParameters().getUserId();
-      byAdmin = deviceIssueInfoRequest.getParameters().getByAdmin();
-
-    }
-    catch (Exception e)
-    {
-     // logger.error(e);
-      return badRequest();
-    }
-
-    // Checking whether request contains all require fields or not.
-    if (null == userId || "".equals(userId.trim()) || null == deviceId || null==byAdmin)
-    {
-      return badRequest();
-    }
-    
-    // Checking whether request Parameters are existing or not.
-    // Checking device info
-    DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
-    if (null == deviceInfo) {
-      return deviceNotRegisteredResponse();
-    }
-    
-    if (!isUserExisting(userId)) {
-      return userNotExistingResponse();
-    }
   
-    // Checking device info
-    // Assuming , deviceId and userId will be selected from UI
-    List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
-    boolean deviceAvailable = true;
-    if (byAdmin)
+
+    public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest)
     {
-      if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
+      response = new EnigmaResponse();
+      responseCode = new ResponseCode();
+      result = new ResponseResult();
+      String userId;
+      String deviceId;
+      Boolean byAdmin;
+      try
       {
-        for (DeviceIssueInfo deviceIssue : deviceIssueInfoList)
+        deviceId = deviceIssueInfoRequest.getParameters().getDeviceId();
+        userId = deviceIssueInfoRequest.getParameters().getUserId();
+        byAdmin = deviceIssueInfoRequest.getParameters().getByAdmin();
+      }
+      catch (Exception e)
+      {
+        // logger.error(e);
+        return CommonUtils.badRequest(response, responseCode);
+      }
+
+      // Checking whether request contains all require fields or not.
+      if (null == userId || "".equals(userId.trim()) || null == deviceId || null == byAdmin)
+      {
+        return CommonUtils.badRequest(response, responseCode);
+      }
+
+      // Checking whether request Parameters are existing or not.
+      // Checking device info
+      DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
+      if (null == deviceInfo)
+      {
+        return CommonUtils.deviceNotRegisteredResponse(response, responseCode);
+      }
+
+      if (!isUserExisting(userId))
+      {
+        return CommonUtils.userNotExistingResponse(response, responseCode);
+      }
+      // Checking device info
+      // Assuming , deviceId and userId will be selected from UI
+      List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+      DeviceIssueInfo deviceIssueInfoTemp = null;
+      if (byAdmin)
+      {
+        if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
         {
-          if (deviceIssue.getSubmitTime() == null)
+          deviceIssueInfoTemp = deviceIssueInfoList.get(0);
+          if (deviceIssueInfoTemp.getSubmitTime() == null)
           {
-            deviceAvailable = false;
-            break;
+            // show message ,device is issued
+            CommonUtils.updateResponse(response, responseCode,
+              Constants.MESSAGE_DEVICE_ALREADY_ISSUED, Constants.CODE_SUCCESS);
+            return response;
+          }
+          else if (deviceIssueInfoTemp.getSubmitTime() != null
+            && (Constants.DEVICE_STATUS_PENDING.equals(deviceInfo.getDeviceAvailability()) || Constants.DEVICE_STATUS_AVAILABLE
+              .equals(deviceInfo.getDeviceAvailability())))
+          {
+            // issue device
+            createDeviceIssueInfo(deviceId, userId, byAdmin);
+          }
+          else if(deviceIssueInfoTemp.getSubmitTime() != null
+            && (Constants.DEVICE_STATUS_ISSUED.equals(deviceInfo.getDeviceAvailability()) ))
+          {
+            CommonUtils.updateResponse(response, responseCode,
+              Constants.MESSAGE_DEVICE_ALREADY_ISSUED, Constants.CODE_SUCCESS);
+            return response;
           }
         }
-      }
-      // If Device is not issued to any one, issue it
-      if (deviceAvailable)
-      {
-        createDeviceIssueInfo(deviceId, userId, byAdmin);
+        else
+        {
+          createDeviceIssueInfo(deviceId, userId, byAdmin);
+        }
       }
       else
       {
-        responseCode.setCode(Constants.CODE_SUCCESS);
-        responseCode.setMessage(Constants.MESSAGE_DEVICE_ALREADY_ISSUED);
-        response.setResponseCode(responseCode);
-        response.setResult(result);
-        return response;
-      }
-    }
-    else
-    {
-      if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
-      {
-        for (DeviceIssueInfo deviceIssue : deviceIssueInfoList)
+        if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
         {
-          if (deviceIssue.getSubmitTime() == null)
+          deviceIssueInfoTemp = deviceIssueInfoList.get(0);
+          if (deviceIssueInfoTemp.getSubmitTime() == null)
           {
-            // submit Device
-            if(deviceIssue.getUserId().equals(userId))
+            if (userId.equals(deviceIssueInfoTemp.getUserId()))
             {
-              //Not submit User Is same 
-              responseCode.setCode(Constants.CODE_SUCCESS);
-              responseCode.setMessage(Constants.MESSAGE_DEVICE_ASSIGNED_TO_SAME_USER);
-              response.setResponseCode(responseCode);
-              response.setResult(result);
+              CommonUtils.updateResponse(response, responseCode,
+                Constants.MESSAGE_DEVICE_ASSIGNED_TO_SAME_USER, Constants.CODE_SUCCESS);
               return response;
             }
             else
             {
-            deviceIssue.setSubmitTime(CommonUtils.getCurrentDateTime());
-            deviceIssue.setSubmitByAdmin(false);
+              // assign to other user
+              deviceIssueInfoTemp.setSubmitTime(CommonUtils.getCurrentDateTime());
+              deviceIssueInfoTemp.setSubmitBy(Constants.SUBMITTED_BY_SYSTEM);
+              deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfoTemp);
+              deviceInfoDao.updateDeviceInfo(deviceInfo);
             }
-            break;
+            createDeviceIssueInfo(deviceId, userId, byAdmin);
+          }
+          else
+          {
+            createDeviceIssueInfo(deviceId, userId, byAdmin);
           }
         }
-      }
-      createDeviceIssueInfo(deviceId, userId, false);
-    }
-    // Success response.
-    responseCode.setCode(Constants.CODE_SUCCESS);
-    responseCode.setMessage(Constants.MESSAGE_DEVICE_SUCCESSFULLY_ISSUED);
-    response.setResponseCode(responseCode);
-    response.setResult(result);
-    return response;
-  }
-
-  
- 
-  public EnigmaResponse submitDevice(Request deviceIssueInfoRequest)
-  {
-    response = new EnigmaResponse();
-    responseCode = new ResponseCode();
-    result = new ResponseResult();
-    String userId;
-    String deviceId;
-    Boolean byAdmin;
-
-    try
-    {
-      deviceId = deviceIssueInfoRequest.getParameters().getDeviceId();
-      userId = deviceIssueInfoRequest.getParameters().getUserId();
-      byAdmin = deviceIssueInfoRequest.getParameters().getByAdmin();
-    }
-    catch (Exception e)
-    {
-      logger.error(e);
-      return badRequest();
-    }
-    
-    //submitted by user  -->> PD device is submmited but entry pending with admin ,
-    //AV--> available
-    //IS -->already issed
-    DeviceIssueInfo tempDeviceIssueInfo=null;
-    List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
-    boolean deviveInfoFound=false;
-   // Checking whether request contains all require fields or not.
-    if (null == userId || "".equals(userId.trim()) || null == deviceId || null==byAdmin)
-    {
-      return badRequest();
-    }
-    
-    // Checking whether request Parameters are existing or not.
-    // Checking device info
-    DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
-    if (null == deviceInfo) {
-      return deviceNotRegisteredResponse();
-    }
-    
-    if (!isUserExisting(userId)) {
-      return userNotExistingResponse();
-    }
-    
-    if(byAdmin)
-    {
-      for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
-      {
-        if(deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime()==null)
+        else
         {
-          deviveInfoFound=true;
-          tempDeviceIssueInfo=deviceIssueInfo;
-          break;
+          createDeviceIssueInfo(deviceId, userId, byAdmin);
         }
       }
-      if(deviveInfoFound && Constants.DEVICE_STATUS_ISSUED.equals(deviceInfo.getDeviceAvailability()))
-      {
-        tempDeviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
-        tempDeviceIssueInfo.setSubmitByAdmin(byAdmin);
-        deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
-     
-        deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
-        deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_AVAILABLE);
-        deviceInfoDao.updateDeviceInfo(deviceInfo);
-      }
-      else if(!Constants.DEVICE_STATUS_ISSUED.equals(deviceInfo.getDeviceAvailability()))
-      {
-        responseCode.setCode(Constants.CODE_SUCCESS);
-        responseCode.setMessage(Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED);
-        response.setResponseCode(responseCode);
-        response.setResult(result);
-        return response;
-      }
+      // Success response.
+      response.setResult(result);
+      return response;
     }
-    else
+
+    
+   
+    public EnigmaResponse submitDevice(Request deviceIssueInfoRequest)
     {
-      boolean flag=false;
-      for(DeviceIssueInfo deviceIssueInfo : deviceIssueInfoList)
+      response = new EnigmaResponse();
+      responseCode = new ResponseCode();
+      result = new ResponseResult();
+      String userId;
+      String deviceId;
+      Boolean byAdmin;
+
+      try
       {
-        if(deviceIssueInfo.getUserId().equals(userId) && deviceIssueInfo.getSubmitTime()==null)
-        {
-          flag=true;
-          tempDeviceIssueInfo=deviceIssueInfo;
-          break;
-        }
+        deviceId = deviceIssueInfoRequest.getParameters().getDeviceId();
+        userId = deviceIssueInfoRequest.getParameters().getUserId();
+        byAdmin = deviceIssueInfoRequest.getParameters().getByAdmin();
       }
-      //If same user is submitting device ,it will goes to pending status
-      if(flag)
+      catch (Exception e)
       {
-        tempDeviceIssueInfo.setSubmitTime(CommonUtils.getCurrentDateTime());
-        tempDeviceIssueInfo.setSubmitByAdmin(false);
-        deviceIssueInfoDao.updateDeviceIssueInfo(tempDeviceIssueInfo);
-        
-        deviceInfo= deviceInfoDao.getDeviceInfo(deviceId);
-        deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_PENDING);
-        deviceInfoDao.updateDeviceInfo(deviceInfo);
-        
-        responseCode.setCode(Constants.CODE_SUCCESS);
-        responseCode.setMessage(Constants.MESSAGE_DEVICE_SUBMITTED_TO_ADMIN_FOR_APPROVAL);
-        response.setResponseCode(responseCode);
-        response.setResult(result);
-        return response; 
+        logger.error(e);
+        return CommonUtils.badRequest(response,responseCode);
+      }
+      
+      //submitted by user  -->> PD device is submmited but entry pending with admin ,
+      //AV--> available
+      //IS -->already issed
+     // DeviceIssueInfo tempDeviceIssueInfo=null;
+      List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
+      //boolean deviveInfoFound=false;
+     // Checking whether request contains all require fields or not.
+      if (null == userId || "".equals(userId.trim()) || null == deviceId || null==byAdmin)
+      {
+        return CommonUtils.badRequest(response,responseCode);
+      }
+      
+      // Checking whether request Parameters are existing or not.
+      // Checking device info
+      DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
+      if (null == deviceInfo) {
+        return CommonUtils.deviceNotRegisteredResponse(response,responseCode);
+      }
+      
+      if (!isUserExisting(userId)) {
+        return CommonUtils.userNotExistingResponse(response,responseCode);
+      }
+      //DeviceIssueInfo newDeviceIssueInfo = null;
+      DeviceIssueInfo deviceIssueInfoTemp = null;
+      
+      if (byAdmin)
+      {
+        if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
+        {
+          deviceIssueInfoTemp = deviceIssueInfoList.get(0);
+          if(deviceIssueInfoTemp.getUserId().equals(userId))
+          {
+            if( deviceIssueInfoTemp.getSubmitTime()==null)
+            {
+            deviceIssueInfoTemp.setSubmitTime(CommonUtils.getCurrentDateTime());
+            deviceIssueInfoTemp.setSubmitBy(Constants.SUBMITTED_BY_ADMIN);
+            deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfoTemp);
+            
+            deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_AVAILABLE);
+            deviceInfoDao.updateDeviceInfo(deviceInfo);
+            }
+            else
+            {
+              CommonUtils.updateResponse(response, responseCode,
+                Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED, Constants.CODE_SUCCESS);
+              return response;
+            }
+          }
+          else if(!deviceIssueInfoTemp.getUserId().equals(userId))
+          {
+            CommonUtils.updateResponse(response, responseCode,
+              Constants.MESSAGE_DEVICE_ISSUED_TO_OTHER_USER, Constants.CODE_SUCCESS);
+            return response;
+          }
+        }
+        else
+        {
+          CommonUtils.updateResponse(response, responseCode,
+            Constants.MESSAGE_DEVICE_WAS_NOT_ISSUED, Constants.CODE_SUCCESS);
+          return response;
+        }
       }
       else
       {
-        responseCode.setCode(Constants.CODE_SUCCESS);
-        responseCode.setMessage(Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED);
-        response.setResponseCode(responseCode);
-        response.setResult(result);
-        return response;  
+        if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
+        {
+          deviceIssueInfoTemp = deviceIssueInfoList.get(0);
+          if(deviceIssueInfoTemp.getUserId().equals(userId))
+          {
+            if( deviceIssueInfoTemp.getSubmitTime()==null)
+            {
+              deviceIssueInfoTemp.setSubmitTime(CommonUtils.getCurrentDateTime());
+              deviceIssueInfoTemp.setSubmitBy(Constants.SUBMITTED_BY_USER);
+              deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfoTemp);
+              
+              deviceInfo.setDeviceAvailability(Constants.DEVICE_STATUS_PENDING);
+              deviceInfoDao.updateDeviceInfo(deviceInfo);
+              
+              CommonUtils.updateResponse(response, responseCode,
+                Constants.MESSAGE_DEVICE_SUBMITTED_TO_ADMIN_FOR_APPROVAL, Constants.CODE_SUCCESS);
+              return response;
+            }
+            else
+            {
+              CommonUtils.updateResponse(response, responseCode,
+                Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED, Constants.CODE_SUCCESS);
+              return response;
+            }
+          }
+          else
+          {
+            CommonUtils.updateResponse(response, responseCode,
+              Constants.MESSAGE_DEVICE_ALREADY_SUBMITTED, Constants.CODE_SUCCESS);
+            return response;
+          }
+        }
+        else
+        {
+          CommonUtils.updateResponse(response, responseCode,
+            Constants.MESSAGE_DEVICE_WAS_NOT_ISSUED, Constants.CODE_SUCCESS);
+          return response;
+        }
       }
-     
+      CommonUtils.updateResponse(response, responseCode,
+        Constants.MESSAGE_DEVICE_SUBMITTED, Constants.CODE_SUCCESS);
+      return response;
     }
-    responseCode.setCode(Constants.CODE_SUCCESS);
-    responseCode.setMessage(Constants.MESSAGE_DEVICE_SUBMITTED);
-    response.setResponseCode(responseCode);
-    response.setResult(result);
-    return response;
-  }
-  
- 
-  
- @Override
+    
+       
+    
+  @Override
  public String populateDeviceIssueInfo(String deviceId, String userId)
  {
    String issueId = null;
@@ -430,7 +442,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
      if (deviceIssueInfoTemp.getSubmitTime() == null)
      {
        deviceIssueInfoTemp.setSubmitTime(CommonUtils.getCurrentDateTime());
-       deviceIssueInfoTemp.setSubmitByAdmin(false);
+       deviceIssueInfoTemp.setSubmitBy(Constants.SUBMITTED_BY_SYSTEM);
        deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfoTemp);
      }
      else

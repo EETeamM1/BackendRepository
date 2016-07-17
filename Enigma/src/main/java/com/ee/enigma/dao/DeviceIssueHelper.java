@@ -64,8 +64,8 @@ public class DeviceIssueHelper
           }
         }
         issueTrendLineData.setDate(issueDate);
-        issueTrendLineData.setIssedByAdmin(issuedByAdmin);
-        issueTrendLineData.setIssedBySystem(issuedBySystem);
+        issueTrendLineData.setByAdmin(issuedByAdmin);
+        issueTrendLineData.setBySystem(issuedBySystem);
         issueTrendLineList.add(issueTrendLineData);
       }
     }
@@ -104,26 +104,32 @@ public class DeviceIssueHelper
       {
         int submitByAdmin = 0;
         int submitBySystem = 0;
+        int submitByUser = 0;
         issueTrendLineData = new IssueTrendLineData();
         for (int i = 0; i < deviceIssueInfos.size(); i++)
         {
           deviceIssueInfo = deviceIssueInfos.get(i);
-          if (deviceIssueInfo.getSubmitByAdmin() != null
+          if (deviceIssueInfo.getSubmitBy() != null
             && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime())))
           {
-            if (deviceIssueInfo.getSubmitByAdmin())
+            if (Constants.SUBMITTED_BY_ADMIN.equals(deviceIssueInfo.getSubmitBy()))
             {
               submitByAdmin++;
             }
-            if (!deviceIssueInfo.getSubmitByAdmin())
+            if (Constants.SUBMITTED_BY_USER.equals(deviceIssueInfo.getSubmitBy()))
+            {
+              submitByUser++;
+            }
+            if (Constants.SUBMITTED_BY_SYSTEM.equals(deviceIssueInfo.getSubmitBy()))
             {
               submitBySystem++;
             }
           }
         }
         issueTrendLineData.setDate(issueDate);
-        issueTrendLineData.setIssedByAdmin(submitByAdmin);
-        issueTrendLineData.setIssedBySystem(submitBySystem);
+        issueTrendLineData.setByAdmin(submitByAdmin);
+        issueTrendLineData.setBySystem(submitBySystem);
+        issueTrendLineData.setByUser(submitByUser);
         issueTrendLineList.add(issueTrendLineData);
       }
     }
@@ -131,7 +137,7 @@ public class DeviceIssueHelper
     return deviceIssueTrendLineDto;
   }  
   
-  public List<com.ee.enigma.dto.ReportInfo> buildDeviceIssueTrendList(List<DeviceIssueInfo> deviceIssueInfos)
+ /* public List<com.ee.enigma.dto.ReportInfo> buildDeviceIssueTrendList(List<DeviceIssueInfo> deviceIssueInfos)
   {
     DeviceIssueInfo deviceIssueInfo = null;
     List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
@@ -162,9 +168,9 @@ public class DeviceIssueHelper
       }
     }
     return reportInfoList;
-  }  
+  }  */
   
-  public List<ReportInfo> buildDeviceSubmitTrendList(List<DeviceIssueInfo> deviceIssueInfos)
+ /* public List<ReportInfo> buildDeviceSubmitTrendList(List<DeviceIssueInfo> deviceIssueInfos)
   {
     DeviceIssueInfo deviceIssueInfo = null;
     List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
@@ -195,7 +201,7 @@ public class DeviceIssueHelper
       }
     }
     return reportInfoList;
-  }  
+  }  */
   
  
  public DeviceStatusCountsInfo buildDeviceReportAvailability(List<DeviceInfo> deviceInfoList)
@@ -225,7 +231,7 @@ public class DeviceIssueHelper
     return info;
   }  
   
- public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
+ /*public List<ReportInfo> buildDeviceIssueReportListByStatus(List<DeviceInfo> deviceInfoList)
  {
    DeviceInfo deviceInfo = null;
    List<ReportInfo> reportInfoList = new ArrayList<ReportInfo>();
@@ -244,7 +250,7 @@ public class DeviceIssueHelper
        reportInfoList.add(reportInfo);
    }
    return reportInfoList;
- }  
+ }  */
  
   public JSONObject buildDeviceTimeLineReport(List<DeviceIssueInfo> deviceIssueInfos)
   {

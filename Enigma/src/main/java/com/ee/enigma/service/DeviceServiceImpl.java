@@ -233,7 +233,7 @@ public class DeviceServiceImpl implements DeviceService {
 		DeviceIssueInfo deviceIssueInfo = deviceIssueInfoDao.getDeviceIssueInfoByDeviceId(deviceId);
 		if(null != deviceIssueInfo) {
 			deviceIssueInfo.setSubmitTime(null);
-			deviceIssueInfo.setSubmitByAdmin(null);
+			deviceIssueInfo.setSubmitBy(null);
 			deviceIssueInfoDao.updateDeviceIssueInfo(deviceIssueInfo);
 		}
 	}

@@ -25,7 +25,8 @@ public class DeviceIssueInfo {
 	private Timestamp issueTime;
 	private Timestamp submitTime;
 	private Boolean issueByAdmin;
-  private Boolean submitByAdmin;
+	//Update DB column
+  private String submitBy;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "deviceId" ,insertable =false, updatable=false)
@@ -56,19 +57,29 @@ public class DeviceIssueInfo {
   {
     this.issueByAdmin = issueByAdmin;
   }
-  public Boolean getSubmitByAdmin()
+ 
+  /*public String getSubmitByAdmin()
   {
     return submitByAdmin;
   }
-  public void setSubmitByAdmin(Boolean submitByAdmin)
+  public void setSubmitByAdmin(String submitByAdmin)
   {
     this.submitByAdmin = submitByAdmin;
-  }
+  }*/
+  
   /* GETTERS AND SETTERS */
 	public String getIssueId() {
 		return issueId;
 	}
-	public void setIssueId(String issueId) {
+	public String getSubmitBy()
+  {
+    return submitBy;
+  }
+  public void setSubmitBy(String submitBy)
+  {
+    this.submitBy = submitBy;
+  }
+  public void setIssueId(String issueId) {
 		this.issueId = issueId;
 	}
 	public String getDeviceId() {
