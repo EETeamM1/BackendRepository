@@ -138,8 +138,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       endDate=beginDate;
     JSONObject jsonObject=null;
     DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
-    List<DeviceIssueInfo> jsonObjectList= deviceIssueInfoDao.getDeviceIssueList(deviceId, beginDate, endDate);
-    jsonObject=deviceIssueHelper.buildDeviceTimeLineReport(jsonObjectList);
+    List<DeviceIssueInfo> deviceIssueList= deviceIssueInfoDao.getDeviceIssueList(deviceId, beginDate, endDate);
+    jsonObject=deviceIssueHelper.buildDeviceTimeLineReport(deviceIssueList);
     return jsonObject;
   }
   
@@ -253,7 +253,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
           createDeviceIssueInfo(deviceId, userId, byAdmin);
         }
       }
-      // Success response.
+      // Success response. 
       response.setResult(result);
       return response;
     }
@@ -496,6 +496,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    return response;
  }
  
+ //confirm first before junit
   public DeviceIssueStatusDto getDeviceIssueStatusForDevice(String deviceId)
   {
     DeviceIssueStatusDto deviceIssueStatusDto = null;
@@ -525,6 +526,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     return deviceIssueStatusDto;
   }
+  
  public EnigmaResponse getDevicesIssueReportByStatus(){
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
@@ -562,31 +564,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     responseCode.setMessage(Constants.MESSAGE_DEVICE_SUCCESSFULLY_ISSUED);
     response.setResponseCode(responseCode); 
    }
-
-  
-  private EnigmaResponse deviceNotRegisteredResponse()
-  {
-    responseCode.setCode(Constants.CODE_NOT_FOUND);
-    responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
-    response.setResponseCode(responseCode);
-    return response;
-  }
-
-  private EnigmaResponse userNotExistingResponse()
-  {
-    responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
-    responseCode.setMessage(Constants.USER_NOT_EXISTING);
-    response.setResponseCode(responseCode);
-    return response;
-  }
-
-  private EnigmaResponse badRequest()
-  {
-    responseCode.setCode(Constants.CODE_BAD_REQUEST);
-    responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
-    response.setResponseCode(responseCode);
-    return response;
-  }
   
   private boolean isUserExisting(String userId) {
     UserInfo userInfo = userInfoDao.getUserInfo(userId);
