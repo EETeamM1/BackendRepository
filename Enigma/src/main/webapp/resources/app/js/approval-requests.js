@@ -33,7 +33,9 @@ var popOverSettings = {
 var abc = function(){
 	content = "";
 	$.each(responseData, function(k, v) {
+		if(v.deviceAvailability == 'Pending'){
 		content = content.concat('<div style="border: 1px solid #eee; padding: 5px; overflow: auto;">'+
+				
 		'<div class="col-sm-9">'+
 			v.deviceName+'<br/>'+v.deviceId+'<br />'+v.userName+
 		'</div>'+
@@ -46,6 +48,7 @@ var abc = function(){
 			'</div>'+
 		'</div>'+
 	'</div>');
+		}
 	});
 	return '<div>'+content+'</div>';
 }
