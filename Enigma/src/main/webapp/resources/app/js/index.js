@@ -1,6 +1,15 @@
 var devicesList;
 var userList;
 var deviceIssueObj;
+
+//show loading indicator before populating data.
+$("#totalDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
+$("#availableDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
+$("#issuedDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
+$("#device_list").html('<div style="font-size:32px;text-align:center;">Loading Device List...<i class="fa fa-refresh fa-spin"></i></div>');
+
+var deviceStatusviseCount = function(){
+		
 $.ajax({
 			type : 'GET',
 			url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/deviceReportByAvailability',
@@ -22,6 +31,8 @@ $.ajax({
 			}
 
 		});
+}
+deviceStatusviseCount();
 
 $.ajax({
 			type : 'GET',
@@ -32,6 +43,8 @@ $.ajax({
 			success : function(response_status) {
 				var responseData = [];
 				devicesList = response_status;
+				var isAdmin = $("#isAdmin").text();
+				var loggedUserId = $("#loggedInUserId").text();
 				$.each(response_status, function(key, value) {
 					var osType = 'mobile';
 					switch (value.os.toLowerCase()) {
@@ -49,14 +62,16 @@ $.ajax({
 					var userName = "";
 					var searchUser = "";
 					var hideIssued = "hide";
-					if(value.deviceAvailability == "Available"){
+					if(value.deviceAvailability == "Available" && isAdmin){
 						hideAvailable = "";
 					}
 					if(value.deviceAvailability == "Issued"){
+						if(isAdmin || (loggedUserId == value.userId)){
 						userId = value.userId;
 						userName = value.userName;
 						searchUser = value.userName.toLowerCase();
 						hideIssued = "";
+					}
 					}
 
 					responseData.push({
@@ -65,6 +80,7 @@ $.ajax({
 						'deviceId' : value.deviceId,
 						'device_name' : value.deviceName,
 						'status' : value.deviceAvailability,
+						'OSVersion' : value.osversion,
 						'user_id': userId,
 						'user_name' : userName,
 						'hideAvailable' : hideAvailable,
@@ -73,6 +89,7 @@ $.ajax({
 				});
 				var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
 				var template = $('#deviceStatusTemplate').text(temp);
+				$("#device_list").html('');
 				$("#deviceStatusTemplate").tmpl(responseData).appendTo("#device_list");
 			},
 			error : function(xhr, status, error) {
@@ -254,6 +271,7 @@ $("#issue_btn").click(function(e) {
 			$(deviceIssueObj).siblings().removeClass("hide");
 			$(deviceIssueObj).siblings().attr("user-id",userId);
 			alert(response.responseCode.message);
+			deviceStatusviseCount();
 		},
 		error : function(xhr, status, error) {
 			try {
@@ -284,8 +302,11 @@ $(".submit_device").click(function(e){
         resizable: false,
         buttons: {
             Yes: function () {
-
                 $(this).dialog("close");
+                var byAdmin=false;
+                if($("#isAdmin").text()){
+                	byAdmin = true;
+                }
             	$.ajax({
             		type : 'POST',
             		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/submitDevice',
@@ -293,7 +314,7 @@ $(".submit_device").click(function(e){
             			  "parameters": {
             			      "userId": userId,
             			      "deviceId": deviceId,
-            			      "byAdmin": true
+            			      "byAdmin": byAdmin
             			  }
             		}),
             		dataType : 'json',
@@ -301,9 +322,11 @@ $(".submit_device").click(function(e){
             		contentType : 'application/json; charset=utf-8',
             		success : function(response) {			
             			$(self).addClass("hide");
+            			if($("#isAdmin").text()){
             			$(self).siblings().removeClass("hide");            			
+            			}
             			alert(response.responseCode.message);
-            			
+            			deviceStatusviseCount();
             		},
             		error : function(xhr, status, error) {
             			try {

@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@page session="true"%>
 <html>
 <head>
@@ -7,7 +8,7 @@
 <link href="resources/lib/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <script src="resources/lib/js/jquery.js"></script>
 <script src="resources/lib/js/bootstrap.min.js"></script>
- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="resources/lib/js/google-chart-loader.js"></script>
 </head>
 <body>
 	<!---Header start--->
@@ -25,15 +26,16 @@
 				<ul class="nav navbar-nav">
 					<li ><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
 					<li class="active"><a href="report">Reports</a></li>
 					<li><a href="entities">Entities</a></li>
-					<li><a href="#">Requests<span class="badge"
-							id="requestCount">4</span></a></li>
+					<li><a href="#" data-toggle="popover" id="ApprovalRequests">Requests<span class="badge"
+							id="requestCount"></span></a></li>
+					</sec:authorize>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<li><a href="/profile">Welcome
-								${pageContext.request.userPrincipal.name}</a></li>
+						<li><a href="/profile">${pageContext.request.userPrincipal.name}</a></li>
 						<li><a href="<c:url value="/j_spring_security_logout"/>">
 								Logout</a></li>
 					</c:if>
@@ -51,4 +53,5 @@
 		</div>
 	</div>
 	<script src="resources/app/js/report.js"></script>
+	<sec:authorize access="hasRole('ROLE_ADMIN')"><script src="resources/app/js/approval-requests.js"></script></sec:authorize>
 </body>

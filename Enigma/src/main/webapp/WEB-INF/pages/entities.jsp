@@ -1,3 +1,6 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@page session="true"%>
 <head>
 <link rel="shortcut icon" type="image/png" href="includes/uimgs/fav.ico">
 <link href="resources/lib/css/bootstrap.min.css" rel="stylesheet"
@@ -24,10 +27,19 @@
 				<ul class="nav navbar-nav">
 					<li ><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
-					<li><a href="#">Reports</a></li>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li><a href="report">Reports</a></li>
 					<li class="active"><a href="entities">Entities</a></li>
-					<li><a href="#">Requests<span class="badge"
-							id="requestCount">4</span></a></li>
+					<li><a href="#" data-toggle="popover" id="ApprovalRequests">Requests<span class="badge"
+							id="requestCount"></span></a></li>
+					</sec:authorize>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<c:if test="${pageContext.request.userPrincipal.name != null}">
+						<li><a href="/profile">	${pageContext.request.userPrincipal.name}</a></li>
+						<li><a href="<c:url value="/j_spring_security_logout"/>">
+								Logout</a></li>
+					</c:if>
 				</ul>
 			</div>
 		</div>
@@ -201,4 +213,5 @@
 	</div>
 	
 	<script language="javascript" src="resources/app/js/entities.js"></script>
+	<sec:authorize access="hasRole('ROLE_ADMIN')"><script src="resources/app/js/approval-requests.js"></script></sec:authorize>
 </body>
