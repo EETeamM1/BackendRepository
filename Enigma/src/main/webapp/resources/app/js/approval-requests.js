@@ -5,28 +5,18 @@ var requestCount="";
  * Feching request data from server;
  */
 function getApproveRequests(){
-	/*$.ajax({
+	$.ajax({
 		type : 'GET',
 		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/devicesIssueReportByStatus',
 		dataType : 'json',
 		async : false,
 		contentType : 'application/json; charset=utf-8',
-		success : function(response) {*/
-			responseData = [{
-				'deviceId' : '1234567444',
-				'deviceName' : 'Iphone6s',
-				'userId': 'mnamdeo',
-				'userName' : 'Mohit Namdeo'
-			},{
-				'deviceId' : '345367444',
-				'deviceName' : 'Xperia Z',
-				'userId': 'akd',
-				'userName' : 'Ankit Mishra'
-			}] 
+		success : function(response) {
+			responseData = response 
 			
 			requestCount=responseData.length;
-/*		}
-	});*/
+		}
+	});
 }
 getApproveRequests();
 $("#requestCount").text(requestCount);
@@ -67,15 +57,43 @@ if(requestCount){
 $('body').on("click", ".device_approve_btn", function() {
 	var deviceId = $(this).attr("device-id");
 	var userId = $(this).attr("user-id");
+	var isAdminApproved = false;
 	var status;
 	
 	if(this.id=="device_approve_accept"){
 		status = 'accept';
+		isAdminApproved = true;
 	}else if (this.id=="device_approve_reject"){
 		status = 'reject';
+		isAdminApproved = false;
 	}
 	
 	alert("deviceId-"+deviceId+" userId-"+userId+" status-"+status);
+	
+	$.ajax({
+		type : 'PUT',
+		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/approveDevice',
+		data : JSON.stringify({
+			"parameters" : {
+				"deviceId" : deviceId,
+				"isAdminApproved" : isAdminApproved
+			}
+		}),
+		dataType : 'json',
+		contentType : 'application/json; charset=utf-8',
+		success : function(response) {
+			alert(response.responseCode.message);
+		},
+		error : function(xhr, status, error) {
+			try {
+				errorResponse = JSON.parse(xhr.responseText);
+				alert(errorResponse.responseCode.message);
+			} catch (e) {
+				alert("some error occurred, please try later.");
+			}
+		}
+
+	});
 	
 	//post approve/reject data to server 
 	//delete this data from array.
