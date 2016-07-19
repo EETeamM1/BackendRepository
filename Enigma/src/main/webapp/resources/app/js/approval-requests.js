@@ -7,7 +7,7 @@ var requestCount="";
 function getApproveRequests(){
 	$.ajax({
 		type : 'GET',
-		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/devicesIssueReportByStatus',
+		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/pendingDevicesReport',
 		dataType : 'json',
 		async : false,
 		contentType : 'application/json; charset=utf-8',
