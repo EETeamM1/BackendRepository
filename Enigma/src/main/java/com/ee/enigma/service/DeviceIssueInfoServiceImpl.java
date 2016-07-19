@@ -1,6 +1,7 @@
 package com.ee.enigma.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -540,6 +541,26 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response.setResult(result);
    return response;
  }
+ 
+ public EnigmaResponse getPendingDevicesReport(){
+	   response = new EnigmaResponse();
+	   responseCode = new ResponseCode();
+	   result = new ResponseResult();
+	   DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
+	   List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
+	   List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getAllDeviceIssueInfoList();
+	   List<ReportInfo> jsonObjectList= deviceIssueHelper.buildDevicesListByStatus(deviceIssueInfoList,deviceInfoList);
+	   List<ReportInfo> pendingDevicesList = new ArrayList<ReportInfo>();
+	   for (ReportInfo reportInfo : jsonObjectList) {
+		   if(reportInfo.getDeviceAvailability().equals(Constants.DEVICE_STATUS_PENDING)) {
+			   pendingDevicesList.add(reportInfo);
+		   }
+	   }
+	   responseCode.setResultObject(pendingDevicesList);
+	   CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_SUCCESS, Constants.CODE_SUCCESS);
+	   response.setResult(result);
+	   return response;
+	 }
  
   private String issueIdGenerator(String deviceId, String userId)
   {

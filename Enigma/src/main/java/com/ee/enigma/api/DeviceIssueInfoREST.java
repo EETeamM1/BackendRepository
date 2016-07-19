@@ -148,5 +148,14 @@ public class DeviceIssueInfoREST {
     return response;
   }
   
+  @GET
+  @Path("/pendingDevicesReport")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getPendingDevicesReport(){
+    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getPendingDevicesReport();
+    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+    return response;
+  }
+  
 	
 }

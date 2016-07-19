@@ -86,6 +86,7 @@ $('body').on("click", ".device_approve_btn", function() {
 		contentType : 'application/json; charset=utf-8',
 		success : function(response) {
 			alert(response.responseCode.message);
+			window.location.reload();
 		},
 		error : function(xhr, status, error) {
 			try {

@@ -16,5 +16,5 @@ public interface DeviceIssueInfoService {
 	public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(String beginDateString,String endDateString,String reportType);
 	public DeviceIssueStatusDto getDeviceIssueStatusForDevice(String deviceId);
 	public EnigmaResponse getDevicesIssueReportByStatus();
-	   
+	public EnigmaResponse getPendingDevicesReport();
 }
