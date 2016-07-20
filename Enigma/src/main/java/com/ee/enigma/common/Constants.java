@@ -52,4 +52,7 @@ public interface Constants {
    String DEVICE_SUBMIT = "submit";
    String DEVICE_ISSUE_ALL = "all";
    
+   String RETURN_REPONSE_UPDATED = "updated";
+   String RETURN_REPONSE_SAME = "same";
+   
 }
