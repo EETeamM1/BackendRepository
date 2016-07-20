@@ -298,13 +298,16 @@ public class DeviceIssueHelper
           if (reportInfoList != null && reportInfoList.size() > 0)
           {
             reportResultInfo = null;
+            ReportInfo reportInfoTemp=null;
             for (int j = 0; j < reportInfoList.size(); j++)
             {
-              reportInfo = reportInfoList.get(j);
+              reportInfoTemp=null;
+              reportResultInfo=null;
+              reportInfoTemp = reportInfoList.get(j);
               if (j == 0)
               {
                 reportResultInfo = new ReportResultInfo();
-                reportResultInfo.setReportInfoNext(reportInfo);
+                reportResultInfo.setReportInfoNext(reportInfoTemp);
                 reportInfo = new ReportInfo();
                 reportInfo.setLoginTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime()));
                 reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(userActivity.getLogoutTime()));
@@ -325,12 +328,13 @@ public class DeviceIssueHelper
               }
               else
               {
+                reportResultInfo = new ReportResultInfo();
                 reportResultInfo.setReportInfo(reportInfoList.get(j - 1));
                 reportResultInfo.setReportInfoNext(reportInfoList.get(j));
               }
               reportResultInfoList.add(reportResultInfo);
             }
-            
+            reportResultInfo=null; 
           }
           for(int k=0;k<reportResultInfoList.size();k++)
           {
@@ -362,7 +366,7 @@ public class DeviceIssueHelper
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLoginTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfo().getLogoutTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(userActivity.getLoginTime(), userActivity.getLogoutTime()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getInDate(), reportResultInfo.getReportInfo().getOutDate()));
               userActivityJson.put("useStatus", "Active");
               userActityJsonArray.add(userActivityJson);
               
@@ -389,7 +393,7 @@ public class DeviceIssueHelper
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLoginTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfo().getLogoutTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(userActivity.getLoginTime(), userActivity.getLogoutTime()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getInDate(), reportResultInfo.getReportInfo().getOutDate()));
               userActivityJson.put("useStatus", "Active");
               userActityJsonArray.add(userActivityJson);
               

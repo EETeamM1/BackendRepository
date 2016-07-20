@@ -1,6 +1,7 @@
 package com.ee.enigma.dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.ee.enigma.dto.TopDeviceDto;
@@ -19,9 +20,9 @@ public interface DeviceIssueInfoDao {
 
 	public List<DeviceIssueInfo> getDeviceIssueInfoList(String deviceId, String userId);
 
-	public List<DeviceIssueInfo> getDeviceIssueList(String deviceId, Date beginDate, Date endDate);
+	public List<DeviceIssueInfo> getDeviceIssueList(String deviceId,java.util.Date beginDate, java.util.Date endDate);
 
-	public List<DeviceIssueInfo> getDeviceIssueList(Date beginDate, Date endDate, String issueType);
+	public List<DeviceIssueInfo> getDeviceIssueList(java.util.Date beginDate, java.util.Date endDate, String issueType);
 
 	public List<TopDeviceDto> getTopDevices(java.util.Date lastMonthDate);
 	

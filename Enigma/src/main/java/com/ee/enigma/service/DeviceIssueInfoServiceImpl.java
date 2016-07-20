@@ -45,8 +45,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   String reportType=null;
   String beginDateString=null;
   String endDateString=null;
-  Date beginDate=null;
-  Date endDate=null;
+  java.util.Date beginDate=null;
+  java.util.Date endDate=null;
   
   @Autowired
   @Qualifier(value = "deviceIssueInfoDao")
@@ -90,6 +90,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.MONTH, -1);
       beginDate = new java.sql.Date(cal.getTimeInMillis());
+    }
+    if(endDate!=null)
+    {
+      endDate=CommonUtils.getDayEndTime(endDate);
     }
     DeviceIssueHelper deviceIssueHelper = new DeviceIssueHelper();
     List<DeviceIssueInfo> deviceIssueInfoList = null;
@@ -137,6 +141,11 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     if(endDate==null)
       endDate=beginDate;
+    if(endDate!=null)
+    {
+      endDate=CommonUtils.getDayEndTime(endDate);
+    }
+    
     JSONObject jsonObject=null;
     DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
     List<DeviceIssueInfo> deviceIssueList= deviceIssueInfoDao.getDeviceIssueList(deviceId, beginDate, endDate);

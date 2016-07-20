@@ -30,7 +30,7 @@ public class CommonUtils {
 		return (date.getTime());
 	}
 
-	public static java.sql.Date getSqlDateByString(String dateString) throws ParseException {
+	/*public static java.sql.Date getSqlDateByString(String dateString) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		java.sql.Date sqlDate = null;
 		Date parsed = null;
@@ -42,7 +42,21 @@ public class CommonUtils {
 			throw new ParseException("Parse Exception", 0);
 		}
 		return sqlDate;
-	}
+	}*/
+	
+	public static java.util.Date getSqlDateByString(String dateString) throws ParseException {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    java.util.Date sqlDate = null;
+    Date parsed = null;
+    try {
+      parsed = sdf.parse(dateString);
+      sqlDate = new java.util.Date(parsed.getTime());
+    } catch (ParseException e1) {
+      e1.printStackTrace();
+      throw new ParseException("Parse Exception", 0);
+    }
+    return sqlDate;
+  }
 
 	public static long getTimeDiffernce(Date beginDate, Date endDate) {
 		long difference = 0;
@@ -70,7 +84,7 @@ public class CommonUtils {
 		return beginDate;
 	}
 
-	public static Date getDayEndTime(Date endDate) {
+	/*public static Timestamp getDayEndTime(Timestamp endDate) {
 		try {
 			if (endDate != null) {
 				endDate.setHours(23);
@@ -81,8 +95,22 @@ public class CommonUtils {
 			e1.printStackTrace();
 		}
 		return endDate;
-	}
+	}*/
 
+	public static java.util.Date getDayEndTime(java.util.Date endDate) {
+    try {
+      if (endDate != null) {
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+        
+      }
+    } catch (Exception e1) {
+      e1.printStackTrace();
+    }
+    return endDate;
+  }
+	
 	public static EnigmaResponse badRequest() {
 	  EnigmaResponse response=new EnigmaResponse();
 	  ResponseCode responseCode=new ResponseCode();

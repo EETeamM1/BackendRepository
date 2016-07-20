@@ -1,6 +1,7 @@
 package com.ee.enigma.dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -31,7 +32,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 	}
 	
 	 @Override
-	 public List<DeviceIssueInfo> getDeviceIssueList(String deviceId,Date beginDate,Date  endDate) {
+	 public List<DeviceIssueInfo> getDeviceIssueList(String deviceId,java.util.Date beginDate,java.util.Date  endDate) {
 	   try {
 	     String hql=null;
 	     Query query=null;
@@ -129,7 +130,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao{
 		return deviceIssueInfo;
 	}
 	@Override
-  public List<DeviceIssueInfo> getDeviceIssueList(Date beginDate,Date  endDate,String issueType) {
+  public List<DeviceIssueInfo> getDeviceIssueList(java.util.Date beginDate,java.util.Date  endDate,String issueType) {
     try {
       String hql=null;
       Query query=null;
