@@ -17,7 +17,7 @@ function drawIssueTrendChart() {
 			startDate = response.startDate;
 			endDate = response.endDate;
 			$.each(response.issueTrendLineData,function(k,v){
-				ReportData.push([new Date(v.date),v.issedByAdmin,v.issedBySystem]);
+				ReportData.push([new Date(v.date),v.byAdmin,v.bySystem]);
 			});
 		}
 	});
@@ -59,7 +59,7 @@ function drawSubmitTrendChart() {
 			startDate = response.startDate;
 			endDate = response.endDate;
 			$.each(response.issueTrendLineData,function(k,v){
-				ReportData.push([new Date(v.date),v.issedByAdmin,v.issedBySystem]);
+				ReportData.push([new Date(v.date),v.byAdmin,v.bySystem,v.byUser]);
 			});
 		}
 	});
@@ -74,6 +74,7 @@ function drawSubmitTrendChart() {
 	var data = new google.visualization.DataTable();
 	data.addColumn('date', 'Date');
 	data.addColumn('number', 'Submitted by Admin');
+	data.addColumn('number', 'Submitted by System');
 	data.addColumn('number', 'Submitted by User');
 
 	data.addRows(ReportData);
