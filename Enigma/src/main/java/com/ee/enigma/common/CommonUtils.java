@@ -30,20 +30,6 @@ public class CommonUtils {
 		return (date.getTime());
 	}
 
-	/*public static java.sql.Date getSqlDateByString(String dateString) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		java.sql.Date sqlDate = null;
-		Date parsed = null;
-		try {
-			parsed = sdf.parse(dateString);
-			sqlDate = new java.sql.Date(parsed.getTime());
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-			throw new ParseException("Parse Exception", 0);
-		}
-		return sqlDate;
-	}*/
-	
 	public static java.util.Date getSqlDateByString(String dateString) throws ParseException {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     java.util.Date sqlDate = null;
@@ -58,26 +44,29 @@ public class CommonUtils {
     return sqlDate;
   }
 
-	public static String getTimeDiffernce(Date beginDate, Date endDate) {
-		long difference = 0;
-		String differenceStr="";
+	public static long getTimeDiffernce(Date beginDate, Date endDate) {
+		long minuteDifference = 0;
 		try {
 			if (beginDate != null && endDate != null) {
-				difference = endDate.getTime() - beginDate.getTime();
-				difference = (long) ((difference / 1000) / 60);
-				long minutes=difference%60;
-				long hours=difference/60;
-				if(hours>0)
-				 differenceStr=hours+"."+minutes+" Hours";
-				else
-				  differenceStr=minutes+" Minutes"; 
-				
+			  minuteDifference = endDate.getTime() - beginDate.getTime();
+			  minuteDifference = (long) ((minuteDifference / 1000) / 60);
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return differenceStr;
+		return minuteDifference;
 	}
+	
+	public static String displayTimeString(long minuteDifference) {
+        String differenceStr="";
+        long minutes=minuteDifference%60;
+        long hours=minuteDifference/60;
+        if(hours>0)
+         differenceStr=hours+" Hour(s) "+minutes+" Minutes ";
+        else
+          differenceStr=minutes+" Minutes"; 
+        return differenceStr;
+  }
 
 	public static Date getDayBeginTime(Date beginDate) {
 		try {
@@ -91,19 +80,6 @@ public class CommonUtils {
 		}
 		return beginDate;
 	}
-
-	/*public static Timestamp getDayEndTime(Timestamp endDate) {
-		try {
-			if (endDate != null) {
-				endDate.setHours(23);
-				endDate.setMinutes(59);
-				endDate.setSeconds(59);
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		return endDate;
-	}*/
 
 	public static java.util.Date getDayEndTime(java.util.Date endDate) {
     try {
