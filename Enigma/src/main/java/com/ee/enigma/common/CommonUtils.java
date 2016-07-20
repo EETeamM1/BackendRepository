@@ -58,17 +58,25 @@ public class CommonUtils {
     return sqlDate;
   }
 
-	public static long getTimeDiffernce(Date beginDate, Date endDate) {
+	public static String getTimeDiffernce(Date beginDate, Date endDate) {
 		long difference = 0;
+		String differenceStr="";
 		try {
 			if (beginDate != null && endDate != null) {
 				difference = endDate.getTime() - beginDate.getTime();
 				difference = (long) ((difference / 1000) / 60);
+				long minutes=difference%60;
+				long hours=difference/60;
+				if(hours>0)
+				 differenceStr=hours+"."+minutes+" Hours";
+				else
+				  differenceStr=minutes+" Minutes"; 
+				
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return difference;
+		return differenceStr;
 	}
 
 	public static Date getDayBeginTime(Date beginDate) {
