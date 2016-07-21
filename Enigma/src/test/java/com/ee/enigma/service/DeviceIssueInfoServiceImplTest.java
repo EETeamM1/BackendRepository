@@ -104,6 +104,25 @@ public class DeviceIssueInfoServiceImplTest
   }
   
   @Test
+  public void testBuildDeviceReportAvailability() throws Exception
+  {
+    List<DeviceInfo> deviceInfoList=new ArrayList<DeviceInfo>();
+    String deviceId=JunitConstants.DEVICE_ID;
+    DeviceInfo deviceInfo=null;
+    deviceInfo= populateDeviceInfo(deviceId, Constants.DEVICE_STATUS_AVAILABLE);
+    deviceInfoList.add(deviceInfo);
+    deviceInfo= populateDeviceInfo(deviceId, Constants.DEVICE_STATUS_ISSUED);
+    deviceInfoList.add(deviceInfo);
+    deviceInfo= populateDeviceInfo(deviceId, Constants.DEVICE_STATUS_PENDING);
+    deviceInfoList.add(deviceInfo);
+    Mockito.doReturn(deviceInfoList).when(deviceInfoDao).getDevicesList();
+    EnigmaResponse enigmaResponse= deviceIssueInfoServiceImpl.getDeviceReportAvailability();
+    DeviceStatusCountsInfo info=(DeviceStatusCountsInfo) enigmaResponse.getResponseCode().getResultObject();
+    Assert.assertTrue(info.getAvailableDevices()==1);
+    Assert.assertTrue(info.getTotalDevices()==3);
+  }
+  
+  @Test
   public void testPopulateDeviceIssueInfo() throws Exception
   {
     Mockito.doReturn(populateDeviceIssueInfoList(new Timestamp(11111),JunitConstants.USER_ID)).when(deviceIssueInfoDao).getDeviceIssueInfoList(Matchers.anyString());

@@ -523,8 +523,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     Boolean byAdmin)
   {
     DeviceIssueInfo deviceIssueInfoTemp = null;
-    // createDeviceSubmitByAdmin(response, deviceIssueInfoList, deviceInfo,
-    // userId, deviceId, byAdmin);
     if (deviceIssueInfoList != null && deviceIssueInfoList.size() > 0)
     {
       deviceIssueInfoTemp = deviceIssueInfoList.get(0);
