@@ -42,6 +42,9 @@ public interface Constants {
 	String DEVICE_STATUS_AVAILABLE = "Available";
 	String DEVICE_STATUS_PENDING = "Pending";
 	String DEVICE_STATUS_ISSUED = "Issued";
+	
+	 String OPRATION_SAVE = "save";
+	  String OPRATION_UPDATE = "update";
 
 	String MESSAGE_SUCCESSFULLY_SAVE = "Successfully saved.";
 	String MESSAGE_SUCCESSFULLY_UPDATED = "Successfully updated.";
