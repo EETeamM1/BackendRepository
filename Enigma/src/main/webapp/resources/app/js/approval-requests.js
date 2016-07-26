@@ -19,8 +19,8 @@ function getApproveRequests(){
 	});
 }
 getApproveRequests();
-$("#requestCount").text(requestCount);
-
+$("#requestCount").text(requestCount || "");
+$("#pendingDevices").text(requestCount || 0);
 
 var popOverSettings = {
 	placement : 'bottom',
@@ -34,9 +34,9 @@ var abc = function(){
 	content = "";
 	$.each(responseData, function(k, v) {
 		if(v.deviceAvailability == 'Pending'){
-		content = content.concat('<div style="border: 1px solid #eee; padding: 5px; overflow: auto;">'+
+		content = content.concat('<div style="border: 1px solid #cdcdcd; padding: 5px; overflow: auto;">'+
 				
-		'<div class="col-sm-9">'+
+		'<div class="col-sm-9 t2 n3">'+
 			v.deviceName+'<br/>'+v.deviceId+'<br />'+v.userName+
 		'</div>'+
 		'<div class="col-sm-3">'+

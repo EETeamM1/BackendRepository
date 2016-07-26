@@ -11,18 +11,23 @@
 <body>
 <body>
 	<!---Header start--->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="welcome">Inventory Management</a>				
-			</div>
-		</div>
+	<div class="navbar-fixed-top">
+	<nav class="navbar navbar-first">
+        <div class="container navbar-first-container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img height="40" alt="logo" src="resources/lib/images/logo.png"></a>
+            </div>
+        </div>
+    </nav>
+	<nav class="navbar navbar-inverse second-navbar">
+		<div class="container"></div>
 	</nav>
+	</div>
 	<!---Header ends--->
 
 	<!-- Login page body start -->
 	<!-- left side content text -->
-	<div class="body-content">
+	<div class="container body-content">
 		<div class="col-md-6 hidden-sm hidden-xs">
 			<div class="media">
 				<!-- <div class="media-left">

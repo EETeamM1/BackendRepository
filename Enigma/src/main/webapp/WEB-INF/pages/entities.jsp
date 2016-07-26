@@ -13,40 +13,43 @@
 </head>
 <body>
 	<!---Header start--->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="welcome">Inventory Management</a>
-			</div>
+	<div class="navbar-fixed-top">
+	<nav class="navbar navbar-first">
+        <div class="container navbar-first-container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img height="40" alt="logo" src="resources/lib/images/logo.png"></a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right font-bold">
+					<c:if test="${pageContext.request.userPrincipal.name != null}">
+						<li><a href="/profile">${pageContext.request.userPrincipal.name}</a></li>
+						<li><a href="<c:url value="/j_spring_security_logout"/>">
+								Logout</a></li>
+					</c:if>
+				</ul>
+            </div>
+        </div>
+    </nav>
+	<nav class="navbar navbar-inverse second-navbar">
+		<div class="container">
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li ><a href="welcome">Home</a></li>
+					<li><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<li><a href="report">Reports</a></li>
+			        <li><a href="report">Reports</a></li>
 					<li class="active"><a href="entities">Entities</a></li>
 					<li><a href="#" data-toggle="popover" id="ApprovalRequests">Requests<span class="badge"
 							id="requestCount"></span></a></li>
 					</sec:authorize>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<li><a href="/profile">	${pageContext.request.userPrincipal.name}</a></li>
-						<li><a href="<c:url value="/j_spring_security_logout"/>">
-								Logout</a></li>
-					</c:if>
-				</ul>
 			</div>
 		</div>
 	</nav>
+	</div>
 	<!---Header ends--->
 
-	<div class="body-content">
+	<div class="container body-content">
 		<div id="entities" class="row row-content">
 			<div class="col-md-12">
 				<ul class="nav nav-tabs" role="tablist">
