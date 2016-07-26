@@ -310,8 +310,9 @@ public class DeviceIssueHelper
                 reportResultInfo.setReportInfoNext(reportInfoTemp);
                 reportInfo = new ReportInfo();
                 reportInfo.setLoginTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime()));
-                reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(userActivity.getLogoutTime()));
+                reportInfo.setLogoutTime("NA");
                 reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
+                reportInfo.setInDate(deviceIssueInfo.getIssueTime());
                 reportInfo.setFromTable("DIINFO");
                 reportResultInfo.setReportInfo(reportInfo);
               }
@@ -324,6 +325,7 @@ public class DeviceIssueHelper
                 reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime()));
                 reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
                 reportInfo.setFromTable("DIINFO");
+                reportInfo.setOutDate(new java.util.Date(deviceIssueInfo.getSubmitTime().getTime()));
                 reportResultInfo.setReportInfoNext(reportInfo);
               }
               else
@@ -375,13 +377,13 @@ public class DeviceIssueHelper
               userActityJsonArray.add(userActivityJson);
               
               //Next
-              if(CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate())>0)
+              if(CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getOutDate())>0)
               {
               userActivityJson=new JSONObject();
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLogoutTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfoNext().getLoginTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getOutDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
               }

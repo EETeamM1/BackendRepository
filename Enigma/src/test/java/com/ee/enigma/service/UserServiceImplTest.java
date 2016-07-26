@@ -113,7 +113,7 @@ public class UserServiceImplTest  {
   }
   
   @Test
-  @Ignore
+  //@Ignore
   public void testDeleteUserInfoForUserId() throws Exception
   {
     response = new EnigmaResponse();
@@ -121,6 +121,12 @@ public class UserServiceImplTest  {
     requestInfo = new Request();
     requestInfo.setParameters(parameters);
     parameters.setUserId(JunitConstants.USER_ID);
+    UserInfo userInfo=new  UserInfo();
+    userInfo.setUserId(JunitConstants.USER_ID);
+    userInfo.setPassword(JunitConstants.PASSWORD);
+    userInfo.setUserName(JunitConstants.USER_NAME);
+    Mockito.doReturn(userInfo).when(userInfoDaoImpl)
+    .getUserInfo(Matchers.anyString());
     Mockito.doReturn(JunitConstants.COUNT_ONE).when(userInfoDaoImpl)
     .deleteUserInfo(Matchers.any(UserInfo.class));
     response=userServiceImpl.deleteUserInfo(JunitConstants.USER_ID);
@@ -172,7 +178,7 @@ public class UserServiceImplTest  {
     requestInfo.setParameters(parameters);
     parameters.setUserId(null);
     UserInfo userInfo=new  UserInfo();
-    userInfo.setUserId(JunitConstants.USER_ID);
+    userInfo.setUserId(JunitConstants.USER_ID+1);
     userInfo.setPassword(JunitConstants.PASSWORD);
     userInfo.setUserName(JunitConstants.USER_NAME);
     Mockito.doReturn(userInfo).when(userInfoDaoImpl)
