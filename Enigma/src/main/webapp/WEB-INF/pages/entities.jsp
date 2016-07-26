@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@page session="true"%>
 <head>
 <link rel="shortcut icon" type="image/png" href="includes/uimgs/fav.ico">
@@ -25,18 +26,19 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li ><a href="welcome">Home</a></li>
+					<li><a href="welcome">Home</a></li>
 					<li><a href="#">Profile</a></li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<li><a href="report">Reports</a></li>
-					<li class="active"><a href="entities">Entities</a></li>
-					<li><a href="#" data-toggle="popover" id="ApprovalRequests">Requests<span class="badge"
-							id="requestCount"></span></a></li>
+						<li><a href="report">Reports</a></li>
+						<li class="active"><a href="entities">Entities</a></li>
+						<li><a href="#" data-toggle="popover" id="ApprovalRequests">Requests<span
+								class="badge" id="requestCount"></span></a></li>
 					</sec:authorize>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<li><a href="/profile">	${pageContext.request.userPrincipal.name}</a></li>
+						<li><a href="/profile">
+								${pageContext.request.userPrincipal.name}</a></li>
 						<li><a href="<c:url value="/j_spring_security_logout"/>">
 								Logout</a></li>
 					</c:if>
@@ -55,7 +57,7 @@
 
 					<li role="presentation"><a href="#user" role="tab"
 						data-toggle="tab">Users</a></li>
-						
+
 					<li role="presentation"><a href="#masterData" role="tab"
 						data-toggle="tab">Master Data</a></li>
 				</ul>
@@ -73,44 +75,62 @@
 							<div class="form-group col-sm-3">
 								<label for="deviceId" class="control-label">Device Id</label> <input
 									type="text" class="form-control" id="deviceId" name="deviceId"
-									placeholder="Enter Device Id" required oninput="setCustomValidity('')">
+									data-toggle="tooltip" title="IMI example: 1234567890"
+									placeholder="Enter Device Id" required
+									oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
 								<label for="deviceName" class="control-label">Device
 									Name </label> <input type="text" class="form-control" id="deviceName"
-									name="deviceName" placeholder="Enter Device Name" required oninput="setCustomValidity('')">
+									name="deviceName" data-toggle="tooltip"
+									title="example: Iphone 6s" placeholder="Enter Device Name"
+									required oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
 								<label for="manufacturer" class="control-label">Manufacturer</label>
 								<input type="text" class="form-control" id="manufacturer"
-									name="manufacturer" placeholder="Enter Manufacturer" required oninput="setCustomValidity('')">
+									data-toggle="tooltip" title="example: Apple or Samsung"
+									name="manufacturer" placeholder="Enter Manufacturer" required
+									oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
-								<label for="OS" class="control-label">Operating System</label> <input
-									type="text" class="form-control" id="OS" name="OS"
-									placeholder="Enter Operating System" required oninput="setCustomValidity('')">
+								<label for="OS" class="control-label">Operating System</label> <select
+									class="form-control" id="OS" name="OS">
+									<option value="Android">Android</option>
+									<option value="Ios">Ios</option>
+									<option value="Windows">Windows</option>
+									<option value="Other">Other</option>
+								</select>
 							</div>
 							<div class="form-group col-sm-3">
 								<label for="OSVersion" class="control-label">OS Version</label>
 								<input type="text" class="form-control" id="OSVersion"
-									name="OSVersion" placeholder="Enter OS Version" required oninput="setCustomValidity('')">
+									name="OSVersion" placeholder="Enter OS Version" required
+									oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
 								<label for="yearOfManufacturing" class="control-label">Year
 									Of Manufacturing</label> <input type="text" class="form-control"
 									id="yearOfManufacturing" name="yearOfManufacturing"
-									placeholder="Enter Year Of Manufacturing"  required oninput="setCustomValidity('')">
+									placeholder="Enter Year Of Manufacturing" required
+									oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
 								<label for="timeoutPeriod" class="control-label">Timeout
-									Period</label> <input type="text" class="form-control"
-									id="timeoutPeriod" name="timeoutPeriod"
-									placeholder="Enter Timeout Period" required oninput="setCustomValidity('')">
+									Period</label> <select class="form-control" id="timeoutPeriod"
+									name="timeoutPeriod">
+									<option value="30">30 Min</option>
+									<option value="60">60 Min</option>
+									<option value="90">90 Min</option>
+									<option value="120">120 Min</option>
+									<option value="180">180 Min</option>
+									<option value="240">240 Min</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group col-sm-6">
@@ -139,19 +159,22 @@
 							<div class="form-group col-sm-3">
 								<label for="userId" class="control-label">User Id</label> <input
 									type="text" class="form-control" id="userId" name="userId"
-									placeholder="Enter User Id" oninput="setCustomValidity('')" required>
+									placeholder="Enter User Id" oninput="setCustomValidity('')"
+									required>
 							</div>
 
 							<div class="form-group col-sm-3">
 								<label for="userName" class="control-label">User Name </label> <input
 									type="text" class="form-control" id="userName" name="userName"
-									placeholder="Enter User Name" oninput="setCustomValidity('')" required>
+									placeholder="Enter User Name" oninput="setCustomValidity('')"
+									required>
 							</div>
 
 							<div class="form-group col-sm-3">
 								<label for="password" class="control-label">Password</label> <input
 									type="password" class="form-control" id="user_password"
-									name="password" placeholder="Enter Password" required oninput="setCustomValidity('')">
+									name="password" placeholder="Enter Password" required
+									oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group col-sm-6">
@@ -169,40 +192,45 @@
 					</form>
 				</div>
 			</div>
-			
-			
+
+
 			<div role="tabpanel" class="tab-pane fade" id="masterData">
 				<div class="row row-content">
 					<form id="form_master" role="form">
 						<p style="padding: 10px"></p>
 						<div class="col-xs-12 col-sm-10">
 							<div class="form-group col-sm-3">
-								<label for="master_current" class="control-label">Current Password</label> <input
-									type="password" class="form-control" id="md_password"
-									placeholder="Current Password" required oninput="setCustomValidity('')">
+								<label for="master_current" class="control-label">Current
+									Password</label> <input type="password" class="form-control"
+									id="md_password" placeholder="Current Password" required
+									oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
-								<label for="master_new" class="control-label">New Password </label> <input
-									type="password" class="form-control" id="md_new_password"
-									placeholder="New Password" data-validation="length" required oninput="setCustomValidity('')">
+								<label for="master_new" class="control-label">New
+									Password </label> <input type="password" class="form-control"
+									id="md_new_password" placeholder="New Password"
+									data-validation="length" required
+									oninput="setCustomValidity('')">
 							</div>
 
 							<div class="form-group col-sm-3">
-								<label for="master_new" class="control-label">Confirm Password</label> <input
-									type="password" class="form-control" id="md_confirm_password"
-									name="password" placeholder="Confirm Password" required oninput="setCustomValidity('')">
+								<label for="master_new" class="control-label">Confirm
+									Password</label> <input type="password" class="form-control"
+									id="md_confirm_password" name="password"
+									placeholder="Confirm Password" required
+									oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group col-sm-6">
 							<div class="row">
 								<div class="form-group col-sm-3 col-sm-offset-1">
-									<input type="submit" id="master-submit"
-										tabindex="4" class="form-control btn btn-login" value="Submit">
+									<input type="submit" id="master-submit" tabindex="4"
+										class="form-control btn btn-login" value="Submit">
 								</div>
 								<div class="form-group col-sm-3 col-sm-offset-1">
-									<input type="reset"  id="master-reset"
-										tabindex="4" class="form-control btn btn-login" value="Reset">
+									<input type="reset" id="master-reset" tabindex="4"
+										class="form-control btn btn-login" value="Reset">
 								</div>
 							</div>
 						</div>
@@ -211,7 +239,9 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<script language="javascript" src="resources/app/js/entities.js"></script>
-	<sec:authorize access="hasRole('ROLE_ADMIN')"><script src="resources/app/js/approval-requests.js"></script></sec:authorize>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<script src="resources/app/js/approval-requests.js"></script>
+	</sec:authorize>
 </body>

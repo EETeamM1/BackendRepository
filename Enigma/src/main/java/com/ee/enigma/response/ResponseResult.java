@@ -2,6 +2,7 @@ package com.ee.enigma.response;
 
 import java.util.List;
 
+import com.ee.enigma.dto.DeviceReportDto;
 import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.UserInfo;
@@ -14,6 +15,7 @@ public class ResponseResult {
 	private List<UserInfo> userList;
 	private List<TopDeviceDto> topDeviceDtoList;
 	private List<DeviceInfo> deviceList;
+	private List<DeviceReportDto> deviceReportDtoList;
 
 	public UserInfo getUser() {
 		return user;
@@ -45,10 +47,10 @@ public class ResponseResult {
 	public void setMasterPassword(String masterPassword) {
 		this.masterPassword = masterPassword;
 	}
-	public List<TopDeviceDto> getTopDeviceDto() {
+	public List<TopDeviceDto> getTopDeviceDtoList() {
 		return topDeviceDtoList;
 	}
-	public void setTopDeviceDto(List<TopDeviceDto> topDeviceDtoList) {
+	public void setTopDeviceDtoList(List<TopDeviceDto> topDeviceDtoList) {
 		this.topDeviceDtoList = topDeviceDtoList;
 	}
 	public List<DeviceInfo> getDeviceList() {
@@ -56,6 +58,13 @@ public class ResponseResult {
 	}
 	public void setDeviceList(List<DeviceInfo> deviceList) {
 		this.deviceList = deviceList;
+	}
+
+	public List<DeviceReportDto> getDeviceReportDtoList() {
+		return deviceReportDtoList;
+	}
+	public void setDeviceReportDtoList(List<DeviceReportDto> deviceReportDtoList) {
+		this.deviceReportDtoList = deviceReportDtoList;
 	}
 		
 }

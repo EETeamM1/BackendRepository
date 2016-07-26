@@ -31,42 +31,42 @@ public class CommonUtils {
 	}
 
 	public static java.util.Date getSqlDateByString(String dateString) throws ParseException {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    java.util.Date sqlDate = null;
-    Date parsed = null;
-    try {
-      parsed = sdf.parse(dateString);
-      sqlDate = new java.util.Date(parsed.getTime());
-    } catch (ParseException e1) {
-      e1.printStackTrace();
-      throw new ParseException("Parse Exception", 0);
-    }
-    return sqlDate;
-  }
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		java.util.Date sqlDate = null;
+		Date parsed = null;
+		try {
+			parsed = sdf.parse(dateString);
+			sqlDate = new java.util.Date(parsed.getTime());
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			throw new ParseException("Parse Exception", 0);
+		}
+		return sqlDate;
+	}
 
 	public static long getTimeDiffernce(Date beginDate, Date endDate) {
 		long minuteDifference = 0;
 		try {
 			if (beginDate != null && endDate != null) {
-			  minuteDifference = endDate.getTime() - beginDate.getTime();
-			  minuteDifference = (long) ((minuteDifference / 1000) / 60);
+				minuteDifference = endDate.getTime() - beginDate.getTime();
+				minuteDifference = (long) ((minuteDifference / 1000) / 60);
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		return minuteDifference;
 	}
-	
+
 	public static String displayTimeString(long minuteDifference) {
-        String differenceStr="";
-        long minutes=minuteDifference%60;
-        long hours=minuteDifference/60;
-        if(hours>0)
-         differenceStr=hours+" Hour(s) "+minutes+" Minutes ";
-        else
-          differenceStr=minutes+" Minutes"; 
-        return differenceStr;
-  }
+		String differenceStr = "";
+		long minutes = minuteDifference % 60;
+		long hours = minuteDifference / 60;
+		if (hours > 0)
+			differenceStr = hours + " Hour(s) " + minutes + " Minutes ";
+		else
+			differenceStr = minutes + " Minutes";
+		return differenceStr;
+	}
 
 	public static Date getDayBeginTime(Date beginDate) {
 		try {
@@ -82,66 +82,58 @@ public class CommonUtils {
 	}
 
 	public static java.util.Date getDayEndTime(java.util.Date endDate) {
-    try {
-      if (endDate != null) {
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
-        
-      }
-    } catch (Exception e1) {
-      e1.printStackTrace();
-    }
-    return endDate;
-  }
-	
+		try {
+			if (endDate != null) {
+				endDate.setHours(23);
+				endDate.setMinutes(59);
+				endDate.setSeconds(59);
+
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return endDate;
+	}
+
 	public static EnigmaResponse badRequest() {
-	  EnigmaResponse response=new EnigmaResponse();
-	  ResponseCode responseCode=new ResponseCode();
+		EnigmaResponse response = new EnigmaResponse();
+		ResponseCode responseCode = new ResponseCode();
 		responseCode.setCode(Constants.CODE_BAD_REQUEST);
 		responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
 		response.setResponseCode(responseCode);
 		return response;
 	}
-	
-	public static EnigmaResponse badRequest(EnigmaResponse response,ResponseCode responseCode) {
-    responseCode.setCode(Constants.CODE_BAD_REQUEST);
-    responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
-    response.setResponseCode(responseCode);
-    return response;
-  }
 
-	public static String getDateFromTemeStamp(Timestamp timestamp) {
+	public static EnigmaResponse badRequest(EnigmaResponse response, ResponseCode responseCode) {
+		responseCode.setCode(Constants.CODE_BAD_REQUEST);
+		responseCode.setMessage(Constants.MESSAGE_BAD_REQUEST);
+		response.setResponseCode(responseCode);
+		return response;
+	}
+
+	public static String getDateFromTimeStamp(Timestamp timestamp) {
 
 		Date date = new Date(timestamp.getTime());
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
-	
-  public static String getTimeStampFormatedString(java.util.Date date)
-  {
-    try
-    {
-      Date formattedDate = new Date(date.getTime());
-      return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(formattedDate);
-    }
-    catch (Exception e)
-    {
-      return null;
-    }
-  }
-  
-  public static String getTimeStampFormatedString(Timestamp timestamp)
-  {
-    try
-    {
-      Date date = new Date(timestamp.getTime());
-      return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(date);
-    }
-    catch (Exception e)
-    {
-      return null;
-    }
-  }
+
+	public static String getTimeStampFormatedString(java.util.Date date) {
+		try {
+			Date formattedDate = new Date(date.getTime());
+			return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(formattedDate);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static String getTimeStampFormatedString(Timestamp timestamp) {
+		try {
+			Date date = new Date(timestamp.getTime());
+			return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(date);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	public static Date getLastMonthAndDate() {
 		Calendar calendar = Calendar.getInstance();
@@ -149,33 +141,44 @@ public class CommonUtils {
 		return calendar.getTime();
 
 	}
-	
-	public static EnigmaResponse deviceNotRegisteredResponse(EnigmaResponse response,ResponseCode responseCode)
-  {
-    responseCode.setCode(Constants.CODE_NOT_FOUND);
-    responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
-    response.setResponseCode(responseCode);
-    return response;
-  }
 
-	public static EnigmaResponse userNotExistingResponse(EnigmaResponse response,ResponseCode responseCode)
-  {
-    responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
-    responseCode.setMessage(Constants.USER_NOT_EXISTING);
-    response.setResponseCode(responseCode);
-    return response;
-  }
-	public static EnigmaResponse duplicateRequest(EnigmaResponse response,ResponseCode responseCode, String message){
-      responseCode.setCode(Constants.CODE_BAD_REQUEST);
-    responseCode.setMessage(message);
-    response.setResponseCode(responseCode);   
-    return response;
-  }
+	public static EnigmaResponse deviceNotRegisteredResponse(EnigmaResponse response, ResponseCode responseCode) {
+		responseCode.setCode(Constants.CODE_NOT_FOUND);
+		responseCode.setMessage(Constants.MESSAGE_NOT_FOUND_DEVICE);
+		response.setResponseCode(responseCode);
+		return response;
+	}
+
+	public static EnigmaResponse userNotExistingResponse(EnigmaResponse response, ResponseCode responseCode) {
+		responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
+		responseCode.setMessage(Constants.USER_NOT_EXISTING);
+		response.setResponseCode(responseCode);
+		return response;
+	}
+
+	public static EnigmaResponse duplicateRequest(EnigmaResponse response, ResponseCode responseCode, String message) {
+		responseCode.setCode(Constants.CODE_BAD_REQUEST);
+		responseCode.setMessage(message);
+		response.setResponseCode(responseCode);
+		return response;
+	}
+
+	public static void updateResponse(EnigmaResponse response, ResponseCode responseCode, String message, int code) {
+		responseCode.setCode(code);
+		responseCode.setMessage(message);
+		response.setResponseCode(responseCode);
+
+	}
 	
-	 public static void updateResponse(EnigmaResponse response,ResponseCode responseCode, String message,int code){
-	   responseCode.setCode(code);
-     responseCode.setMessage(message);
-     response.setResponseCode(responseCode); 
-   
- }
+	public static java.util.Date getDateWithOutTime() {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR_OF_DAY);
+		cal.clear(Calendar.AM_PM);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		
+		return cal.getTime();
+		
+	}
 }

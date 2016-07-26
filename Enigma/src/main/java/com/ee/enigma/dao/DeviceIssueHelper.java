@@ -31,7 +31,7 @@ public class DeviceIssueHelper
       for (int i = 0; i < deviceIssueInfos.size(); i++)
       {
         deviceIssueInfo = deviceIssueInfos.get(i);
-        date = CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getIssueTime());
+        date = CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getIssueTime());
         if (date != null && !deviceIssueDateList.contains(date))
         {
           deviceIssueDateList.add(date);
@@ -51,7 +51,7 @@ public class DeviceIssueHelper
         {
           deviceIssueInfo = deviceIssueInfos.get(i);
           if (deviceIssueInfo.getIssueByAdmin() != null
-            && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getIssueTime())))
+            && issueDate.equals(CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getIssueTime())))
           {
             if (deviceIssueInfo.getIssueByAdmin())
             {
@@ -85,7 +85,7 @@ public class DeviceIssueHelper
       for (int i = 0; i < deviceIssueInfos.size(); i++)
       {
         deviceIssueInfo = deviceIssueInfos.get(i);
-        date = CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime());
+        date = CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getSubmitTime());
         if(date==null)
         {
           date="Not Submitted";
@@ -110,7 +110,7 @@ public class DeviceIssueHelper
         {
           deviceIssueInfo = deviceIssueInfos.get(i);
           if (deviceIssueInfo.getSubmitBy() != null
-            && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime())))
+            && issueDate.equals(CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getSubmitTime())))
           {
             if (Constants.SUBMITTED_BY_ADMIN.equals(deviceIssueInfo.getSubmitBy()))
             {
