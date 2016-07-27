@@ -21,4 +21,5 @@ public static final String DEVICE_OS_VERSION="4.4.1.2";
 public static final String DEVICE_OS="Android";    
 public static final String DEVICE_YR_OF_MANUFACTURING="2015";   
 public static final String DEVICE_MANUFACTURER="HTC";    
+public static final String SEARCH_TEXT="Search Text";    
 }
