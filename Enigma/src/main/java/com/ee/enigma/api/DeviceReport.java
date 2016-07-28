@@ -74,13 +74,17 @@ public class DeviceReport {
 		List<DeviceReportDto> deviceReportDtoList = deviceService.getDeviceReport(deviceId, startDate, endDate);
 
 		if (null == deviceReportDtoList || deviceReportDtoList.size() == 0) {
-			return CommonUtils.badRequest();
+			// Success response.
+			CommonUtils.updateResponse(response, responseCode, "No Reports available for given Date", Constants.CODE_SUCCESS);
+			
+		} else {
+			// Success response.
+			result.setDeviceReportDtoList(deviceReportDtoList);
+			response.setResult(result);
+			CommonUtils.updateResponse(response, responseCode, null, Constants.CODE_SUCCESS);
 		}
 
-		// Success response.
-		result.setDeviceReportDtoList(deviceReportDtoList);
-		response.setResult(result);
-		CommonUtils.updateResponse(response, responseCode, null, Constants.CODE_SUCCESS);
+		
 		return response;
 	}
 }

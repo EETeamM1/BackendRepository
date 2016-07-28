@@ -245,20 +245,15 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
 		String hql = null;
 		Query query = null;
 		Session session = this.sessionFactory.getCurrentSession();
-//		hql = "select activity.loginTime, activity.logoutTime, user.userName, user.userId  from UserActivity activity,"
-//				+ " UserInfo user where activity.deviceId= :deviceId and activity.userId=user.userId "
-//				+ "and activity.loginTime between :startDate and :endDate order by loginTime";
-//		query = session.createQuery(hql);
-//		query.setParameter("deviceId", deviceId);
-//		query.setParameter("startDate", startDate);
-//		query.setParameter("endDate", endDate);
-		
-
 		hql = "select activity.loginTime, activity.logoutTime, user.userName, user.userId  from UserActivity activity,"
 				+ " UserInfo user where activity.deviceId= :deviceId and activity.userId=user.userId "
-				+ " order by loginTime";
+				+ "and activity.loginTime between :startDate and :endDate order by loginTime";
 		query = session.createQuery(hql);
 		query.setParameter("deviceId", deviceId);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		
+		
 		List<Objects[]> deviceReportDtoObjects = (List<Objects[]>) query.list();
 		List<DeviceReportDto> deviceReportDtoList = new ArrayList<DeviceReportDto>();
 		if (null == deviceReportDtoObjects || deviceReportDtoObjects.size() == 0) {
