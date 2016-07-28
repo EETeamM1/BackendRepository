@@ -24,6 +24,23 @@ public class RequestParameters {
 	private String newMasterPassword;
 	private String deviceStatus;
 	private String issueType;
+	
+	private String deviceToken;
+
+	public String getDeviceToken() {
+		return deviceToken;
+	}
+	
+
+	public void setDeviceToken(String deviceToken) {
+		this.deviceToken = deviceToken;
+	}
+	
+
+	public void setAdminApproved(boolean isAdminApproved) {
+		this.isAdminApproved = isAdminApproved;
+	}
+	
 
 	public String getDeviceStatus() {
 		return deviceStatus;

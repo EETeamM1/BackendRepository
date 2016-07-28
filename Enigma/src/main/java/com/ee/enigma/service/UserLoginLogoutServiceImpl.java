@@ -98,6 +98,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		float latitude;
 		float longitude;
 		String osVersion;
+		String deviceToken;
 
 		try {
 			userId = loginInfo.getParameters().getUserId().trim();
@@ -106,6 +107,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 			latitude = loginInfo.getParameters().getLatitude();
 			longitude = loginInfo.getParameters().getLongitude();
 			osVersion = loginInfo.getParameters().getOsVersion();
+			deviceToken = loginInfo.getParameters().getDeviceToken();
 		} catch (Exception e) {
 			logger.error(e);
 			return badRequest();
