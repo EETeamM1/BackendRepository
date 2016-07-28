@@ -7,7 +7,7 @@ var requestCount="";
 function getApproveRequests(){
 	$.ajax({
 		type : 'GET',
-		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/pendingDevicesReport',
+		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.PENDING_DEVICE_URL,
 		dataType : 'json',
 		async : false,
 		contentType : 'application/json; charset=utf-8',
@@ -71,11 +71,10 @@ $('body').on("click", ".device_approve_btn", function() {
 		isAdminApproved = false;
 	}
 	
-	alert("deviceId-"+deviceId+" userId-"+userId+" status-"+status);
-	
+
 	$.ajax({
 		type : 'PUT',
-		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/approveDevice',
+		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.APPROVE_DEVICE_URL,
 		data : JSON.stringify({
 			"parameters" : {
 				"deviceId" : deviceId,
@@ -85,15 +84,16 @@ $('body').on("click", ".device_approve_btn", function() {
 		dataType : 'json',
 		contentType : 'application/json; charset=utf-8',
 		success : function(response) {
-			alert(response.responseCode.message);
+			$("#ApprovalRequests").popover('hide');
+			if(alertBox(response.responseCode.message))
 			window.location.reload();
 		},
 		error : function(xhr, status, error) {
 			try {
 				errorResponse = JSON.parse(xhr.responseText);
-				alert(errorResponse.responseCode.message);
+				alertBox(errorResponse.responseCode.message);
 			} catch (e) {
-				alert("some error occurred, please try later.");
+				alertBox("some error occurred, please try later.");
 			}
 		}
 
@@ -103,4 +103,4 @@ $('body').on("click", ".device_approve_btn", function() {
 	//delete this data from array.
 	//hide data from popover
 	//if popover gets empty then hide popover.
-})
+});

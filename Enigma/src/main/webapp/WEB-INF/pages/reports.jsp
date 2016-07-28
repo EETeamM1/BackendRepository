@@ -6,8 +6,11 @@
 <link href="resources/lib/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="resources/lib/css/enigma.css" rel="stylesheet"	type="text/css">
 <link href="resources/lib/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="resources/lib/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <script src="resources/lib/js/jquery.js"></script>
 <script src="resources/lib/js/bootstrap.min.js"></script>
+<script src="resources/lib/js/jquery-ui.min.js"></script>
+<script src="resources/app/js/common.js"></script>
 <script src="resources/lib/js/google-chart-loader.js"></script>
 </head>
 <body>
@@ -49,10 +52,50 @@
 	<!---Header ends--->
 	
 	<!-- Chart body starts here -->
-	<div class="body-content" style="margin-top: 133px;">
-		<div class="" style="overflow:none;">
-			<div id="device_issue_trend" style="margin:20px;padding 10px;border:1px solid #eee;background-color:#ffffff;"></div>
-			<div id="device_submit_trend" style="margin:20px;padding 10px;border:1px solid #eee;background-color:#ffffff;"></div>			
+	<div class="container body-content" style="margin-top: 133px;">
+	
+		<div class="row-content">
+			<div>
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#default"
+						role="tab" data-toggle="tab">All Reports</a></li>
+	
+					<li role="presentation"><a href="#deviceReport" role="tab"
+						data-toggle="tab" id="tabDeviceReport" >Device Reports</a></li>
+						
+					<li role="presentation"><a href="#userReport" role="tab"
+						data-toggle="tab" id="tabUserReport">User Reports</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<!-- Tab Panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in active" id="default">
+				<div class="" style="overflow:none;">
+					<div id="barchart_top5" style="margin:20px;padding 10px;background-color:#ffffff;"></div>
+					<div id="device_issue_trend" style="margin:20px;padding 10px;background-color:#ffffff;"></div>
+					<div id="device_submit_trend" style="margin:20px;padding 10px;background-color:#ffffff;"></div>			
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane fade in active" id="deviceReport">
+				<div class="" style="overflow:none;">
+					
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane fade in active" id="userReport">
+				<div class="t2 n1" style="overflow:none">
+					<div class="row-content">
+						<input type="text" id="userAutocomplete"  placeholder="Search User" autofocus/>
+						<label for="from">From</label>
+						<input type="text" id="from" name="from">
+						<label for="to">to</label>
+						<input type="text" id="to" name="to">
+						<button id="fetchUserReport" class="n3">Search</button>
+					</div>
+					<div id="user_timeline" style="margin:20px;padding 10px;background-color:#ffffff;"></div>	
+				</div>
+			</div>
 		</div>
 	</div>
 	<script src="resources/app/js/report.js"></script>

@@ -14,6 +14,7 @@
 <script src="resources/lib/js/jquery.js"></script>
 <script src="resources/lib/js/bootstrap.min.js"></script>
 <script src="resources/lib/js/jquery-ui.min.js"></script>
+<script src="resources/app/js/common.js"></script>
 
 </head>
 <body>
@@ -180,6 +181,51 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<div id="alertModal" class="modal fade">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <!-- dialog body -->
+	      <div class="modal-body">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <span id="alertMessage"></span>
+	      </div>
+	      <div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">OK</button></div>
+	    </div>
+	  </div>
+	</div>
+	<div id="confirmModal" class="modal fade">
+	<div class="modal-dialog modal-sm">
+	 <div class="modal-content ">
+	  <div class="modal-body">
+	    Are you sure?<br/>
+	    <table>
+			<tbody>
+				<tr>
+					<td class="n1 font-bold">Device</td>
+					<td>:&nbsp&nbsp&nbsp</td>
+					<td class="n3 font-bold" id="confirmModal_device_detail_modal_name"></td>
+				</tr>
+				<tr>
+					<td class="n1 font-bold">Unique Id</td>
+					<td>:&nbsp&nbsp&nbsp</td>
+					<td class="n3 font-bold" id="confirmModal_device_detail_modal_id"></td>
+				</tr>
+				<tr>
+					<td class="n1 font-bold">User</td>
+					<td>:&nbsp&nbsp&nbsp</td>
+					<td class="n3 font-bold" id="confirmModa_device_detail_modal_user"></td>
+				</tr>
+			</tbody>
+		</table>
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-primary" id="confirmModalYes">Yes</button>
+	    <button type="button" data-dismiss="modal" class="btn btn-warning">No</button>
+	  </div>
+	  </div>
+	  </div>
 	</div>
 	
 	<script src="resources/lib/js/jquery.tmpl.min.js"></script>

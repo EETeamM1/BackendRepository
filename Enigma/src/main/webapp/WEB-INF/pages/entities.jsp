@@ -8,9 +8,9 @@
 	type="text/css">
 <link href="resources/lib/css/enigma.css" rel="stylesheet"
 	type="text/css">
-<script language="javascript" src="resources/lib/js/jquery.js"></script>
-<script language="javascript" src="resources/lib/js/bootstrap.min.js"></script>
-<script language="javascript" src="resources/app/js/constants.js"></script>
+<script src="resources/lib/js/jquery.js"></script>
+<script src="resources/lib/js/bootstrap.min.js"></script>
+<script src="resources/app/js/common.js"></script>
 </head>
 <body>
 	<!---Header start--->

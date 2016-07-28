@@ -81,7 +81,7 @@ a{
 	padding: 10px;
 	border-color: #cdcdcd;
 }
-#entities .nav-tabs>li>a{
+.nav-tabs>li>a{
 	border:none;
 }
 .panel-login {

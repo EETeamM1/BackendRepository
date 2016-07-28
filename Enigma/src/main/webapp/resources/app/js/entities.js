@@ -18,7 +18,7 @@ $('#form_master').submit(
 
 			$.ajax({
 				type : 'PUT',
-				url : 'http://172.26.60.21:9000/InventoryManagement/api/master',
+				url : 'URL.HOST_NAME+URL.APPLICATION_NAME+URL.MASTER_UPDATE_URL',
 				data : JSON.stringify({
 					"parameters" : {
 						"currentMasterPassword" : password,
@@ -77,7 +77,7 @@ $('#form_user_save')
 					$
 							.ajax({
 								type : 'POST',
-								url : 'http://172.26.60.21:9000/InventoryManagement/api/user/saveUserInfo',
+								url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.SAVEUSER_URL,
 								data : JSON.stringify({
 									"parameters" : {
 										"userId" : userId,
@@ -126,7 +126,7 @@ $('#form_device_submit')
 					$
 							.ajax({
 								type : 'POST',
-								url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/saveDeviceInfo',
+								url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.SAVEDEVICE_URL,
 								data : JSON
 										.stringify({
 											"parameters" : {
