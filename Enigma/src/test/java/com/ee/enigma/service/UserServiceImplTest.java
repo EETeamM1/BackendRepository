@@ -1,5 +1,8 @@
 package com.ee.enigma.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -18,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.JunitConstants;
+import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.dao.UserInfoDaoImpl;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
@@ -35,6 +39,7 @@ public class UserServiceImplTest  {
   
   @Mock
   private UserInfoDaoImpl userInfoDaoImpl;
+ 
   @Mock
   private SessionFactory sessionFactory;
   @Mock
@@ -74,10 +79,35 @@ public class UserServiceImplTest  {
     parameters.setPassword(password);
     parameters.setUserName(userName);
     parameters.setOpration(opration);
-    Mockito.doNothing().when(userInfoDaoImpl).updateUserInfo(Matchers.any(UserInfo.class));
+    //Mockito.doNothing().when(userInfoDaoImpl).updateUserInfo(Matchers.any(UserInfo.class));
+    Mockito.doNothing().when(session).persist(Matchers.any(UserInfo.class));
     response=userServiceImpl.saveUserInfo(requestInfo,opration);
     Mockito.verify(userInfoDaoImpl,Mockito.times(1)).createUserInfo(Mockito.any(UserInfo.class));
     Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_SUCCESSFULLY_SAVE));
+   }
+  
+  @Test
+  public void testSaveUserInfoForDuplicateUser() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    String userId =JunitConstants.USER_ID;
+    String password = JunitConstants.PASSWORD;
+    String userName = JunitConstants.USER_NAME;
+    String opration =JunitConstants.OPRATION_SAVE;
+    parameters.setUserId(userId);
+    parameters.setPassword(password);
+    parameters.setUserName(userName);
+    parameters.setOpration(opration);
+    UserInfo userInfo=new  UserInfo();
+    userInfo.setUserId(JunitConstants.USER_ID);
+    userInfo.setPassword(JunitConstants.PASSWORD);
+    userInfo.setUserName(JunitConstants.USER_NAME);
+    Mockito.doReturn(userInfo).when(userInfoDaoImpl).getUserInfo(Matchers.anyString());
+    response=userServiceImpl.saveUserInfo(requestInfo,opration);
+    Assert.assertTrue(Constants.USER_ALREADY_EXISTS.equals(response.getResponseCode().getMessage()));
    }
   
   @Test
@@ -113,7 +143,6 @@ public class UserServiceImplTest  {
   }
   
   @Test
-  //@Ignore
   public void testDeleteUserInfoForUserId() throws Exception
   {
     response = new EnigmaResponse();
@@ -167,7 +196,6 @@ public class UserServiceImplTest  {
     Assert.assertTrue(userInfo2.getUserId().equals(JunitConstants.USER_ID));
   }
   
-  @Ignore
   @Test
   public void testGetUserInfoForNullUserId() throws Exception
   {
@@ -181,12 +209,97 @@ public class UserServiceImplTest  {
     userInfo.setUserId(JunitConstants.USER_ID+1);
     userInfo.setPassword(JunitConstants.PASSWORD);
     userInfo.setUserName(JunitConstants.USER_NAME);
-    Mockito.doReturn(userInfo).when(userInfoDaoImpl)
+    Mockito.doReturn(null).when(userInfoDaoImpl)
     .getUserInfo(Matchers.anyString());
     response = userServiceImpl.getUserInfo(JunitConstants.USER_ID);
-   // response=userServiceImpl.getUserInfo(requestInfo);
-    Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));
+    Assert.assertTrue(Constants.USER_NOT_EXISTING.equals(response.getResponseCode().getMessage()));
   }
+  
+  @Test
+  public void testGetAllUser() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    parameters.setUserId(JunitConstants.USER_ID);
+    UserInfo userInfo=new  UserInfo();
+    userInfo.setUserId(JunitConstants.USER_ID);
+    userInfo.setPassword(JunitConstants.PASSWORD);
+    userInfo.setUserName(JunitConstants.USER_NAME);
+    List<UserInfo> userInfoList=new ArrayList<UserInfo>();
+    userInfoList.add(userInfo);
+    Mockito.doReturn(userInfoList).when(userInfoDaoImpl).getAllUserInfo();
+     
+    EnigmaResponse response =userServiceImpl.getAllUser();
+    Assert.assertTrue(response.getResult().getUserList().size()>0);
+  }
+  
+  @Test
+  public void testGetAllUserForNoUser() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    parameters.setUserId(JunitConstants.USER_ID);
+    List<UserInfo> userInfoList=null;
+    Mockito.doReturn(userInfoList).when(userInfoDaoImpl).getAllUserInfo();
+     
+    EnigmaResponse response =userServiceImpl.getAllUser();
+    Assert.assertTrue(Constants.USER_NOT_EXISTING.equalsIgnoreCase(response.getResponseCode().getMessage()));
+  }
+  
+  @Test
+  public void testSearchUserResult() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+   
+    UserInfo userInfo=new  UserInfo();
+    userInfo.setUserId(JunitConstants.USER_ID);
+    userInfo.setPassword(JunitConstants.PASSWORD);
+    userInfo.setUserName(JunitConstants.USER_NAME);
+    List<UserInfo> userInfoList=new ArrayList<UserInfo>();
+    userInfoList.add(userInfo);
+    String searchQuery="Test Query";
+    Mockito.doReturn(userInfoList).when(userInfoDaoImpl).getUsersByIdAndName(Mockito.anyString());
+ 
+    EnigmaResponse response =userServiceImpl.searchUserResult(searchQuery);
+    Assert.assertTrue(response.getResult().getUserList().size()>0);
+  }
+  
+  @Test
+  public void testSearchUserResultWithNoUser() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    parameters.setUserId(JunitConstants.USER_ID);
+    String searchQuery="Test Query";
+    Mockito.doReturn(null).when(userInfoDaoImpl).getUsersByIdAndName(Mockito.anyString());
+     
+    EnigmaResponse response =userServiceImpl.searchUserResult(searchQuery);
+    Assert.assertTrue(response.getResult().getUserList()==null);
+  }
+  
+  @Test
+  public void testSearchUserResultWithBlankSearchQuery() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    parameters.setUserId(JunitConstants.USER_ID);
+    String searchQuery="";
+    Mockito.doReturn(null).when(userInfoDaoImpl).getUsersByIdAndName(Mockito.anyString());
+     
+    EnigmaResponse response =userServiceImpl.searchUserResult(searchQuery);
+    Assert.assertTrue(Constants.MESSAGE_BAD_REQUEST.equals(response.getResponseCode().getMessage()));
+  }
+  
   @AfterClass
   public static void destroy() throws Exception
   {

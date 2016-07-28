@@ -10,29 +10,82 @@ $("#device_list").html('<div style="font-size:32px;text-align:center;">Loading D
 
 var deviceStatusviseCount = function(){
 		
-$.ajax({
-			type : 'GET',
-			url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/deviceReportByAvailability',
-			dataType : 'json',
-			async : false,
-			contentType : 'application/json; charset=utf-8',
-			success : function(response) {
-				$("#totalDevices").text(response.totalDevices);
-				$("#availableDevices").text(response.availableDevices);
-				$("#issuedDevices").text(response.issuedDevices);
-			},
-			error : function(xhr, status, error) {
-				try {
-					var errorResponse = JSON.parse(xhr.responseText);
-					alert(errorResponse.responseCode.message);
-				} catch (e) {
-					alert("some error occurred, please try later.");
-				}
+	$.ajax({
+		type : 'GET',
+		url : 'http://172.26.60.21:9000/InventoryManagement/api/deviceIssue/deviceReportByAvailability',
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(response) {
+			$("#totalDevices").text(response.totalDevices);
+			$("#availableDevices").text(response.availableDevices);
+			$("#issuedDevices").text(response.issuedDevices);
+		},
+		error : function(xhr, status, error) {
+			try {
+				var errorResponse = JSON.parse(xhr.responseText);
+				alert(errorResponse.responseCode.message);
+			} catch (e) {
+				alert("some error occurred, please try later.");
 			}
+		}
 
-		});
+	});
 }
 deviceStatusviseCount();
+
+function compare(a,b) {
+  if (a.status < b.status)
+    return -1;
+  if (a.status > b.status)
+    return 1;
+  return compareByName(a,b);
+}
+
+function compareByName(a,b){
+	if (a.device_name.toLowerCase() < b.device_name.toLowerCase())
+	    return -1;
+	  if (a.device_name.toLowerCase() > b.device_name.toLowerCase())
+	    return 1;
+	  return 0;
+}
+function compareForUser(a,b){
+	if(a.hideIssued=="" && b.hideIssued!=""){
+		return -1
+	}else if(a.hideIssued!="" && b.hideIssued==""){
+		return 1;
+	}else{
+		return compare(a,b);
+	}
+}
+
+
+var DeviceRenderingData = [];
+var viewRenderer = function(){
+	var isAdmin = $("#isAdmin").text();
+	var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
+	$('#deviceStatusTemplate').text(temp);
+	$("#device_list").html('');
+	DeviceRenderingData.sort(compareByName);
+	if(isAdmin){
+		DeviceRenderingData.sort(compare);
+	}else{
+		DeviceRenderingData.sort(compareForUser);
+	}
+	$("#deviceStatusTemplate").tmpl(DeviceRenderingData).appendTo("#device_list");
+	$(".issue_device_modal").click(function(e) {
+		e.preventDefault();
+		issueDeviceModel(this);
+	});
+	$(".submit_device").on('click',function(e){
+		e.preventDefault();
+		submitDevice(this);
+	});
+	$(".list_device_name").click(function(e) {
+		e.preventDefault();
+		deviceDetails(this);
+	});
+}
 
 $.ajax({
 			type : 'GET',
@@ -41,7 +94,6 @@ $.ajax({
 			async : false,
 			contentType : 'application/json; charset=utf-8',
 			success : function(response_status) {
-				var responseData = [];
 				devicesList = response_status;
 				var isAdmin = $("#isAdmin").text();
 				var loggedUserId = $("#loggedInUserId").text();
@@ -62,19 +114,21 @@ $.ajax({
 					var userName = "";
 					var searchUser = "";
 					var hideIssued = "hide";
+					var hideIssuedDetails = "hide";
 					if(value.deviceAvailability == "Available" && isAdmin){
 						hideAvailable = "";
 					}
 					if(value.deviceAvailability == "Issued"){
+							userId = value.userId;
+							userName = value.userName;
+							searchUser = value.userName.toLowerCase();
+							hideIssuedDetails=""
 						if(isAdmin || (loggedUserId == value.userId)){
-						userId = value.userId;
-						userName = value.userName;
-						searchUser = value.userName.toLowerCase();
-						hideIssued = "";
-					}
+							hideIssued="";
+						}
 					}
 
-					responseData.push({
+					DeviceRenderingData.push({
 						'img' : '' + osType + '',
 						'searchKeywords' : '' + value.os.toLowerCase() + ' '+ value.deviceName.toLowerCase()+' '+value.deviceAvailability.toLowerCase()+' '+searchUser,
 						'deviceId' : value.deviceId,
@@ -84,13 +138,12 @@ $.ajax({
 						'user_id': userId,
 						'user_name' : userName,
 						'hideAvailable' : hideAvailable,
+						'hideIssuedDetails' : hideIssuedDetails,
 						'hideIssued' : hideIssued						
 					});
 				});
-				var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
-				var template = $('#deviceStatusTemplate').text(temp);
-				$("#device_list").html('');
-				$("#deviceStatusTemplate").tmpl(responseData).appendTo("#device_list");
+				
+				viewRenderer();
 			},
 			error : function(xhr, status, error) {
 				try {
@@ -144,6 +197,7 @@ $(".apple_icon").click(function(){
 	}
 	$("#search_box").trigger("keyup");
 });
+
 $(".android_icon").click(function(){
 	$( this ).toggleClass("active");
 	if ($(".windows_icon").hasClass("active")) {
@@ -165,10 +219,9 @@ $(".windows_icon").click(function(){
 	$("#search_box").trigger("keyup");
 });
 
-$(".list_device_name").click(function(e) {
-	e.preventDefault();
-	var id = this.id;
-	console.log(devicesList);
+
+var deviceDetails = function(self){
+	var id = self.id;
 	$.each(devicesList, function(i, v) {
 		if (v.deviceId == id) {
 			$("#device_detail_modal_name").html(v.deviceName);
@@ -179,21 +232,20 @@ $(".list_device_name").click(function(e) {
 			$("#deviceDetailModal").modal('show');
 		}
 	});
-});
+}
 
-$(".issue_device_modal").click(function(e) {
-	e.preventDefault();
-	deviceIssueObj = this;
+var issueDeviceModel = function(self){
+	deviceIssueObj = self;
 	if (!userList) {
 		getUserList();
 		setAutocompleteList();
 	}
-	var id = $(this).attr("device-id");
-	var deviceName = $(this).attr("device-name");
+	var id = $(self).attr("device-id");
+	var deviceName = $(self).attr("device-name");
 	$("#issue_modal_name").html(deviceName);
 	$("#issue_modal_device_id").html(id);
 	$("#deviceIssueModal").modal('show');
-});
+}
 
 var getUserList = function() {
 	$.ajax({
@@ -247,7 +299,7 @@ $('#deviceIssueModal').on('hidden.bs.modal', function () {
 	}
 })
 
-$("#issue_btn").click(function(e) {
+var issueDevice = function(e){
 	e.preventDefault();
 	var userId = $("#issue_modal_user_id").html();
 	var deviceId = $("#issue_modal_device_id").html();
@@ -267,11 +319,19 @@ $("#issue_btn").click(function(e) {
 		contentType : 'application/json; charset=utf-8',
 		success : function(response) {			
 			$('#deviceIssueModal').modal('hide');
-			$(deviceIssueObj).addClass("hide");
-			$(deviceIssueObj).siblings().removeClass("hide");
-			$(deviceIssueObj).siblings().attr("user-id",userId);
+			$.each(DeviceRenderingData, function(i, v) {
+				if (v.deviceId == deviceId) {
+					v.status = "Issued";
+					v.user_id =  userId;
+					v.user_name = $("#issue_modal_issued_to").html();
+					v.hideAvailable = "hide";
+					v.hideIssuedDetails = "";
+					v.hideIssued = "";				
+				}
+			});
 			alert(response.responseCode.message);
 			deviceStatusviseCount();
+			viewRenderer();
 		},
 		error : function(xhr, status, error) {
 			try {
@@ -281,15 +341,14 @@ $("#issue_btn").click(function(e) {
 				alert("some error occurred, please try later.");
 			}
 		}
-
 	});
+}
+$("#issue_btn").click(function(e) {
+	issueDevice(e);
 });
-
-$(".submit_device").click(function(e){
-	e.preventDefault();
-	var self = this;
-	var userId =  $(this).attr("user-id");
-	var deviceId =  $(this).attr("device-id");
+var submitDevice = function(self){
+	var userId =  $(self).attr("user-id");
+	var deviceId =  $(self).attr("device-id");
 	
 	$('<div></div>').appendTo('body')
     .html('<div><h6>Are you sure?</h6></div>')
@@ -320,13 +379,22 @@ $(".submit_device").click(function(e){
             		dataType : 'json',
             		async : false,
             		contentType : 'application/json; charset=utf-8',
-            		success : function(response) {			
-            			$(self).addClass("hide");
-            			if($("#isAdmin").text()){
-            			$(self).siblings().removeClass("hide");            			
-            			}
+            		success : function(response) {		
+            			$.each(DeviceRenderingData, function(i, v) {
+            				if (v.deviceId == deviceId) {
+            					v.status = "Available";
+            					v.user_id =  "";
+            					v.user_name = "";
+            					if($("#isAdmin").text()){
+            						v.hideAvailable = "";
+            					}
+            					v.hideIssuedDetails = "hide";
+            					v.hideIssued = "hide";				
+            				}
+            			});
             			alert(response.responseCode.message);
             			deviceStatusviseCount();
+            			viewRenderer();
             		},
             		error : function(xhr, status, error) {
             			try {
@@ -348,4 +416,4 @@ $(".submit_device").click(function(e){
         }
     });
 	
-});
+}
