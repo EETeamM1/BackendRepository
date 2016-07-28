@@ -2,11 +2,15 @@ package com.ee.enigma.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -25,11 +29,13 @@ import com.ee.enigma.common.JunitConstants;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueInfoDaoImpl;
 import com.ee.enigma.dao.UserInfoDaoImpl;
+import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
 import com.ee.enigma.dto.ReportInfo;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
+import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.request.RequestParameters;
@@ -189,9 +195,6 @@ public class DeviceIssueInfoServiceImplTest
        Matchers.any(DeviceIssueInfo.class));
   }
   
-  
-  
- 
   @Test
   public void testGetDeviceIssueTimeLineTrendReportForSubmitDevice() throws Exception
   {
@@ -455,7 +458,7 @@ public class DeviceIssueInfoServiceImplTest
 
   @Test
   public void testDeviceIssueInfoServiceDeviceIssueInfoListWithDifferentUserIdByAdinnIsTrueDeviceInfoListIsNull()
-    throws Exception
+    throws Exception 
   {
     initializeDeviceIssueInfoService();
     userInfo.setUserId(JunitConstants.USER_ID + "1");
@@ -563,16 +566,171 @@ public class DeviceIssueInfoServiceImplTest
     Assert.assertTrue((((DeviceStatusCountsInfo)(enigmaResponse.getResponseCode().getResultObject())).getTotalDevices())==3);
   }
   
+  @Test
   public void testGetDeviceTimeLineReport() throws Exception
   {
-    Mockito.doReturn(populateDeviceIssueInfoList(new Timestamp(11111),JunitConstants.USER_ID)).when(deviceIssueInfoDao).getDeviceIssueInfoList(Matchers.anyString());
-    String userId=JunitConstants.USER_ID;
+    List<DeviceIssueInfo> deviceIssueInfoList =populateDeviceIssueInfoListForTimeLineReport(new Timestamp(11111),JunitConstants.USER_ID,1);
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao).getDeviceIssueList(Matchers.anyString(),Mockito.any(java.util.Date.class),Mockito.any(java.util.Date.class));
     String deviceId=JunitConstants.DEVICE_ID;
     Mockito.doReturn(new DeviceInfo()).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
-    //String issueId = deviceIssueInfoServiceImpl.getDeviceTimeLineReport(deviceId,userId);
+    JSONObject jsonObject=deviceIssueInfoServiceImpl.getDeviceTimeLineReport(null,null,deviceId);
     //Assert.assertTrue(issueId.equals(JunitConstants.ISSUE_ID));
   }
   
+  
+  @Test
+  public void testGetDeviceTimeLineReportForZeroIdleTime() throws Exception
+  {
+    List<DeviceIssueInfo> deviceIssueInfoList =populateDeviceIssueInfoListForTimeLineReport(new Timestamp(11111),JunitConstants.USER_ID,0);
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao).getDeviceIssueList(Matchers.anyString(),Mockito.any(java.util.Date.class),Mockito.any(java.util.Date.class));
+    String deviceId=JunitConstants.DEVICE_ID;
+    Mockito.doReturn(new DeviceInfo()).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
+    JSONObject jsonObject=deviceIssueInfoServiceImpl.getDeviceTimeLineReport(null,null,deviceId);
+    //Assert.assertTrue(issueId.equals(JunitConstants.ISSUE_ID));
+  }
+  
+  public List<DeviceIssueInfo> populateDeviceIssueInfoListForTimeLineReport(Timestamp submitTime,String userId,int idleTimeInMinutes)
+  {
+    List<DeviceIssueInfo> deviceIssueInfoList =new ArrayList<DeviceIssueInfo>();
+    DeviceIssueInfo deviceIssueInfo = null;
+    deviceIssueInfo=populateDeviceIssueInfo(userId, JunitConstants.DEVICE_ID, JunitConstants.ISSUE_ID, true, Constants.SUBMITTED_BY_ADMIN);
+    deviceIssueInfo.setIssueTime(new Timestamp(1111));
+    deviceIssueInfo.setSubmitTime(getUpdatedTimeStamp(new Timestamp((new java.util.Date()).getTime()), 100, 30));
+    deviceInfo=new DeviceInfo();
+    deviceIssueInfo.setDeviceInfo(populateDeviceInfo(JunitConstants.DEVICE_ID, JunitConstants.ISSUE_ID));
+    deviceIssueInfo.setIssueId(JunitConstants.ISSUE_ID);
+    deviceIssueInfo.setUserActivity(populateUserActivities(idleTimeInMinutes));
+    deviceIssueInfo.setUserInfo(populateUserInfo(JunitConstants.USER_ID, JunitConstants.PASSWORD));
+    
+    deviceIssueInfoList.add(deviceIssueInfo);
+     
+    return deviceIssueInfoList;
+  }
+  
+ 
+  
+  public Set<UserActivity> populateUserActivities(int idleTimeInMinutes)
+  {
+    Set<UserActivity> userActivities=new HashSet<UserActivity>(); 
+    UserActivity userActivity=null;
+    Date loginTime=null;;
+    Date logoutTime=null;
+    loginTime=new Date();
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    if(idleTimeInMinutes>=0)
+    {
+      logoutTime=loginTime;
+    }
+    else{
+     logoutTime=getUpdatedTime(loginTime, 2, 20);
+    }
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    logoutTime=null;
+    if(idleTimeInMinutes>=0)
+    {
+      logoutTime=loginTime;
+    }
+    else{
+    logoutTime=getUpdatedTime(loginTime, 4, 25);
+    }
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    logoutTime=null;
+    if(idleTimeInMinutes<=0)
+    {
+      logoutTime=loginTime;
+    }
+    else{
+    logoutTime=getUpdatedTime(loginTime, 5, 25);}
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+   
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    if(idleTimeInMinutes<=0)
+    {
+      logoutTime=loginTime;
+    }
+    else{
+     logoutTime=getUpdatedTime(loginTime, 2, 20);
+    }
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    logoutTime=null;
+    if(idleTimeInMinutes<=0)
+    {
+      logoutTime=loginTime;
+    }
+    else{
+    logoutTime=getUpdatedTime(loginTime, 4, 25);
+    }
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    logoutTime=null;
+    if(idleTimeInMinutes<=0)
+    {
+      logoutTime=loginTime;
+    }
+    else{
+    logoutTime=getUpdatedTime(loginTime, 5, 25);}
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    
+    logoutTime=getUpdatedTime(loginTime, 6, 25);
+    userActivity=populateUserActivity(loginTime, logoutTime);
+    userActivities.add(userActivity);
+    
+    return userActivities;
+  }
+  
+  public UserActivity populateUserActivity(java.util.Date loginTime,java.util.Date logoutTime)
+  {
+    UserActivity userActivity=new UserActivity();
+    userActivity.setActivityId(JunitConstants.ACTIVITY_ID);
+    userActivity.setDeviceId(JunitConstants.DEVICE_ID);
+    userActivity.setIssueId(JunitConstants.ISSUE_ID);
+    userActivity.setLocation(JunitConstants.LOCATION);
+    userActivity.setLoginTime(loginTime);
+    userActivity.setLogoutTime(logoutTime);
+    userActivity.setUserId(JunitConstants.USER_ID);
+    return userActivity;
+  }
+  
+  public static java.util.Date getUpdatedTime(java.util.Date currentTime,int hours, int minutre) {
+    java.util.Date  updateTime=null;
+    try {
+      if (currentTime != null) {
+        updateTime=new Date(currentTime.getTime());
+        updateTime.setHours(hours);
+        updateTime.setMinutes(minutre);
+      }
+    } catch (Exception e1) {
+      e1.printStackTrace();
+    }
+    return updateTime;
+  }
+  
+  public static java.sql.Timestamp getUpdatedTimeStamp(java.util.Date currentTime,int hours, int minutre) {
+    java.sql.Timestamp  updateTime=null;
+    try {
+      if (currentTime != null) {
+        updateTime=new java.sql.Timestamp(currentTime.getTime());
+        updateTime.setHours(hours);
+        updateTime.setMinutes(minutre);
+      }
+    } catch (Exception e1) {
+      e1.printStackTrace();
+    }
+    return updateTime;
+  }
 
   @AfterClass
   public static void destroy() throws Exception
@@ -586,4 +744,53 @@ public class DeviceIssueInfoServiceImplTest
     sessionFactory = null;
     session = null;
   }
-}
+  
+  @Test
+  public void testGetDeviceIssueStatusForDevice() throws Exception
+  {
+    DeviceInfo deviceInfo=null;
+    DeviceIssueInfo  deviceIssueInfo=null;
+    deviceIssueInfo=populateDeviceIssueInfo(JunitConstants.USER_ID, JunitConstants.DEVICE_ID, JunitConstants.ISSUE_ID, true, Constants.SUBMITTED_BY_ADMIN);
+    List<DeviceIssueInfo> deviceIssueInfoList=new ArrayList<DeviceIssueInfo>();
+    deviceIssueInfoList.add(deviceIssueInfo);
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao).getDeviceIssueInfoList(Matchers.anyString());
+    
+    userInfo=populateUserInfo(JunitConstants.USER_ID, JunitConstants.PASSWORD);
+    Mockito.doReturn(userInfo).when(userInfoDaoImpl).getUserInfo(Matchers.anyString());
+    Mockito.doNothing().when(deviceInfoDao).updateDeviceInfo(Matchers.any(DeviceInfo.class));
+   
+    deviceInfo= populateDeviceInfo(JunitConstants.DEVICE_ID, Constants.ISSUED_BY_ADMIN);
+    Mockito.doReturn(deviceInfo).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
+    DeviceIssueStatusDto deviceIssueStatusDto = deviceIssueInfoServiceImpl.getDeviceIssueStatusForDevice(JunitConstants.DEVICE_ID);
+    Assert.assertTrue(Constants.ISSUED_BY_ADMIN.equals(deviceIssueStatusDto.getAvailablityStatus()));
+    Assert.assertTrue(JunitConstants.DEVICE_ID.equals(deviceIssueStatusDto.getDeviceId()));
+  }
+  
+  @Test
+  public void testGetPendingDevicesReport() throws Exception
+  {
+    List<DeviceIssueInfo> deviceIssueInfoList = new ArrayList<DeviceIssueInfo>();
+    List<DeviceInfo> deviceInfoList = new ArrayList<DeviceInfo>();
+    DeviceInfo deviceInfo = null;
+    DeviceIssueInfo deviceIssueInfo = null;
+
+    deviceIssueInfo = populateDeviceIssueInfo(JunitConstants.USER_ID, JunitConstants.DEVICE_ID,
+      JunitConstants.ISSUE_ID, true, Constants.SUBMITTED_BY_ADMIN);
+    deviceInfo = populateDeviceInfo(JunitConstants.DEVICE_ID, Constants.DEVICE_STATUS_PENDING);
+    deviceIssueInfo.setDeviceInfo(deviceInfo);
+    deviceIssueInfo.setUserInfo(new UserInfo());
+    deviceIssueInfoList.add(deviceIssueInfo);
+    deviceInfoList.add(deviceInfo);
+
+    deviceInfo = populateDeviceInfo(JunitConstants.DEVICE_ID + 1, Constants.DEVICE_STATUS_PENDING);
+    deviceInfoList.add(deviceInfo);
+
+    Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao).getAllDeviceIssueInfoList();
+    Mockito.doReturn(deviceInfoList).when(deviceInfoDao).getDevicesList();
+    
+ EnigmaResponse enigmaResponse = deviceIssueInfoServiceImpl.getPendingDevicesReport();
+    
+    //Assert.assertTrue(((List<ReportInfo>)(enigmaResponse.getResponseCode().getResultObject())).get(0).getDeviceId().equals(JunitConstants.DEVICE_ID));
+    
+    }
+ }

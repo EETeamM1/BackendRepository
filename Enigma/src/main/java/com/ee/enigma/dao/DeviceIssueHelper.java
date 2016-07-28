@@ -31,7 +31,7 @@ public class DeviceIssueHelper
       for (int i = 0; i < deviceIssueInfos.size(); i++)
       {
         deviceIssueInfo = deviceIssueInfos.get(i);
-        date = CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getIssueTime());
+        date = CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getIssueTime());
         if (date != null && !deviceIssueDateList.contains(date))
         {
           deviceIssueDateList.add(date);
@@ -51,7 +51,7 @@ public class DeviceIssueHelper
         {
           deviceIssueInfo = deviceIssueInfos.get(i);
           if (deviceIssueInfo.getIssueByAdmin() != null
-            && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getIssueTime())))
+            && issueDate.equals(CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getIssueTime())))
           {
             if (deviceIssueInfo.getIssueByAdmin())
             {
@@ -85,7 +85,7 @@ public class DeviceIssueHelper
       for (int i = 0; i < deviceIssueInfos.size(); i++)
       {
         deviceIssueInfo = deviceIssueInfos.get(i);
-        date = CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime());
+        date = CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getSubmitTime());
         if(date==null)
         {
           date="Not Submitted";
@@ -110,7 +110,7 @@ public class DeviceIssueHelper
         {
           deviceIssueInfo = deviceIssueInfos.get(i);
           if (deviceIssueInfo.getSubmitBy() != null
-            && issueDate.equals(CommonUtils.getDateFromTemeStamp(deviceIssueInfo.getSubmitTime())))
+            && issueDate.equals(CommonUtils.getDateFromTimeStamp(deviceIssueInfo.getSubmitTime())))
           {
             if (Constants.SUBMITTED_BY_ADMIN.equals(deviceIssueInfo.getSubmitBy()))
             {
@@ -310,8 +310,9 @@ public class DeviceIssueHelper
                 reportResultInfo.setReportInfoNext(reportInfoTemp);
                 reportInfo = new ReportInfo();
                 reportInfo.setLoginTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime()));
-                reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(userActivity.getLogoutTime()));
+                reportInfo.setLogoutTime("NA");
                 reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
+                reportInfo.setInDate(deviceIssueInfo.getIssueTime());
                 reportInfo.setFromTable("DIINFO");
                 reportResultInfo.setReportInfo(reportInfo);
               }
@@ -324,6 +325,7 @@ public class DeviceIssueHelper
                 reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime()));
                 reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
                 reportInfo.setFromTable("DIINFO");
+                reportInfo.setOutDate(new java.util.Date(deviceIssueInfo.getSubmitTime().getTime()));
                 reportResultInfo.setReportInfoNext(reportInfo);
               }
               else
@@ -375,13 +377,13 @@ public class DeviceIssueHelper
               userActityJsonArray.add(userActivityJson);
               
               //Next
-              if(CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate())>0)
+              if(CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getOutDate())>0)
               {
               userActivityJson=new JSONObject();
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", reportResultInfo.getReportInfo().getLogoutTime());
               userActivityJson.put("outTime", reportResultInfo.getReportInfoNext().getLoginTime());
-              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getInDate()));
+              userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getOutDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
               }

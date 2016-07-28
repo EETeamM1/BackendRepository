@@ -1,6 +1,6 @@
 package com.ee.enigma.dto;
 
-import java.sql.Timestamp;
+//import java.sql.Timestamp;
 import java.util.Date;
 
 public class ReportInfo
@@ -19,8 +19,6 @@ public class ReportInfo
   String fromTable;
   String userName;
   String deviceName;
-  private Timestamp issueTime;
-  private Timestamp submitTime;
   private Boolean issueByAdmin;
   private Boolean submitByAdmin;
   private String deviceAvailability;
@@ -80,25 +78,7 @@ public class ReportInfo
     OSVersion = oSVersion;
   }
 
-  public Timestamp getIssueTime()
-  {
-    return issueTime;
-  }
-
-  public void setIssueTime(Timestamp issueTime)
-  {
-    this.issueTime = issueTime;
-  }
-
-  public Timestamp getSubmitTime()
-  {
-    return submitTime;
-  }
-
-  public void setSubmitTime(Timestamp submitTime)
-  {
-    this.submitTime = submitTime;
-  }
+  
 
   public Boolean getIssueByAdmin()
   {
