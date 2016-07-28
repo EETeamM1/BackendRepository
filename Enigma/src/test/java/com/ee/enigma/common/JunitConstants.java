@@ -1,5 +1,7 @@
 package com.ee.enigma.common;
 
+import java.util.Date;
+
 public class JunitConstants
 {
 public static final String USER_ID="user1";
@@ -21,5 +23,7 @@ public static final String DEVICE_OS_VERSION="4.4.1.2";
 public static final String DEVICE_OS="Android";    
 public static final String DEVICE_YR_OF_MANUFACTURING="2015";   
 public static final String DEVICE_MANUFACTURER="HTC";    
-public static final String SEARCH_TEXT="Search Text";    
+public static final String SEARCH_TEXT="Search Text";   
+
+public static final Date CURRENT_DATE=new Date();  
 }
