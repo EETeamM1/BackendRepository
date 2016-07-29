@@ -92,10 +92,10 @@ function drawSubmitTrendChart() {
 }
 
 function compareByCount(a,b){
-	if (a[2] < b[2])
-	    return -1;
-	  if (a[2] > b[2])
+	if (a.count < b.count)
 	    return 1;
+	  if (a.count > b.count)
+	    return -1;
 	  return 0;
 }
 
@@ -109,12 +109,12 @@ function drawTopDevicesChart(){
 		async : false,
 		contentType : 'application/json; charset=utf-8',
 		success : function(response) {
-			dataArray = response.result.topDeviceDto;
+			dataArray = response.result.topDeviceDtoList;
 			if(dataArray){
 				dataArray.sort(compareByCount);
 			}
 			$.each(dataArray,function(k,v){
-				ReportData.push([v[1],v[2]]);
+				ReportData.push([v.deviceName,v.count]);
 			});
 		}
 	});
@@ -157,15 +157,12 @@ var setAutocompleteList = function() {
 			return false;
 		},
 		select : function(event, ui) {
-//			$("#issue_modal_issued_to").html(ui.item.label);
-//			$("#issue_modal_user_id").html(ui.item.value);
+			$("#userAutocomplete").attr("user-id",ui.item.value);
 			$("#userAutocomplete").val(ui.item.label);
-			alertBox(ui.item.value);
 			return false;
 		}
 	});
 };
-
 
 $( function() {
     var dateFormat = "mm/dd/yy",
@@ -200,3 +197,13 @@ $( function() {
       return date;
     }
   } );
+
+$("#fetchUserReport").on("click",function(e){
+	var userId = $("#userAutocomplete").attr("user-id");
+	if(!userId){
+		alertBox("Please select user from drop-down");
+		return;
+	}
+	
+	
+});
