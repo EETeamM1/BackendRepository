@@ -57,5 +57,5 @@ public interface Constants {
    
    String RETURN_REPONSE_UPDATED = "updated";
    String RETURN_REPONSE_SAME = "same";
-   
+   String RETURN_NA = "NA";
 }

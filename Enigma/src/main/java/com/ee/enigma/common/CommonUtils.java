@@ -181,4 +181,17 @@ public class CommonUtils {
 		return cal.getTime();
 		
 	}
+	
+	public static String displayTimeStringNA(String timeString)
+  {
+    timeString = (timeString+"").trim();
+    if (timeString.equalsIgnoreCase("null") || "".equals(timeString) )
+    {
+      return Constants.RETURN_NA;
+    }
+    else
+    {
+      return timeString;
+    }
+  }
 }
