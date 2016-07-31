@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
 		if(null == userInfo){
 			return userNotFound();
 		}
-		userId=userId.trim();
 		// Success response.
 		result.setUser(userInfo);
 		responseCode.setCode(Constants.CODE_SUCCESS);
