@@ -77,6 +77,8 @@ public class DeviceServiceImpl implements DeviceService {
 		String osVersion;
 		String yearOfManufacturing;
 		DeviceInfo deviceInfo = null;
+		try
+		{
 		try {
 			deviceId = requestInfo.getParameters().getDeviceId().trim();
 			deviceName = requestInfo.getParameters().getDeviceName().trim();
@@ -116,6 +118,12 @@ public class DeviceServiceImpl implements DeviceService {
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
+		}
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 
@@ -124,7 +132,8 @@ public class DeviceServiceImpl implements DeviceService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-
+    try
+    {
 		String deviceId = null;
 		String deviceStatus = null;
 		try {
@@ -155,6 +164,12 @@ public class DeviceServiceImpl implements DeviceService {
 		responseCode.setCode(Constants.CODE_NOT_FOUND);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 
 	}
@@ -163,6 +178,8 @@ public class DeviceServiceImpl implements DeviceService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
+		try
+		{
 		// Checking whether request contains all require fields or not.
 		if (null == deviceId) {
 			return CommonUtils.badRequest(response, responseCode);
@@ -176,6 +193,12 @@ public class DeviceServiceImpl implements DeviceService {
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
+		}
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 
@@ -191,6 +214,8 @@ public class DeviceServiceImpl implements DeviceService {
 		boolean isAdminApproved = false;
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
+		try
+		{
 		try {
 			deviceId = requestInfo.getParameters().getDeviceId();
 			isAdminApproved = requestInfo.getParameters().getIsAdminApproved();
@@ -207,7 +232,12 @@ public class DeviceServiceImpl implements DeviceService {
 
 		response.setResponseCode(responseCode);
 		response.setResult(null);
-
+		}
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 
@@ -254,7 +284,8 @@ public class DeviceServiceImpl implements DeviceService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-
+    try
+    {
 		if (null == searchQuery || searchQuery.trim().isEmpty()) {
 			return CommonUtils.badRequest(response, responseCode);
 		}
@@ -265,6 +296,12 @@ public class DeviceServiceImpl implements DeviceService {
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 

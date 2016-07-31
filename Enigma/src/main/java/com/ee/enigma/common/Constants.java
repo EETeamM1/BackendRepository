@@ -5,6 +5,7 @@ public interface Constants {
 	int CODE_BAD_REQUEST = 400;
 	int CODE_AUTHENTICATION_FAILD = 401;
 	int CODE_NOT_FOUND = 404;
+	int CODE_INTERNAL_SERVER_ERROR = 500;
 
 	String ISSUED_BY_ADMIN = "Issued By Admin";
 	String ISSUED_BY_SYSTEM = "Issued By System";
@@ -18,6 +19,7 @@ public interface Constants {
 	String MESSAGE_AUTHENTICATION_FAILD = "UnAuthorized";
 	String MESSAGE_NOT_FOUND_DEVICE = "Device not registered";
 	String MESSAGE_WRONG_PASSWORD = "current Password is wrong";
+	String MESSAGE_INTERNAL_SERVER_ERROR = "Internal Sever Error";
 
 	String USER_ACTIVITY_ID_NOT_FOUND = "Provided Session Token is not exist";
 	String USER_ALREADY_LOGOUT = "User already logout for provided Session Token";

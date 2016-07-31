@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.LocationInfoDao;
@@ -91,7 +92,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-
+    try
+    {
 		String userId;
 		String password;
 		String deviceId;
@@ -171,7 +173,12 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		result.setTimeout(timeoutPeriod.getHours() * 60 + timeoutPeriod.getMinutes());
 		response.setResponseCode(responseCode);
 		response.setResult(result);
-
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 
@@ -244,7 +251,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
-
+    try
+    {
 		try {
 			sessionToken = logoutInfo.getParameters().getSessionToken();
 		} catch (Exception e) {
@@ -269,6 +277,12 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		}
 		response.setResponseCode(responseCode);
 		response.setResult(null);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 

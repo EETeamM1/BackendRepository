@@ -71,6 +71,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
     result = new ResponseResult();
+    try
+    {
     String userId;
     String deviceId;
     Boolean byAdmin;
@@ -120,6 +122,12 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     response.setResult(result);
     return response;
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
   }
 
   public EnigmaResponse submitDevice(Request deviceIssueInfoRequest)
@@ -127,6 +135,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
     result = new ResponseResult();
+    try
+    {
     String userId;
     String deviceId;
     Boolean byAdmin;
@@ -178,6 +188,12 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_DEVICE_SUBMITTED,
       Constants.CODE_SUCCESS);
     return response;
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
   }
     
     
@@ -337,7 +353,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
-   
+   try
+   {
    DeviceIssueHelper deviceIssueHelper=new DeviceIssueHelper();
    
    List<DeviceInfo> deviceInfoList= deviceInfoDao.getDevicesList();
@@ -347,6 +364,12 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    responseCode.setMessage(Constants.MESSAGE_SUCCESS);
    response.setResponseCode(responseCode);
    response.setResult(result);
+   }
+   catch(Exception e)
+   {
+     CommonUtils.internalSeverError(response, responseCode);
+     return response;
+   }
    return response;
  }
  
@@ -386,6 +409,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
     result = new ResponseResult();
+    try
+    {
     DeviceIssueHelper deviceIssueHelper = new DeviceIssueHelper();
     List<DeviceInfo> deviceInfoList = deviceInfoDao.getDevicesList();
     List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getAllDeviceIssueInfoList();
@@ -395,6 +420,12 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_SUCCESS,
       Constants.CODE_SUCCESS);
     response.setResult(result);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
     return response;
   }
  
@@ -403,6 +434,8 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
     result = new ResponseResult();
+    try
+    {
     DeviceIssueHelper deviceIssueHelper = new DeviceIssueHelper();
     List<DeviceInfo> deviceInfoList = deviceInfoDao.getDevicesList();
     List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getAllDeviceIssueInfoList();
@@ -420,6 +453,12 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_SUCCESS,
       Constants.CODE_SUCCESS);
     response.setResult(result);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
     return response;
   }
 

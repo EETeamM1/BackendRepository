@@ -29,7 +29,8 @@ public class MasterServiceImpl implements MasterService {
 
 	@Override
 	public EnigmaResponse updateMasterPassword(Request masterInfo) {
-
+    try
+    {
 		String currentMasterPassword = null;
 		String newMasterPassword = null;
 		try {
@@ -51,7 +52,14 @@ public class MasterServiceImpl implements MasterService {
 		} else {
 			return wrongPassword();
 		}
-
+    }
+    catch(Exception e)
+    {
+      ResponseCode responseCode = new ResponseCode();
+      EnigmaResponse response = new EnigmaResponse();
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 	}
 
 	private EnigmaResponse wrongPassword() {

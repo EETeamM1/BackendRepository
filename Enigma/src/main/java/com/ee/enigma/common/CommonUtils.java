@@ -194,4 +194,11 @@ public class CommonUtils {
       return timeString;
     }
   }
+	
+	public static void internalSeverError(EnigmaResponse response, ResponseCode responseCode) {
+    responseCode.setCode(Constants.CODE_INTERNAL_SERVER_ERROR);
+    responseCode.setMessage(Constants.MESSAGE_INTERNAL_SERVER_ERROR);
+    response.setResponseCode(responseCode);
+
+  }
 }

@@ -36,7 +36,8 @@ public class UserServiceImpl implements UserService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-
+    try
+    {
 		try {
 			userId = userId.trim();
 		} catch (Exception e) {
@@ -48,19 +49,26 @@ public class UserServiceImpl implements UserService {
 		if(null == userInfo){
 			return userNotFound();
 		}
-		
+		userId=userId.trim();
 		// Success response.
 		result.setUser(userInfo);
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);		
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;		
 	}
 
 	public EnigmaResponse saveUserInfo(Request requestInfo, String operation) {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
-
+    try
+    {
 		String userId;
 		String password;
 		String userName;
@@ -94,6 +102,12 @@ public class UserServiceImpl implements UserService {
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 
@@ -101,6 +115,8 @@ public class UserServiceImpl implements UserService {
 
 		responseCode = new ResponseCode();
 		response = new EnigmaResponse();
+		try
+		{
 		try {
 			userId = userId.trim();
 		} catch (Exception e) {
@@ -123,6 +139,12 @@ public class UserServiceImpl implements UserService {
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
+		}
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 
@@ -130,7 +152,8 @@ public class UserServiceImpl implements UserService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-
+    try
+    {
 		List<UserInfo> userInfoList = userInfoDao.getAllUserInfo();
 		if(null == userInfoList){
 			return userNotFound();
@@ -142,6 +165,12 @@ public class UserServiceImpl implements UserService {
 		responseCode.setMessage(Constants.MESSAGE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
+    }
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 
 	}
@@ -151,7 +180,8 @@ public class UserServiceImpl implements UserService {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
-		
+		try
+		{
 		if(null == searchQuery ||searchQuery.trim().isEmpty()){
 	    	return CommonUtils.badRequest();
 	    }
@@ -164,6 +194,12 @@ public class UserServiceImpl implements UserService {
 		responseCode.setMessage(Constants.MESSAGE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
+		}
+    catch(Exception e)
+    {
+      CommonUtils.internalSeverError(response, responseCode);
+      return response;
+    }
 		return response;
 	}
 	
@@ -180,8 +216,7 @@ public class UserServiceImpl implements UserService {
 	private EnigmaResponse duplicateRequest(){
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
-		
-		responseCode.setCode(Constants.CODE_BAD_REQUEST);
+				responseCode.setCode(Constants.CODE_BAD_REQUEST);
 		responseCode.setMessage(Constants.USER_ALREADY_EXISTS);
 		response.setResponseCode(responseCode);		
 		return response;
