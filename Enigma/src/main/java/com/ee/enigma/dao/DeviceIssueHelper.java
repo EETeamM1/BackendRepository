@@ -279,9 +279,22 @@ public class DeviceIssueHelper
         issueIdJson.put("issueTime", CommonUtils.displayTimeStringNA(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime())));
         issueIdJson.put("submitTime",CommonUtils.displayTimeStringNA(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime())));
         userActityJsonArray = null;
-        if (deviceIssueInfo.getUserActivity() != null)
+        Iterator<UserActivity> iterator = deviceIssueInfo.getUserActivity().iterator();
+        if(iterator!=null &&  !iterator.hasNext())
         {
-          Iterator<UserActivity> iterator = deviceIssueInfo.getUserActivity().iterator();
+          userActityJsonArray = new JSONArray();
+          userActivityJson=new JSONObject();
+          userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
+          userActivityJson.put("inTime", CommonUtils.displayTimeStringNA(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getIssueTime())));
+          userActivityJson.put("outTime", CommonUtils.displayTimeStringNA(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime())));
+          userActivityJson.put("duration", CommonUtils.displayTimeString(CommonUtils.getTimeDiffernce(deviceIssueInfo.getIssueTime(), deviceIssueInfo.getSubmitTime())));
+          userActivityJson.put("useStatus", "Idle");
+          userActityJsonArray.add(userActivityJson);
+          issueIdJson.put("userActivities", userActityJsonArray);
+        }
+        if (deviceIssueInfo.getUserActivity() != null && iterator!=null &&  iterator.hasNext())
+        {
+          //iterator = deviceIssueInfo.getUserActivity().iterator();
           userActityJsonArray = new JSONArray();
           reportInfoList = new ArrayList<ReportInfo>();
           while (iterator.hasNext())
