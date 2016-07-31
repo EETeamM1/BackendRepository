@@ -14,6 +14,7 @@ var URL = {
 	MASTER_UPDATE_URL : '/api/master',
 	APPROVE_DEVICE_URL : '/api/deviceIssue/approveDevice',
 	PENDING_DEVICE_URL : '/api/deviceIssue/pendingDevicesReport',
+	DEVICE_TMELINE_URL : '/api/deviceIssue/deviceTimeLineReport'
 }
 
 var alertBox = function(msg){

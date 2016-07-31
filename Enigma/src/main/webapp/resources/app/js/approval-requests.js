@@ -19,7 +19,7 @@ function getApproveRequests(){
 	});
 }
 getApproveRequests();
-$("#requestCount").text(requestCount || "");
+$("#requestCount").text(requestCount || 0);
 $("#pendingDevices").text(requestCount || 0);
 
 var popOverSettings = {

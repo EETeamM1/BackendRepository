@@ -148,6 +148,41 @@ $("#tabUserReport").on("click",function(e){
 	
 });
 
+var deviceList;
+$("#tabDeviceReport").on("click",function(){
+	if(!deviceList){
+		deviceList = getDeviceList();
+		setDeviceAutocompleteList();
+	}
+});
+
+var getDeviceList = function(){
+	var deviceList=[];
+	$.ajax({
+		type : 'GET',
+		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.DEVICE_DETAILS,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(response_status) {
+			$.each(response_status, function(k, v) {
+				deviceList.push({'label': v.deviceName, 'value':v.deviceId});
+			});
+		},
+		error : function(xhr, status, error) {
+			try {
+				errorResponse = JSON.parse(xhr.responseText);
+				alertBox(errorResponse.responseCode.message);
+			} catch (e) {
+				alertBox("some error occurred, please try later.");
+			}finally{
+				deviceList = null;
+			}
+		}
+	});
+	return deviceList;
+}
+
 var setAutocompleteList = function() {
 	$("#userAutocomplete").autocomplete({
 		minLength : 0,
@@ -159,6 +194,22 @@ var setAutocompleteList = function() {
 		select : function(event, ui) {
 			$("#userAutocomplete").attr("user-id",ui.item.value);
 			$("#userAutocomplete").val(ui.item.label);
+			return false;
+		}
+	});
+};
+
+var setDeviceAutocompleteList = function() {
+	$("#deviceAutocomplete").autocomplete({
+		minLength : 0,
+		source : deviceList,
+		focus : function(event, ui) {
+			$("#project").val(ui.item.label);
+			return false;
+		},
+		select : function(event, ui) {
+			$("#deviceAutocomplete").attr("device-id",ui.item.value);
+			$("#deviceAutocomplete").val(ui.item.label);
 			return false;
 		}
 	});
@@ -204,6 +255,56 @@ $("#fetchUserReport").on("click",function(e){
 		alertBox("Please select user from drop-down");
 		return;
 	}
-	
+});
+
+$("#fetchDeviceReport").on("click",function(e){
+	var deviceId = $("#deviceAutocomplete").attr("device-id");
+	if(!deviceId){
+		alertBox("Please select user from drop-down");
+		return;
+	}	
+	google.charts.setOnLoadCallback(deviceTimelineReport);
 	
 });
+	
+function deviceTimelineReport(){
+	var ReportData = [];
+	var deviceId = $("#deviceAutocomplete").attr("device-id");
+	var container = document.getElementById('device_timeline');
+	var dateString = '&beginDate=19/07/2016&endDate=19/07/2016';
+	$.ajax({
+		type : 'GET',
+		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.DEVICE_TMELINE_URL+'?deviceId='+deviceId,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(response) {
+//			startDate = response.startDate;
+//			endDate = response.endDate;
+			$.each(response.deviceIssueDetails,function(k,v){
+				$.each(v.userActivities, function(k1, v1){
+					if(v1.inTime != "NA" && v1.outTime != "NA" && v1.inTime && v1.outTime){
+						var start = new Date(v1.inTime);
+						var adate = (start.getMonth()+1)+'/'+start.getDate();  
+						ReportData.push([v1.userName+" - "+ adate, v1.useStatus, new Date(v1.inTime), new Date(v1.outTime)]);
+					}
+				});
+	
+			});
+		}
+	});
+	
+    var chart = new google.visualization.Timeline(container);
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'string', id: 'Name' });
+    dataTable.addColumn({ type: 'string', id: 'Status' });
+    dataTable.addColumn({ type: 'date', id: 'Start' });
+    dataTable.addColumn({ type: 'date', id: 'End' });
+    dataTable.addRows(ReportData);
+
+    var options = {
+      timeline: { showRowLabels: true }
+    };
+    chart.draw(dataTable, options);
+}
+

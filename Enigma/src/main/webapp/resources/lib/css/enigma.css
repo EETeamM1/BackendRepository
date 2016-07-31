@@ -3,7 +3,9 @@
    font-family: InventoFont;
    src: url(../fonts/Ubuntu-L.ttf);
 }
-
+.ui-autocomplete.ui-widget, div.ui-datepicker {
+  font-size: 16px;
+}
 body {
 	font-family: InventoFont;
 	font-size: 18px;

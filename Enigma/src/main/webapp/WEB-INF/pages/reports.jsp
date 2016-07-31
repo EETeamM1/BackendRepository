@@ -81,7 +81,11 @@
 			<div role="tabpanel" class="tab-pane fade in active" id="deviceReport">
 				<div class="" style="overflow:none;">
 					<div class="row-content">
-						<input class="n3" type="text" id="deviceAutocomplete" user-name="" placeholder="Search Device" autofocus/>
+						<input class="n3" type="text" id="deviceAutocomplete" device-id="" placeholder="Search Device" autofocus/>
+						<label for="from">From</label>
+						<input class="n3" type="text" id="from" name="from" placeholder="from date (Optional)"/>
+						<label for="to">to</label>
+						<input class="n3" type="text" id="to" name="to" placeholder="to date (Optional)">
 						<button id="fetchDeviceReport" class="btn btn-primary">Search</button>
 					</div>
 					<div id="device_timeline" style="margin:20px;padding 10px;background-color:#ffffff;"></div>	
@@ -90,7 +94,7 @@
 			<div role="tabpanel" class="tab-pane fade in active" id="userReport">
 				<div class="t2 n1" style="overflow:none">
 					<div class="row-content">
-						<input class="n3" type="text" id="userAutocomplete" user-name="" placeholder="Search User" autofocus/>
+						<input class="n3" type="text" id="userAutocomplete" user-id="" placeholder="Search User" autofocus/>
 						<label for="from">From</label>
 						<input class="n3" type="text" id="from" name="from" placeholder="from date (Optional)"/>
 						<label for="to">to</label>
