@@ -261,8 +261,8 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
 		} else {
 			for (Object[] deviceReport : deviceReportDtoObjects) {
 				DeviceReportDto deviceReportDto = new DeviceReportDto();
-				deviceReportDto.setLoginTIme((java.util.Date) deviceReport[0]);
-				deviceReportDto.setLogOutTime((java.util.Date) deviceReport[1]);
+				deviceReportDto.setLoginTIme(CommonUtils.timestampToDate((Timestamp) deviceReport[0]));
+				deviceReportDto.setLogOutTime(CommonUtils.timestampToDate((Timestamp) deviceReport[1]));
 				deviceReportDto.setUserName((String) deviceReport[2]);
 				deviceReportDto.setUserId((String) deviceReport[3]);
 				deviceReportDtoList.add(deviceReportDto);

@@ -195,6 +195,14 @@ public class CommonUtils {
     }
   }
 	
+	public static java.util.Date timestampToDate(java.sql.Timestamp timestamp) {
+		if (null != timestamp) {
+			long milliseconds = timestamp.getTime() + (timestamp.getNanos() / 1000000);
+			return new java.util.Date(milliseconds);
+		}
+		return null;
+	}
+	
 	public static void internalSeverError(EnigmaResponse response, ResponseCode responseCode) {
     responseCode.setCode(Constants.CODE_INTERNAL_SERVER_ERROR);
     responseCode.setMessage(Constants.MESSAGE_INTERNAL_SERVER_ERROR);
