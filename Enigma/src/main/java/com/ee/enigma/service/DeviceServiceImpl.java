@@ -314,6 +314,11 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Override
 	public List<DeviceReportDto> getDeviceReport(String deviceId, Date startDate, Date endDate) {
+		if (null == startDate) {
+			startDate = CommonUtils.getDayBeginTime(new Date());
+			endDate = CommonUtils.getDayEndTime(new Date());
+			
+		}
 		List<DeviceReportDto> deviceReportList = deviceIssueInfoDao.getDeviceReport(deviceId, startDate, endDate);
 		return deviceReportList;
 	}
