@@ -22,11 +22,17 @@
                 <a class="navbar-brand" href="#"><img height="40" alt="logo" src="resources/lib/images/logo.png"></a>
             </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right font-bold">
+                <ul class="nav navbar-nav navbar-right">
 					<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<li><a href="/profile">${pageContext.request.userPrincipal.name}</a></li>
-						<li><a href="<c:url value="/j_spring_security_logout"/>">
+						<li role="presentation" class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="border-bottom:none;" role="button" aria-haspopup="true" aria-expanded="false">
+      						${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
+    						<ul class="dropdown-menu">
+    							<li><a href="/profile" style="border-bottom:none;">Profile</a></li>
+						<li><a href="<c:url value="/j_spring_security_logout"/>" style="border-bottom:none;">
 								Logout</a></li>
+    						</ul>
+						</li>
 					</c:if>
 				</ul>
             </div>
@@ -37,7 +43,6 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="welcome">Home</a></li>
-					<li><a href="#">Profile</a></li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 			        <li class="active"><a href="report">Reports</a></li>
 					<li><a href="entities">Entities</a></li>
@@ -78,7 +83,7 @@
 					<div id="device_submit_trend" style="margin:20px;padding 10px;background-color:#ffffff;"></div>			
 				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane fade in active" id="deviceReport">
+			<div role="tabpanel" class="tab-pane fade in" id="deviceReport">
 				<div class="" style="overflow:none;">
 					<div class="row-content">
 						<input class="n3" type="text" id="deviceAutocomplete" device-id="" placeholder="Search Device" autofocus/>
@@ -91,7 +96,7 @@
 					<div id="device_timeline" style="margin:20px;padding 10px;background-color:#ffffff;"></div>	
 				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane fade in active" id="userReport">
+			<div role="tabpanel" class="tab-pane fade in" id="userReport">
 				<div class="t2 n1" style="overflow:none">
 					<div class="row-content">
 						<input class="n3" type="text" id="userAutocomplete" user-id="" placeholder="Search User" autofocus/>

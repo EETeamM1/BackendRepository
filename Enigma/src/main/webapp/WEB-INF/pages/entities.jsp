@@ -21,11 +21,17 @@
                 <a class="navbar-brand" href="#"><img height="40" alt="logo" src="resources/lib/images/logo.png"></a>
             </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right font-bold">
+                <ul class="nav navbar-nav navbar-right">
 					<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<li><a href="/profile">${pageContext.request.userPrincipal.name}</a></li>
-						<li><a href="<c:url value="/j_spring_security_logout"/>">
+						<li role="presentation" class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="border-bottom:none;" role="button" aria-haspopup="true" aria-expanded="false">
+      						${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
+    						<ul class="dropdown-menu">
+    							<li><a href="/profile" style="border-bottom:none;">Profile</a></li>
+						<li><a href="<c:url value="/j_spring_security_logout"/>" style="border-bottom:none;">
 								Logout</a></li>
+    						</ul>
+						</li>
 					</c:if>
 				</ul>
             </div>
@@ -36,7 +42,6 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="welcome">Home</a></li>
-					<li><a href="#">Profile</a></li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<li><a href="report">Reports</a></li>
 						<li class="active"><a href="entities">Entities</a></li>
@@ -44,21 +49,13 @@
 								class="badge" id="requestCount"></span></a></li>
 					</sec:authorize>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<li><a href="/profile">
-								${pageContext.request.userPrincipal.name}</a></li>
-						<li><a href="<c:url value="/j_spring_security_logout"/>">
-								Logout</a></li>
-					</c:if>
-				</ul>
 			</div>
 		</div>
 	</nav>
 	</div>
 	<!---Header ends--->
 
-	<div class="container body-content">
+	<div class="container body-content" style="margin-top: 133px;">
 		<div id="entities" class="row row-content">
 			<div class="col-md-12">
 				<ul class="nav nav-tabs" role="tablist">
