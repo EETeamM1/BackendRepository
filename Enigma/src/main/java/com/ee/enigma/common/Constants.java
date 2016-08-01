@@ -60,4 +60,7 @@ public interface Constants {
    String RETURN_REPONSE_UPDATED = "updated";
    String RETURN_REPONSE_SAME = "same";
    String RETURN_NA = "NA";
+   
+   String REPORT_DEVIVE_TIMELINE = "device";
+   String REPORT_USER_TIMELINE = "user";
 }

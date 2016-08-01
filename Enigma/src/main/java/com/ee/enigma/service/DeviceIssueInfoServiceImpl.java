@@ -316,7 +316,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   public JSONObject getDeviceTimeLineReport(
     String beginDateString,
     String endDateString,
-    String deviceId)
+    String id,String reportType)
   {
     try
     {
@@ -343,9 +343,20 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
 
     JSONObject jsonObject = null;
     DeviceIssueHelper deviceIssueHelper = new DeviceIssueHelper();
-    List<DeviceIssueInfo> deviceIssueList = deviceIssueInfoDao.getDeviceIssueList(deviceId,
+    List<DeviceIssueInfo> deviceIssueList=null;
+    if(Constants.REPORT_DEVIVE_TIMELINE.equals(reportType))
+    {
+     deviceIssueList = deviceIssueInfoDao.getDeviceIssueList(id,
       beginDate, endDate);
-    jsonObject = deviceIssueHelper.buildDeviceTimeLineReport(deviceIssueList);
+     jsonObject = deviceIssueHelper.buildDeviceTimeLineReport(deviceIssueList);
+    }
+    else if(Constants.REPORT_USER_TIMELINE.equals(reportType))
+    {
+      deviceIssueList = deviceIssueInfoDao.getDeviceIssueListByUserId(id,
+        beginDate, endDate);
+      jsonObject = deviceIssueHelper.buildUserTimeLineReport(deviceIssueList);
+      
+    }
     return jsonObject;
   }
 

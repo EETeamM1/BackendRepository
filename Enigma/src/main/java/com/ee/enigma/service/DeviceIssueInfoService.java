@@ -9,7 +9,7 @@ import com.ee.enigma.response.EnigmaResponse;
 
 public interface DeviceIssueInfoService {
 	public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo);
-	public JSONObject getDeviceTimeLineReport(String beginDateString,String endDateString,String deviceId);
+	public JSONObject getDeviceTimeLineReport(String beginDateString,String endDateString,String id,String reportType);
 	public EnigmaResponse submitDevice(Request deviceIssueInfo);
 	public String populateDeviceIssueInfo(String deviceId, String userId);
 	public EnigmaResponse getDeviceReportAvailability();

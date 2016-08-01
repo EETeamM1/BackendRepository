@@ -573,7 +573,7 @@ public class DeviceIssueInfoServiceImplTest
     Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao).getDeviceIssueList(Matchers.anyString(),Mockito.any(java.util.Date.class),Mockito.any(java.util.Date.class));
     String deviceId=JunitConstants.DEVICE_ID;
     Mockito.doReturn(new DeviceInfo()).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
-    JSONObject jsonObject=deviceIssueInfoServiceImpl.getDeviceTimeLineReport(null,null,deviceId);
+    JSONObject jsonObject=deviceIssueInfoServiceImpl.getDeviceTimeLineReport(null,null,deviceId,"device");
     //Assert.assertTrue(issueId.equals(JunitConstants.ISSUE_ID));
   }
   
@@ -585,7 +585,7 @@ public class DeviceIssueInfoServiceImplTest
     Mockito.doReturn(deviceIssueInfoList).when(deviceIssueInfoDao).getDeviceIssueList(Matchers.anyString(),Mockito.any(java.util.Date.class),Mockito.any(java.util.Date.class));
     String deviceId=JunitConstants.DEVICE_ID;
     Mockito.doReturn(new DeviceInfo()).when(deviceInfoDao).getDeviceInfo(Matchers.anyString());
-    JSONObject jsonObject=deviceIssueInfoServiceImpl.getDeviceTimeLineReport(null,null,deviceId);
+    JSONObject jsonObject=deviceIssueInfoServiceImpl.getDeviceTimeLineReport(null,null,deviceId,"device");
     //Assert.assertTrue(issueId.equals(JunitConstants.ISSUE_ID));
   }
   

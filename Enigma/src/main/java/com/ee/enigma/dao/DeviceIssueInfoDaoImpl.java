@@ -65,6 +65,34 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
 	}
 
 	@Override
+  public List<DeviceIssueInfo> getDeviceIssueListByUserId(String userId, java.util.Date beginDate, java.util.Date endDate) {
+    try {
+      String hql = null;
+      Query query = null;
+      Session session = this.sessionFactory.getCurrentSession();
+      if (beginDate == null) {
+        hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueTime desc";
+      } else {
+        hql = "from DeviceIssueInfo where userId= :userId and ((issueTime between :beginDate and :endDate) or (submitTime between :beginDate and :endDate)) order by issueTime desc";
+      }
+      query = session.createQuery(hql);
+      query.setParameter("userId", userId);
+      if (beginDate != null) {
+        query.setParameter("beginDate", beginDate);
+        query.setParameter("endDate", endDate);
+      }
+      List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
+      if (null == deviceIssueInfoList || deviceIssueInfoList.size() == 0) {
+        return null;
+      }
+      logger.info(deviceIssueInfoList.toString());
+      return deviceIssueInfoList;
+    } catch (HibernateException e) {
+      logger.error(e);
+      return null;
+    }
+  }
+	@Override
 	public void createDeviceIssueInfo(DeviceIssueInfo deviceIssueInfo) {
 		logger.info(deviceIssueInfo);
 		Session session = this.sessionFactory.getCurrentSession();

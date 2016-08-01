@@ -61,10 +61,20 @@ public class DeviceIssueInfoREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject deviceIssueReportService(@QueryParam("beginDate") String beginDate,@QueryParam("endDate") String endDate,
 	  @QueryParam("deviceId") String deviceId) {
-	  JSONObject deviceTimeLineReport = deviceIssueInfoService.getDeviceTimeLineReport(beginDate,endDate,deviceId);
+	  JSONObject deviceTimeLineReport = deviceIssueInfoService.getDeviceTimeLineReport(beginDate,endDate,deviceId,Constants.REPORT_DEVIVE_TIMELINE);
 		return deviceTimeLineReport;
 	}
 
+//TODO
+  @GET
+  @Path("/userTimeLineReport")
+  @Produces(MediaType.APPLICATION_JSON)
+  public JSONObject userIssueReportService(@QueryParam("beginDate") String beginDate,@QueryParam("endDate") String endDate,
+    @QueryParam("userId") String userId) {
+    JSONObject deviceTimeLineReport = deviceIssueInfoService.getDeviceTimeLineReport(beginDate,endDate,userId,Constants.REPORT_USER_TIMELINE);
+    return deviceTimeLineReport;
+  }
+  
 	@POST
 	@Path("/submitDevice")
 	public EnigmaResponse submitDevice(Request deviceIssueInfo) {
