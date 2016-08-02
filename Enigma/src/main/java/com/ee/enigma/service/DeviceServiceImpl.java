@@ -1,5 +1,6 @@
 package com.ee.enigma.service;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,12 +15,14 @@ import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
+import com.ee.enigma.dao.DevicePushNotificationDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
 import com.ee.enigma.dto.DeviceInfoDto;
 import com.ee.enigma.dto.DeviceReportDto;
 import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
+import com.ee.enigma.model.DevicePushNotification;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
@@ -33,6 +36,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 	private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
 	private DeviceInfoDao deviceInfoDao;
+	private DevicePushNotificationDao devicePushNotificationDao;
 	private DeviceIssueInfoDao deviceIssueInfoDao;
 	private EnigmaResponse response;
 	private ResponseCode responseCode;
@@ -42,6 +46,12 @@ public class DeviceServiceImpl implements DeviceService {
 	@Qualifier(value = "deviceInfoDao")
 	public void setDeviceInfoDao(DeviceInfoDao deviceInfoDao) {
 		this.deviceInfoDao = deviceInfoDao;
+	}
+	
+	@Autowired
+	@Qualifier(value = "devicePushNotificationDao")
+	public void setDevicePushNotificationDao(DevicePushNotificationDao devicePushNotificationDao) {
+		this.devicePushNotificationDao = devicePushNotificationDao;
 	}
 
 	@Autowired
@@ -76,6 +86,7 @@ public class DeviceServiceImpl implements DeviceService {
 		String oS;
 		String osVersion;
 		String yearOfManufacturing;
+		Time timeOutPeriod;
 		DeviceInfo deviceInfo = null;
 		try
 		{
@@ -87,6 +98,7 @@ public class DeviceServiceImpl implements DeviceService {
 			oS = requestInfo.getParameters().getoS().trim();
 			osVersion = requestInfo.getParameters().getOsVersion().trim();
 			yearOfManufacturing = requestInfo.getParameters().getYearOfManufacturing().trim();
+			timeOutPeriod = requestInfo.getParameters().getTimeoutPeriod();
 		} catch (Exception e) {
 			logger.error(e);
 			return CommonUtils.badRequest(response, responseCode);
@@ -104,11 +116,16 @@ public class DeviceServiceImpl implements DeviceService {
 		deviceInfo.setOS(oS);
 		deviceInfo.setOSVersion(osVersion);
 		deviceInfo.setYearOfManufacturing(yearOfManufacturing);
+		deviceInfo.setTimeoutPeriod(timeOutPeriod);
+		deviceInfo.setDeviceAvailability("Available");
 		if (opration.equals("save")) {
 			if (isDeviceExists(deviceId) == true) {
 				return CommonUtils.duplicateRequest(response, responseCode, Constants.DEVICE_ALREADY_EXISTS);
 			}
 			deviceInfoDao.createDeviceInfo(deviceInfo);
+			DevicePushNotification devicePushNotification = new DevicePushNotification();
+			devicePushNotification.setDeviceId(deviceId);
+//			devicePushNotificationDao.saveDevicePushNotification(devicePushNotification);
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
 		} else if (opration.equals("update")) {
 			deviceInfoDao.updateDeviceInfo(deviceInfo);

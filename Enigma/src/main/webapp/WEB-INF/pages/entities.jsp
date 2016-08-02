@@ -131,12 +131,12 @@
 								<label for="timeoutPeriod" class="control-label">Timeout
 									Period</label> <select class="form-control" id="timeoutPeriod"
 									name="timeoutPeriod">
-									<option value="30">30 Min</option>
-									<option value="60">60 Min</option>
-									<option value="90">90 Min</option>
-									<option value="120">120 Min</option>
-									<option value="180">180 Min</option>
-									<option value="240">240 Min</option>
+									<option value="00:30:00">30 Min</option>
+									<option value="00:60:00">60 Min</option>
+									<option value="00:90:00">90 Min</option>
+									<option value="00:120:00">120 Min</option>
+									<option value="00:180:00">180 Min</option>
+									<option value="00:240:00">240 Min</option>
 								</select>
 							</div>
 						</div>

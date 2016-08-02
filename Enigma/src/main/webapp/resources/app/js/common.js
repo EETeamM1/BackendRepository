@@ -8,7 +8,7 @@ var URL = {
 	DEVICES_AVAILABILITY : '/api/deviceIssue/deviceReportByAvailability',
 	DEVICE_DETAILS : '/api/deviceIssue/devicesIssueReportByStatus',
 	SAVEUSER_URL : '/api/user/saveUserInfo',
-	SAVEDEVICE_URL : '/api/deviceIssue/saveDeviceInfo',
+	SAVEDEVICE_URL : '/api/device',
 	DEVICE_ISSUE_TIMELINE : '/api/deviceIssue/deviceIssueTimeLineTrendReport',
 	TOP_DEVICES : '/api/deviceReport/topDevices',
 	MASTER_UPDATE_URL : '/api/master',

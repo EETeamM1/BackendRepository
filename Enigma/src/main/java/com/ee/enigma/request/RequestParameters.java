@@ -1,5 +1,7 @@
 package com.ee.enigma.request;
 
+import java.sql.Time;
+
 public class RequestParameters {
 	private String userId;
 	private String password;
@@ -18,7 +20,7 @@ public class RequestParameters {
 	private boolean isAdminApproved;
 	private String manufacturer;
 	private String oS;
-	private String timeoutPeriod;
+	private Time timeoutPeriod;
 	private String yearOfManufacturing;
 	private String currentMasterPassword;
 	private String newMasterPassword;
@@ -202,11 +204,11 @@ public class RequestParameters {
 		this.oS = oS;
 	}
 
-	public String getTimeoutPeriod() {
+	public Time getTimeoutPeriod() {
 		return timeoutPeriod;
 	}
 
-	public void setTimeoutPeriod(String timeoutPeriod) {
+	public void setTimeoutPeriod(Time timeoutPeriod) {
 		this.timeoutPeriod = timeoutPeriod;
 	}
 
