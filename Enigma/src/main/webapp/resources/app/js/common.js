@@ -7,7 +7,7 @@ var URL = {
 	SUBMIT_DEVICE : '/api/deviceIssue/submitDevice',
 	DEVICES_AVAILABILITY : '/api/deviceIssue/deviceReportByAvailability',
 	DEVICE_DETAILS : '/api/deviceIssue/devicesIssueReportByStatus',
-	SAVEUSER_URL : '/api/user/saveUserInfo',
+	SAVEUSER_URL : '/api/user',
 	SAVEDEVICE_URL : '/api/device',
 	DEVICE_ISSUE_TIMELINE : '/api/deviceIssue/deviceIssueTimeLineTrendReport',
 	TOP_DEVICES : '/api/deviceReport/topDevices',

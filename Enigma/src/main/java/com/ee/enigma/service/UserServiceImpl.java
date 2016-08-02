@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.UserInfoDao;
+import com.ee.enigma.dao.UserRoleDao;
 import com.ee.enigma.model.UserInfo;
+import com.ee.enigma.model.UserRole;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
 	// private Logger logger = Logger.getLogger(UserActivityDaoImpl.class);
 	private UserInfoDao userInfoDao;
+	private UserRoleDao userRoleDao;
 	private EnigmaResponse response;
 	private ResponseCode responseCode;
 	private ResponseResult result;
@@ -30,6 +33,13 @@ public class UserServiceImpl implements UserService {
 	@Qualifier(value = "userInfoDao")
 	public void setUserInfoDao(UserInfoDao userInfoDao) {
 		this.userInfoDao = userInfoDao;
+	}
+	
+
+	@Autowired
+	@Qualifier(value = "userRoleDao")
+	public void setUserRoleDao(UserRoleDao userRoleDao) {
+		this.userRoleDao = userRoleDao;
 	}
 
 	public EnigmaResponse getUserInfo(String userId) {
@@ -88,11 +98,16 @@ public class UserServiceImpl implements UserService {
 		userInfo.setPassword(password);
 		userInfo.setUserId(userId);
 		userInfo.setUserName(userName);
+		
+		UserRole userRole = new UserRole();
+		userRole.setUserId(userId);
+		userRole.setRole("ROLE_USER");
 		if (operation.equals("save")) {
 			if(isUserExists(userId) == true){
 				return duplicateRequest();
 			}
 			userInfoDao.createUserInfo(userInfo);
+			userRoleDao.saveUserRole(userRole);
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
 		} else if (operation.equals("update")) {
 			userInfoDao.updateUserInfo(userInfo);

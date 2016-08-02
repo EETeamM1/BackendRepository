@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ee.enigma.model.DevicePushNotification;
+import com.ee.enigma.model.UserRole;
 
-@Repository(value = "devicePushNotificationDao")
+@Repository(value = "userRoleDao")
 @Transactional
-public class DevicePushNotificationDaoImpl implements DevicePushNotificationDao {
+public class UserRoleDaoImpl implements UserRoleDao{
 
 	private Logger logger = Logger.getLogger(DeviceInfoDaoImpl.class);
 	private SessionFactory sessionFactory;
@@ -23,15 +23,15 @@ public class DevicePushNotificationDaoImpl implements DevicePushNotificationDao 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	
 	@Override
-	public DevicePushNotification getDeviceInfo(String deviceId) {
+	public UserRole getUserRole(String userId) {
 		try {
 			Session session = this.sessionFactory.getCurrentSession();
-			DevicePushNotification devicePushNotification = (DevicePushNotification) session
-					.load(DevicePushNotification.class, deviceId);
-			logger.info(devicePushNotification.toString());
-			return devicePushNotification;
+			UserRole userRole = (UserRole) session
+					.load(UserRole.class, userId);
+			logger.info(userRole.toString());
+			return userRole;
 		} catch (ObjectNotFoundException e) {
 			logger.error(e);
 			return null;
@@ -39,21 +39,22 @@ public class DevicePushNotificationDaoImpl implements DevicePushNotificationDao 
 	}
 
 	@Override
-	public void updateDevicePushNotification(DevicePushNotification devicePushNotification) {
+	public void updateUserRole(UserRole userRole) {
 		Session session = this.sessionFactory.getCurrentSession();
-		session.update(devicePushNotification);
+		session.update(userRole);
+		
 	}
 
 	@Override
-	public void saveDevicePushNotification(DevicePushNotification devicePushNotification) {
+	public void saveUserRole(UserRole userRole) {
 		try {
-		logger.info(devicePushNotification);
+		logger.info(userRole);
 		Session session = this.sessionFactory.getCurrentSession();
-		session.persist(devicePushNotification);
-
+		session.persist(userRole);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
 	}
 
 }

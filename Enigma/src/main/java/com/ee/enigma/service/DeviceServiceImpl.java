@@ -125,7 +125,7 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceInfoDao.createDeviceInfo(deviceInfo);
 			DevicePushNotification devicePushNotification = new DevicePushNotification();
 			devicePushNotification.setDeviceId(deviceId);
-//			devicePushNotificationDao.saveDevicePushNotification(devicePushNotification);
+			devicePushNotificationDao.saveDevicePushNotification(devicePushNotification);
 			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_SAVE);
 		} else if (opration.equals("update")) {
 			deviceInfoDao.updateDeviceInfo(deviceInfo);

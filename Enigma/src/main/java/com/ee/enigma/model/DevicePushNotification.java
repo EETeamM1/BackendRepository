@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="device_push_notification")
+@Table(name="DEVICE_PUSH_NOTIFICATION")
 public class DevicePushNotification {
 
 	@Id
@@ -17,7 +17,7 @@ public class DevicePushNotification {
 	private Date push_notification_end_time;
 	private String userId;
 	
-	public String getDeviceId() {
+	public String getDeviceId() {	
 		return deviceId;
 	}
 	

@@ -47,6 +47,9 @@
 				<value>com.ee.enigma.model.DeviceIssueInfo</value>
 			<value>com.ee.enigma.model.LocationInfo</value>
 				<value>com.ee.enigma.model.Session</value>
+				<value>com.ee.enigma.model.DevicePushNotification</value>
+				<value>com.ee.enigma.model.UserRole</value>
+				
 			</list>
 		</property>
 		<property name="hibernateProperties">
