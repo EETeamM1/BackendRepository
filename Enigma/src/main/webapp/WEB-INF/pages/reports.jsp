@@ -85,14 +85,11 @@
 			</div>
 			<div role="tabpanel" class="tab-pane fade in" id="deviceReport">
 				<div class="" style="overflow:none;">
-					<div class="row-content">
+					<center><div class="row-content">
 						<input class="n3" type="text" id="deviceAutocomplete" device-id="" placeholder="Search Device" autofocus/>
-						<label for="from">From</label>
-						<input class="n3" type="text" id="from" name="from" placeholder="from date (Optional)"/>
-						<label for="to">to</label>
-						<input class="n3" type="text" id="to" name="to" placeholder="to date (Optional)">
 						<button id="fetchDeviceReport" class="btn btn-primary">Search</button>
 					</div>
+					<div id="device_timeline_range" class="row-content" style="margin-top: 15px;"><i class="fa fa-calendar"></i><span class="calendar-range">1d</span><span class="calendar-range">1w</span><span class="calendar-range">1m</span><span class="calendar-range">3m</span></div></center>
 					<div id="device_timeline" style="margin:20px;padding 10px;background-color:#ffffff;"></div>	
 				</div>
 			</div>

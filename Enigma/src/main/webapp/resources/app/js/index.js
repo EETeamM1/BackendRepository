@@ -6,7 +6,7 @@ var deviceIssueObj;
 $("#totalDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
 $("#availableDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
 $("#issuedDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
-$("#device_list").html('<div style="font-size:32px;text-align:center;">Loading Device List...<i class="fa fa-refresh fa-spin"></i></div>');
+$("#device_list").html('<div style="font-size:32px;text-align:center;"><i class="fa fa-refresh fa-spin"></i> Loading Device List...</div>');
 
 var deviceStatusviseCount = function(){
 		
@@ -149,6 +149,7 @@ $.ajax({
 				try {
 					errorResponse = JSON.parse(xhr.responseText);
 					alertBox(errorResponse.responseCode.message);
+					$("#device_list").html('<div style="font-size:32px;text-align:center;"></i> Loading Error</div>');
 				} catch (e) {
 					alertBox("some error occurred, please try later.");
 				}

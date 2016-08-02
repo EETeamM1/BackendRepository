@@ -314,4 +314,16 @@ font-weight: bold;
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }
 }
+
+.calendar-range{
+	background : #efefef;
+	color: #000;
+	padding : 2px;
+	margin: 5px;
+	border: 1px solid #999999;
+}
+
+.calendar-range.active{
+	background : #999999;
+}
 /*css for login screen end*/
