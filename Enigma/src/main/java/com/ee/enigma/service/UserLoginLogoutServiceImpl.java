@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.dao.DeviceInfoDao;
+import com.ee.enigma.dao.DevicePushNotificationDao;
 import com.ee.enigma.dao.LocationInfoDao;
 import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.dao.SessionDao;
@@ -19,6 +20,7 @@ import com.ee.enigma.dao.UserActivityDao;
 import com.ee.enigma.dao.UserActivityDaoImpl;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.model.DeviceInfo;
+import com.ee.enigma.model.DevicePushNotification;
 import com.ee.enigma.model.LocationInfo;
 import com.ee.enigma.model.Master;
 import com.ee.enigma.model.Session;
@@ -44,7 +46,14 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 	private ResponseCode responseCode;
 	private ResponseResult result;
 	private DeviceIssueInfoService deviceIssueInfoService;
+	private DevicePushNotificationDao devicePushNotificationDao;
 
+	@Autowired
+	@Qualifier(value = "devicePushNotificationDao")
+	public void setDevicePushNotificationDao(DevicePushNotificationDao devicePushNotificationDao) {
+		this.devicePushNotificationDao = devicePushNotificationDao;
+	}
+	
 	@Autowired
 	@Qualifier(value="deviceIssueInfoService")
 	public void setDeviceIssueInfoService(DeviceIssueInfoService deviceIssueInfoService) {
@@ -164,6 +173,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
 		// create session validity entry.
 		createSessionEntry(activityId, loginTime, timeoutPeriod);
+		updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId);
 
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
@@ -185,9 +195,18 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 	private void createSessionEntry(String activityId, Date loginTime, Time timeoutPeriod) {
 		Session session = new Session();
 		session.setActivityId(activityId);
-		Date notificationStartTime = getNotificationStartTime(loginTime, timeoutPeriod);
+		Date notificationStartTime = getNotificationStartTime(loginTime, timeoutPeriod, 0);
 		session.setNotificationStartTime(notificationStartTime);
 		sessionDao.createSeesionEntry(session);
+	}
+	
+	private void updateDevicePushNotification(Time timeoutPeriod, String deviceId, String deviceToken, String userId) {
+		DevicePushNotification devicePushNotification = devicePushNotificationDao.getDeviceInfo(deviceId);
+		devicePushNotification.setPush_notification_start_time(getNotificationStartTime(new Date(), timeoutPeriod, 0));
+		devicePushNotification.setPush_notification_end_time(getNotificationStartTime(new Date(), timeoutPeriod, 1));
+		devicePushNotification.setDeviceToken(deviceToken);
+		devicePushNotification.setUserId(userId);
+		devicePushNotificationDao.updateDevicePushNotification(devicePushNotification);
 	}
 
 	private String getGeoLocation(float latitude, float longitude) {
@@ -225,8 +244,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		return response;
 	}
 
-	private Date getNotificationStartTime(Date loginTime, Time timeoutPeriod) {
-		int hour = loginTime.getHours() + timeoutPeriod.getHours();
+	private Date getNotificationStartTime(Date loginTime, Time timeoutPeriod, int delay) {
+		int hour = loginTime.getHours() + timeoutPeriod.getHours() + delay;
 		int minutes = loginTime.getMinutes() + timeoutPeriod.getMinutes();
 		Date sessionExpireTime = new Date(loginTime.getTime());
 		sessionExpireTime.setHours(hour);

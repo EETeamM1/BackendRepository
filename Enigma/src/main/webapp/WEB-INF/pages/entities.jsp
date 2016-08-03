@@ -144,11 +144,11 @@
 							<div class="row">
 								<div class="form-group col-sm-3 col-sm-offset-1">
 									<input type="submit" name="device-submit" id="device-submit"
-										tabindex="4" class="form-control btn btn-login" value="Submit">
+										tabindex="4" class="form-control btn btn-primary" value="Submit">
 								</div>
 								<div class="form-group col-sm-3 col-sm-offset-1">
 									<input type="reset" name="device-reset" id="device-reset"
-										tabindex="4" class="form-control btn btn-login" value="Reset">
+										tabindex="4" class="form-control btn btn-primary" value="Reset">
 								</div>
 							</div>
 						</div>
@@ -188,11 +188,11 @@
 							<div class="row">
 								<div class="form-group col-sm-3 col-sm-offset-1">
 									<input type="submit" name="device-submit" id="user-submit"
-										tabindex="4" class="form-control btn btn-login" value="Submit">
+										tabindex="4" class="form-control btn btn-primary" value="Submit">
 								</div>
 								<div class="form-group col-sm-3 col-sm-offset-1">
 									<input type="reset" name="device-reset" id="user-reset"
-										tabindex="4" class="form-control btn btn-login" value="Reset">
+										tabindex="4" class="form-control btn btn-primary" value="Reset">
 								</div>
 							</div>
 						</div>
@@ -233,11 +233,11 @@
 							<div class="row">
 								<div class="form-group col-sm-3 col-sm-offset-1">
 									<input type="submit" id="master-submit" tabindex="4"
-										class="form-control btn btn-login" value="Submit">
+										class="form-control btn btn-primary" value="Submit">
 								</div>
 								<div class="form-group col-sm-3 col-sm-offset-1">
 									<input type="reset" id="master-reset" tabindex="4"
-										class="form-control btn btn-login" value="Reset">
+										class="form-control btn btn-primary" value="Reset">
 								</div>
 							</div>
 						</div>
