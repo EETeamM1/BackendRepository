@@ -27,7 +27,7 @@
 
 	<!-- Login page body start -->
 	<!-- left side content text -->
-	<div class="container body-content">
+	<div class="container body-content" style="margin-top:133px;">
 		<div class="col-md-6 hidden-sm hidden-xs">
 			<div class="media">
 				<!-- <div class="media-left">

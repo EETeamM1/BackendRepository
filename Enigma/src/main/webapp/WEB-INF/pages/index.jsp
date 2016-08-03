@@ -46,12 +46,15 @@
 		<div class="container">
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="welcome">Home</a></li>
+					<li class="active"><a href="#" id="home">Home</a></li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 			        <li><a href="report">Reports</a></li>
 					<li><a href="entities">Entities</a></li>
 					<li><a href="#" data-toggle="popover" id="ApprovalRequests">Requests<span class="badge"
 							id="requestCount"></span></a></li>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_USER')">
+					<li id="myDevices"><a href="#" >My Devices</a></li>
 					</sec:authorize>
 				</ul>
 			</div>

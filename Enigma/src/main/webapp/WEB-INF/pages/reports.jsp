@@ -87,26 +87,37 @@
 				<div class="" style="overflow:none;">
 					<center><div class="row-content">
 						<input class="n3" type="text" id="deviceAutocomplete" device-id="" placeholder="Search Device" autofocus/>
+						<span style="font-size:25px; padding:5px;" class="calendar-icon-device"><i class="fa fa-calendar"></i></span>
 						<button id="fetchDeviceReport" class="btn btn-primary">Search</button>
 					</div>
-					<div id="device_timeline_range" class="row-content" style="margin-top: 15px;"><i class="fa fa-calendar"></i><span class="calendar-range">1d</span><span class="calendar-range">1w</span><span class="calendar-range">1m</span><span class="calendar-range">3m</span></div></center>
+					<div id="device_timeline_range" class="row-content hide" style="margin-top: 15px;"><span class="calendar-range">1d</span><span class="calendar-range">1w</span><span class="calendar-range">1m</span><span class="calendar-range">3m</span></div></center>
 					<div id="device_timeline" style="margin:20px;padding 10px;background-color:#ffffff;"></div>	
 				</div>
 			</div>
 			<div role="tabpanel" class="tab-pane fade in" id="userReport">
-				<div class="t2 n1" style="overflow:none">
-					<div class="row-content">
+				<div class="" style="overflow:none">
+					<center><div class="row-content">
 						<input class="n3" type="text" id="userAutocomplete" user-id="" placeholder="Search User" autofocus/>
-						<label for="from">From</label>
-						<input class="n3" type="text" id="from" name="from" placeholder="from date (Optional)"/>
-						<label for="to">to</label>
-						<input class="n3" type="text" id="to" name="to" placeholder="to date (Optional)">
+						<span style="font-size:25px; padding:5px;" class="calendar-icon-user"><i class="fa fa-calendar"></i></span>
 						<button id="fetchUserReport" class="btn btn-primary">Search</button>
 					</div>
+					<div id="user_timeline_range" class="row-content hide" style="margin-top: 15px;"><span class="calendar-range-user">1d</span><span class="calendar-range-user">1w</span><span class="calendar-range-user">1m</span><span class="calendar-range-user">3m</span></div></center>
 					<div id="user_timeline" style="margin:20px;padding 10px;background-color:#ffffff;"></div>	
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="alertModal" class="modal fade">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <!-- dialog body -->
+	      <div class="modal-body">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <span id="alertMessage"></span>
+	      </div>
+	      <div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">OK</button></div>
+	    </div>
+	  </div>
 	</div>
 	<script src="resources/app/js/report.js"></script>
 	<sec:authorize access="hasRole('ROLE_ADMIN')"><script src="resources/app/js/approval-requests.js"></script></sec:authorize>

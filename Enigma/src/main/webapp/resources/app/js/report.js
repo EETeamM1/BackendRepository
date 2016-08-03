@@ -214,7 +214,7 @@ var setDeviceAutocompleteList = function() {
 			return false;
 		}
 	});
-};
+}
 
 $( function() {
     var dateFormat = "mm/dd/yy",
@@ -256,12 +256,13 @@ $("#fetchUserReport").on("click",function(e){
 		alertBox("Please select user from drop-down");
 		return;
 	}
+	google.charts.setOnLoadCallback(userTimelineReport);
 });
 
 $("#fetchDeviceReport").on("click",function(e){
 	var deviceId = $("#deviceAutocomplete").attr("device-id");
 	if(!deviceId){
-		alertBox("Please select user from drop-down");
+		alertBox("Please select device from drop-down");
 		return;
 	}	
 	google.charts.setOnLoadCallback(deviceTimelineReport);
@@ -272,7 +273,7 @@ function deviceTimelineReport(){
 	var ReportData = [];
 	var deviceId = $("#deviceAutocomplete").attr("device-id");
 	var container = document.getElementById('device_timeline');
-	var dateString = getDateRange();
+	var dateString = getDateRange('device');
 	$.ajax({
 		type : 'GET',
 		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.DEVICE_TMELINE_URL+'?deviceId='+deviceId+dateString,
@@ -308,6 +309,75 @@ function deviceTimelineReport(){
 			});
 		}
 	});
+	
+	if(ReportData.length == 0){
+		$("#device_timeline").html("<center><span class='t1'>No Data Found</span></center>");
+		return;
+	}
+	
+	var rowHeight = 41;
+    var chartHeight = (ReportData.length) * rowHeight;
+
+    var chart = new google.visualization.Timeline(container);
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'string', id: 'Name' });
+    dataTable.addColumn({ type: 'string', id: 'Status' });
+    dataTable.addColumn({ type: 'date', id: 'Start' });
+    dataTable.addColumn({ type: 'date', id: 'End' });
+    dataTable.addRows(ReportData);
+
+    var options = {
+      timeline: { showRowLabels: true },
+      height: chartHeight
+    };
+    chart.draw(dataTable, options);
+}
+
+function userTimelineReport(){
+	var ReportData = [];
+	var userId = $("#userAutocomplete").attr("user-id");
+	var container = document.getElementById('user_timeline');
+	var dateString = getDateRange('user');
+	$.ajax({
+		type : 'GET',
+		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.USER_TIMELINE_URL+'?userId='+userId+dateString,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(response) {
+//			startDate = response.startDate;
+//			endDate = response.endDate;
+			$.each(response.deviceIssueDetails,function(k,v){
+				$.each(v.userActivities, function(k1, v1){
+					if(v1.inTime != "NA" && v1.outTime != "NA" && v1.inTime && v1.outTime){
+						var start = new Date(v1.inTime);
+						var end = new Date(v1.outTime);
+						var dateArray = getDates(start, end);
+						var arrayLength = dateArray.length;
+						for(var i=0; i<arrayLength;i++){
+							var adate = (new Date(dateArray[i]).getMonth()+1)+'/'+new Date(dateArray[i]).getDate();  
+							var startLimit = new Date(0,0,0,0,0,0);
+							var endLimit = new Date(0,0,0,23,59,59);
+							if(i==0){
+								startLimit = new Date(0,0,0,start.getHours(),start.getMinutes(),start.getSeconds());
+							}
+							if(i==(arrayLength-1)){
+								endLimit = new Date(0,0,0,end.getHours(),end.getMinutes(),end.getSeconds());
+							}
+							ReportData.push([v1.deviceName+" - "+ adate, v1.useStatus, startLimit, endLimit]);
+						}
+						
+					}
+				});
+				
+			});
+		}
+	});
+
+	if(ReportData.length == 0){
+		$("#user_timeline").html("<center><span class='t1'>No Data Found</span></center>");
+		return;
+	}
 	
 	var rowHeight = 41;
     var chartHeight = (ReportData.length) * rowHeight;
@@ -348,11 +418,51 @@ function getDates(startDate, stopDate) {
 $(".calendar-range").on("click",function(e){
 	$(".calendar-range").removeClass("active");
 	$(this).addClass("active");
+	if($("#deviceAutocomplete").attr("device-id")){
+		$("#fetchDeviceReport").trigger("click");
+	}	
 });
 
-function getDateRange(){
-	var elements = $(".calendar-range");
+$("#deviceAutocomplete").on("keyup",function(e){
+	$("#deviceAutocomplete").attr("device-id","");
+});
+
+$(".calendar-range-user").on("click",function(e){
+	$(".calendar-range-user").removeClass("active");
+	$(this).addClass("active");
+	if($("#userAutocomplete").attr("user-id")){
+		$("#fetchUserReport").trigger("click");
+	}	
+});
+
+$("#userAutocomplete").on("keyup",function(e){
+	$("#userAutocomplete").attr("user-id","");
+});
+
+$(".calendar-icon-device").on("click",function(e){
+	$("#device_timeline_range").toggleClass("hide");
+	if($("#device_timeline_range").hasClass("hide")){
+		$(".calendar-range").removeClass("active");
+	}
+});
+$(".calendar-icon-user").on("click",function(e){
+	$("#user_timeline_range").toggleClass("hide");
+	if($("#user_timeline_range").hasClass("hide")){
+		$(".calendar-range-user").removeClass("active");
+	}
+});
+
+function getDateRange(reportType){
+	var elements ;
 	var dateRange = "";
+	if(reportType=='device'){
+		elements = $(".calendar-range")
+	}else if(reportType=='user'){
+		elements = $(".calendar-range-user")
+	}
+	if($("#device_timeline_range").hasClass("hide") && $("#user_timeline_range").hasClass("hide")){
+		return dateRange;
+	}
 	for(i=0;i<elements.length;i++){
 		if((elements[i].className).includes("active")){
 			var currentDate = new Date();

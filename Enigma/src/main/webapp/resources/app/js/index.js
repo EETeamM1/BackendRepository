@@ -61,18 +61,35 @@ function compareForUser(a,b){
 
 
 var DeviceRenderingData = [];
-var viewRenderer = function(){
+var myDeviceRenderingData = [];
+var viewRenderer = function(isMyDevice){
 	var isAdmin = $("#isAdmin").text();
 	var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
 	$('#deviceStatusTemplate').text(temp);
 	$("#device_list").html('');
+	if(isMyDevice){
+		myDeviceRenderingData.sort(compareByName);
+		myDeviceRenderingData.sort(compareForUser);
+		if(myDeviceRenderingData.length==0){
+			$("#myDevices").addClass("hide");
+			$("#deviceStatusTemplate").tmpl(DeviceRenderingData).appendTo("#device_list");
+			$(".nav.navbar-nav li:first-child").addClass("active");
+			$(".nav.navbar-nav li:last").removeClass("active");
+		}else{
+			$("#deviceStatusTemplate").tmpl(myDeviceRenderingData).appendTo("#device_list");
+		}
+	}else{
 	DeviceRenderingData.sort(compareByName);
 	if(isAdmin){
 		DeviceRenderingData.sort(compare);
 	}else{
 		DeviceRenderingData.sort(compareForUser);
+			if(!$("#myDevices").hasClass("hide") && myDeviceRenderingData.length==0){
+				$("#myDevices").addClass("hide");
+			}
 	}
 	$("#deviceStatusTemplate").tmpl(DeviceRenderingData).appendTo("#device_list");
+	}
 	$(".issue_device_modal").click(function(e) {
 		e.preventDefault();
 		issueDeviceModel(this);
@@ -86,6 +103,19 @@ var viewRenderer = function(){
 		deviceDetails(this);
 	});
 }
+
+$("#myDevices").on("click",function(e){
+	e.preventDefault();
+	viewRenderer(true);
+	$(".nav.navbar-nav li:first-child").removeClass("active");
+	$(".nav.navbar-nav li:last").addClass("active");
+});
+$("#home").on("click",function(e){
+	e.preventDefault();
+	viewRenderer();
+	$(".nav.navbar-nav li:first-child").addClass("active");
+	$(".nav.navbar-nav li:last").removeClass("active");
+});
 
 $.ajax({
 			type : 'GET',
@@ -123,8 +153,22 @@ $.ajax({
 							userName = value.userName;
 							searchUser = value.userName.toLowerCase();
 							hideIssuedDetails=""
-						if(isAdmin || (loggedUserId == value.userId)){
-							hideIssued="";
+						if(isAdmin){
+							hideIssued=""
+						}else if((loggedUserId == value.userId)){
+							myDeviceRenderingData.push({
+								'img' : '' + osType + '',
+								'searchKeywords' : '' + value.os.toLowerCase() + ' '+ value.deviceName.toLowerCase()+' '+value.deviceAvailability.toLowerCase()+' '+searchUser,
+								'deviceId' : value.deviceId,
+								'device_name' : value.deviceName,
+								'status' : value.deviceAvailability,
+								'OSVersion' : value.osversion,
+								'user_id': userId,
+								'user_name' : userName,
+								'hideAvailable' : hideAvailable,
+								'hideIssuedDetails' : hideIssuedDetails,
+								'hideIssued' : ""
+							})
 						}
 					}
 
