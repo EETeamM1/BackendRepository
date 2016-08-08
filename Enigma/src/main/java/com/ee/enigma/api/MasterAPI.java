@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.ee.enigma.common.CommonUtils;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.MasterService;
@@ -33,11 +35,23 @@ public class MasterAPI {
 
 	@PUT
 	@Path("/")
-	public Response saveUserInfo(Request userInfo) {
-		logger.debug(userInfo);
-		EnigmaResponse userResponse = masterService.updateMasterPassword(userInfo);
-		return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode())
-				.build();
-	}
+  public Response saveUserInfo(Request userInfo)
+  {
+    logger.debug(userInfo);
+    EnigmaResponse userResponse = null;
+    String errorMessage = "";
+    try
+    {
+      userResponse = masterService.updateMasterPassword(userInfo);
+      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+  }
 
 }

@@ -14,10 +14,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.ee.enigma.common.CommonUtils;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dto.DeviceInfoDto;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -28,7 +31,7 @@ import com.ee.enigma.service.DeviceService;
 @Produces("application/json")
 public class DeviceREST
 {
-//  private Logger logger = Logger.getLogger(DeviceREST.class);
+   private Logger logger = Logger.getLogger(DeviceREST.class);
 
   private DeviceService deviceService;
 
@@ -43,9 +46,22 @@ public class DeviceREST
   @Path("/")
   public Response saveDeviceInfo(Request requestInfo)
   {
-    EnigmaResponse userResponse = deviceService.saveDeviceInfo(requestInfo);
+    String errorMessage = "";
+    EnigmaResponse userResponse;
+    try
+    {
+    userResponse = deviceService.saveDeviceInfo(requestInfo);
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+
   }
 
 
@@ -53,9 +69,20 @@ public class DeviceREST
   @Path("/{id}")
   public Response deleteUserInfo(@PathParam("id") String deviceId)
   {
-    EnigmaResponse userResponse = deviceService.deleteDeviceInfo(deviceId);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON)
-      .status(userResponse.getResponseCode().getCode()).build();
+    String errorMessage = "";
+    EnigmaResponse userResponse;
+    try
+    {
+      userResponse = deviceService.deleteDeviceInfo(deviceId);
+      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
   }
   
   @GET
@@ -81,10 +108,21 @@ public class DeviceREST
   @Path("/{id}")
   public Response updateDeviceInfoStatus(@PathParam("id") String deviceId, Request requestInfo)
   {
-    requestInfo.getParameters().setDeviceId(deviceId);
-    EnigmaResponse userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON)
-      .status(userResponse.getResponseCode().getCode()).build();
+    String errorMessage = "";
+    EnigmaResponse userResponse;
+    try
+    {
+      requestInfo.getParameters().setDeviceId(deviceId);
+      userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
+      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
   }
   
 }

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.CommonUtils;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -42,28 +43,66 @@ public class UserREST
   @Path("/")
   public Response saveUserInfo(Request userInfo)
   {
-    EnigmaResponse userResponse = userService.saveUserInfo(userInfo,"save");
+    EnigmaResponse userResponse = null;
+    String errorMessage="";
+    try
+    {
+     userResponse = userService.saveUserInfo(userInfo,"save");
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
   }
   
   @PUT
   @Path("/{id}")
   public Response updateUserInfo(@PathParam("id") String userId, Request userInfo)
   {
+    EnigmaResponse userResponse = null;
+    String errorMessage="";
+    try
+    {
 	 userInfo.getParameters().setUserId(userId);
-	 EnigmaResponse userResponse = userService.saveUserInfo(userInfo,"update");
+	  userResponse = userService.saveUserInfo(userInfo,"update");
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+ 
   }
 
   @DELETE
   @Path("/{id}")
   public Response deleteUserInfo(@PathParam("id") String userId)
   {
-    EnigmaResponse userResponse = userService.deleteUserInfo(userId);
+    EnigmaResponse userResponse = null;
+    String errorMessage="";
+    try
+    {
+     userResponse = userService.deleteUserInfo(userId);
     return Response.ok(userResponse, MediaType.APPLICATION_JSON)
       .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+
   }
   
   @GET
@@ -71,17 +110,41 @@ public class UserREST
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserInfo(@PathParam("id") String userId)
   {
-	EnigmaResponse userResponse =  userService.getUserInfo(userId);
-	return Response.ok(userResponse, MediaType.APPLICATION_JSON)
-		      .status(userResponse.getResponseCode().getCode()).build();
+    EnigmaResponse userResponse = null;
+    String errorMessage="";
+    try
+    {
+      userResponse = userService.getUserInfo(userId);
+      return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+        .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserInfo()
   {
-	EnigmaResponse userResponse=  userService.getAllUser();
+  EnigmaResponse userResponse = null;
+  String errorMessage="";
+  try
+  {
+	 userResponse=  userService.getAllUser();
 	return Response.ok(userResponse, MediaType.APPLICATION_JSON)
 		      .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
   }
 }

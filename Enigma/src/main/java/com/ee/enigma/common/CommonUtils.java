@@ -209,4 +209,20 @@ public class CommonUtils {
     response.setResponseCode(responseCode);
 
   }
+	public static EnigmaResponse internalSeverError() {
+	  EnigmaResponse response=new EnigmaResponse();
+	  ResponseCode responseCode=new ResponseCode();
+	  responseCode.setCode(Constants.CODE_INTERNAL_SERVER_ERROR);
+    responseCode.setMessage(Constants.MESSAGE_INTERNAL_SERVER_ERROR);
+    response.setResponseCode(responseCode);
+    return response;
+  }
+	public static EnigmaResponse internalSeverError(String error) {
+    EnigmaResponse response=new EnigmaResponse();
+    ResponseCode responseCode=new ResponseCode();
+    responseCode.setCode(Constants.CODE_INTERNAL_SERVER_ERROR);
+    responseCode.setMessage(error);
+    response.setResponseCode(responseCode);
+    return response;
+  }
 }

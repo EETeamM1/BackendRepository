@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueHelper;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
@@ -66,7 +68,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     this.userInfoDao = userInfoDao;
   }
   
-  public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest)
+  public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest) throws EngimaException
   {
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -123,14 +125,21 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     response.setResult(result);
     return response;
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
   }
 
-  public EnigmaResponse submitDevice(Request deviceIssueInfoRequest)
+  public EnigmaResponse submitDevice(Request deviceIssueInfoRequest) throws EngimaException
   {
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -189,18 +198,27 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       Constants.CODE_SUCCESS);
     return response;
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
   }
     
     
   @Override
- public String populateDeviceIssueInfo(String deviceId, String userId)
+ public String populateDeviceIssueInfo(String deviceId, String userId) throws EngimaException
  {
-   String issueId = null;
+   String issueId = null; 
+   try
+   {
    DeviceIssueInfo newDeviceIssueInfo = null;
    List<DeviceIssueInfo> deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueInfoList(deviceId);
    DeviceIssueInfo deviceIssueInfoTemp = null;
@@ -260,15 +278,30 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
        issueId = deviceIssueInfoTemp.getIssueId();
      }
    }
+   }
+  catch(HibernateException e)
+  {
+    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+  }
+  catch(Exception e)
+  {
+    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+  }
+  catch(Throwable e)
+  {
+    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
+  }
    return issueId;
  } 
  
   public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(
     String beginDateString,
     String endDateString,
-    String reportType)
+    String reportType) throws EngimaException
   {
     DeviceIssueTrendLineDto deviceIssueTrendLineDto = null;
+    try
+    {
     try
     {
       if (reportType == null) reportType = Constants.DEVICE_ISSUE_ALL;
@@ -310,6 +343,19 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       deviceIssueTrendLineDto.setStartDate(beginDate);
       deviceIssueTrendLineDto.setEndDate(endDate);
     }
+  }
+  catch(HibernateException e)
+  {
+    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+  }
+  catch(Exception e)
+  {
+    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+  }
+  catch(Throwable e)
+  {
+    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
+  }
     return deviceIssueTrendLineDto;
   }
   
@@ -360,7 +406,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return jsonObject;
   }
 
- public EnigmaResponse getDeviceReportAvailability(){
+ public EnigmaResponse getDeviceReportAvailability() throws EngimaException{
    response = new EnigmaResponse();
    responseCode = new ResponseCode();
    result = new ResponseResult();
@@ -376,10 +422,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    response.setResponseCode(responseCode);
    response.setResult(result);
    }
+   catch(HibernateException e)
+   {
+     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+   }
    catch(Exception e)
    {
-     CommonUtils.internalSeverError(response, responseCode);
-     return response;
+     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+   }
+   catch(Throwable e)
+   {
+     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
    }
    return response;
  }
@@ -415,7 +468,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     return deviceIssueStatusDto;
   }
   
-  public EnigmaResponse getDevicesIssueReportByStatus()
+  public EnigmaResponse getDevicesIssueReportByStatus() throws EngimaException
   {
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -432,15 +485,22 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       Constants.CODE_SUCCESS);
     response.setResult(result);
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
     return response;
   }
  
-  public EnigmaResponse getPendingDevicesReport()
+  public EnigmaResponse getPendingDevicesReport() throws EngimaException
   {
     response = new EnigmaResponse();
     responseCode = new ResponseCode();
@@ -465,10 +525,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       Constants.CODE_SUCCESS);
     response.setResult(result);
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
     return response;
   }
