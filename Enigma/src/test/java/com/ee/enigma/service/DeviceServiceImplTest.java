@@ -82,7 +82,7 @@ public class DeviceServiceImplTest
     Assert.assertTrue(deviceInfoDtos.size() == 3);
   }
 
-  @Test
+  //@Test
   public void testSaveDeviceInfoSaveInfo() throws Exception
   {
     response = new EnigmaResponse();
