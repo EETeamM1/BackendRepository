@@ -241,7 +241,7 @@ public class DeviceIssueHelper
                 reportInfo.setFromTable("DIINFO");
                 reportResultInfo.setReportInfo(reportInfo);
               }
-              else if (j == (reportInfoList.size() - 1))
+              /* else if (j == (reportInfoList.size() - 1))
               {
                 reportResultInfo = new ReportResultInfo();
                 reportResultInfo.setReportInfo(reportInfoList.get(j));
@@ -255,7 +255,7 @@ public class DeviceIssueHelper
                  reportInfo.setOutDate(new java.util.Date(deviceIssueInfo.getSubmitTime().getTime()));
                 }
                 reportResultInfo.setReportInfoNext(reportInfo);
-              }
+              }*/
               else
               {
                 reportResultInfo = new ReportResultInfo();
@@ -265,6 +265,21 @@ public class DeviceIssueHelper
               reportResultInfoList.add(reportResultInfo);
             }
             reportResultInfo=null; 
+            //Adding last Record
+            reportResultInfo = new ReportResultInfo();
+            reportResultInfo.setReportInfo(reportInfoList.get(reportInfoList.size()-1));
+            reportInfo = new ReportInfo();
+            reportInfo.setLoginTime(null);
+            reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime()));
+            reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+            reportInfo.setFromTable("DIINFO");
+            if(deviceIssueInfo.getSubmitTime()!=null)
+            {
+             reportInfo.setOutDate(new java.util.Date(deviceIssueInfo.getSubmitTime().getTime()));
+            }
+            reportResultInfo.setReportInfoNext(reportInfo);
+            reportResultInfoList.add(reportResultInfo);
+            
           }
           for(int k=0;k<reportResultInfoList.size();k++)
           {
@@ -421,6 +436,7 @@ public class DeviceIssueHelper
           {
             reportResultInfo = null;
             ReportInfo reportInfoTemp=null;
+            
             for (int j = 0; j < reportInfoList.size(); j++)
             {
               reportInfoTemp=null;
@@ -438,7 +454,7 @@ public class DeviceIssueHelper
                 reportInfo.setFromTable("DIINFO");
                 reportResultInfo.setReportInfo(reportInfo);
               }
-              else if (j == (reportInfoList.size() - 1))
+              /*else if (j == (reportInfoList.size()))
               {
                 reportResultInfo = new ReportResultInfo();
                 reportResultInfo.setReportInfo(reportInfoList.get(j));
@@ -452,7 +468,7 @@ public class DeviceIssueHelper
                  reportInfo.setOutDate(new java.util.Date(deviceIssueInfo.getSubmitTime().getTime()));
                 }
                 reportResultInfo.setReportInfoNext(reportInfo);
-              }
+              }*/
               else
               {
                 reportResultInfo = new ReportResultInfo();
@@ -461,7 +477,22 @@ public class DeviceIssueHelper
               }
               reportResultInfoList.add(reportResultInfo);
             }
+            
+            //Adding last Record
             reportResultInfo=null; 
+            reportResultInfo = new ReportResultInfo();
+            reportResultInfo.setReportInfo(reportInfoList.get(reportInfoList.size()-1));
+            reportInfo = new ReportInfo();
+            reportInfo.setLoginTime(null);
+            reportInfo.setLogoutTime(CommonUtils.getTimeStampFormatedString(deviceIssueInfo.getSubmitTime()));
+            reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
+            reportInfo.setFromTable("DIINFO");
+            if(deviceIssueInfo.getSubmitTime()!=null)
+            {
+             reportInfo.setOutDate(new java.util.Date(deviceIssueInfo.getSubmitTime().getTime()));
+            }
+            reportResultInfo.setReportInfoNext(reportInfo);
+            reportResultInfoList.add(reportResultInfo);
           }
           for(int k=0;k<reportResultInfoList.size();k++)
           {
