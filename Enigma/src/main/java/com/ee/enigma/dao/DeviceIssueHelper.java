@@ -325,7 +325,7 @@ public class DeviceIssueHelper
               userActivityJson=new JSONObject();
               userActivityJson.put("userName", deviceIssueInfo.getUserInfo().getUserName());
               userActivityJson.put("inTime", CommonUtils.displayTimeStringNA(reportResultInfo.getReportInfo().getLogoutTime()));
-              userActivityJson.put("outTime", CommonUtils.displayTimeStringNA(reportResultInfo.getReportInfoNext().getLoginTime()));
+              userActivityJson.put("outTime", CommonUtils.displayTimeStringNA(reportResultInfo.getReportInfoNext().getLogoutTime()));
               userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getOutDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
@@ -537,7 +537,7 @@ public class DeviceIssueHelper
               userActivityJson=new JSONObject();
               userActivityJson.put("deviceName", deviceIssueInfo.getDeviceInfo().getDeviceName());
               userActivityJson.put("inTime", CommonUtils.displayTimeStringNA(reportResultInfo.getReportInfo().getLogoutTime()));
-              userActivityJson.put("outTime", CommonUtils.displayTimeStringNA(reportResultInfo.getReportInfoNext().getLoginTime()));
+              userActivityJson.put("outTime", CommonUtils.displayTimeStringNA(reportResultInfo.getReportInfoNext().getLogoutTime()));
               userActivityJson.put("duration", CommonUtils.getTimeDiffernce(reportResultInfo.getReportInfo().getOutDate(), reportResultInfo.getReportInfoNext().getOutDate()));
               userActivityJson.put("useStatus", "Idle");
               userActityJsonArray.add(userActivityJson);
