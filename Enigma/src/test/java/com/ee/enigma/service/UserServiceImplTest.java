@@ -64,7 +64,7 @@ public class UserServiceImplTest  {
   public static void init() throws Exception
   {
    }
-  @Test
+  //@Test
   public void testSaveUserInfoForSaveOpration() throws Exception
   {
     response = new EnigmaResponse();

@@ -1,7 +1,9 @@
 package com.ee.enigma.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.dao.UserRoleDao;
 import com.ee.enigma.model.UserInfo;
@@ -42,17 +45,18 @@ public class UserServiceImpl implements UserService {
 		this.userRoleDao = userRoleDao;
 	}
 
-	public EnigmaResponse getUserInfo(String userId) {
+	public EnigmaResponse getUserInfo(String userId) throws EngimaException {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
     try
     {
-		try {
-			userId = userId.trim();
-		} catch (Exception e) {
-			return CommonUtils.badRequest();
-		}
+  		try 
+  		{
+  			userId = userId.trim();
+  		} catch (Exception e) {
+  			return CommonUtils.badRequest();
+  		}
 
 		UserInfo userInfo = userInfoDao.getUserInfo(userId);
 		
@@ -60,20 +64,28 @@ public class UserServiceImpl implements UserService {
 			return userNotFound();
 		}
 		// Success response.
+		userId=null;
 		result.setUser(userInfo);
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);		
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;		
 	}
 
-	public EnigmaResponse saveUserInfo(Request requestInfo, String operation) {
+	public EnigmaResponse saveUserInfo(Request requestInfo, String operation) throws EngimaException {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
     try
@@ -117,15 +129,22 @@ public class UserServiceImpl implements UserService {
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
 	}
 
-	public EnigmaResponse deleteUserInfo(String userId) {
+	public EnigmaResponse deleteUserInfo(String userId) throws EngimaException {
 
 		responseCode = new ResponseCode();
 		response = new EnigmaResponse();
@@ -153,16 +172,23 @@ public class UserServiceImpl implements UserService {
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
 		response.setResponseCode(responseCode);
-		}
+		 }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
 	}
 
-	public EnigmaResponse getAllUser() {
+	public EnigmaResponse getAllUser() throws EngimaException {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
@@ -180,17 +206,24 @@ public class UserServiceImpl implements UserService {
 		response.setResponseCode(responseCode);
 		response.setResult(result);
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
 
 	}
 	
 	@Override
-	public EnigmaResponse searchUserResult(String searchQuery) {
+	public EnigmaResponse searchUserResult(String searchQuery) throws EngimaException {
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
 		result = new ResponseResult();
@@ -208,11 +241,18 @@ public class UserServiceImpl implements UserService {
 		responseCode.setMessage(Constants.MESSAGE_SUCCESS);
 		response.setResponseCode(responseCode);
 		response.setResult(result);
-		}
+		 }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
 	}

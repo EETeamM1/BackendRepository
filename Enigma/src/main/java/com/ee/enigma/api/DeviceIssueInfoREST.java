@@ -5,7 +5,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -17,10 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
-import com.ee.enigma.dto.IssueTrendLineData;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.DeviceIssueInfoService;
@@ -30,7 +30,7 @@ import com.ee.enigma.service.DeviceService;
 @Consumes("application/json")
 @Produces("application/json")
 public class DeviceIssueInfoREST {
-	// private Logger logger = Logger.getLogger(DeviceIssueInfoREST.class);
+	 private Logger logger = Logger.getLogger(DeviceIssueInfoREST.class);
 
 	DeviceIssueInfoService deviceIssueInfoService;
 	private DeviceService deviceService;
@@ -50,10 +50,21 @@ public class DeviceIssueInfoREST {
 	@POST
 	@Path("/")
 	public Response deviceIssueInfoService(Request deviceIssueInfo) {
-		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
-	  return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-      .status(deviceIssueResponse.getResponseCode().getCode()).build();
-	
+    String errorMessage = "";
+    EnigmaResponse deviceIssueResponse;
+    try
+    {
+      deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
+      return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).status(deviceIssueResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).status(deviceIssueResponse.getResponseCode().getCode()).build();
+
 	}
   //TODO
 	@GET
@@ -78,53 +89,90 @@ public class DeviceIssueInfoREST {
 	@POST
 	@Path("/submitDevice")
 	public EnigmaResponse submitDevice(Request deviceIssueInfo) {
-		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.submitDevice(deviceIssueInfo);
-		return deviceIssueResponse;
+    String errorMessage = "";
+    EnigmaResponse deviceIssueResponse;
+    try
+    {
+      deviceIssueResponse = deviceIssueInfoService.submitDevice(deviceIssueInfo);
+      return deviceIssueResponse;
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
+    return deviceIssueResponse;
 	}
 
 	@GET
 	@Path("/deviceReportByAvailability")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDeviceReportAvailability() {
-		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceReportAvailability();
-		Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-				.entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-		return response;
+    String errorMessage = "";
+    EnigmaResponse deviceIssueResponse;
+    try
+    {
+      deviceIssueResponse = deviceIssueInfoService.getDeviceReportAvailability();
+      Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
+        .entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+      return response;
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).status(deviceIssueResponse.getResponseCode().getCode()).build();
 	}
 
-	/*@GET
-	@Path("/deviceReportByStatus")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDeviceIssueReportByStatus() {
-		EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDeviceIssueReportByStatus();
-		Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
-				.entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-		return response;
-	}*/
-
+	
 	@PUT
 	@Path("/approveDevice")
-	public Response approveDevice(Request requestInfo) {
-		EnigmaResponse userResponse = deviceService.approveDevice(requestInfo);
-		return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode())
-				.build();
-	}
+  public Response approveDevice(Request requestInfo)
+  {
+    String errorMessage = "";
+    EnigmaResponse userResponse;
+    try
+    {
+      userResponse = deviceService.approveDevice(requestInfo);
+      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+  }
 
   
 	@GET
   @Path("/deviceIssueTimeLineTrendReport")
 	@Produces(MediaType.APPLICATION_JSON)
   public Response getDeviceIssueTimeLineTrendReport(@QueryParam("beginDate") String beginDate,@QueryParam("endDate") String endDate,
-    @QueryParam("reportType") String reportType) throws Exception{
-    DeviceIssueTrendLineDto deviceIssueTimeLineTrendReport= deviceIssueInfoService.getDeviceIssueTimeLineTrendReport(beginDate,endDate,reportType);
-    Response response=null;
-    if(deviceIssueTimeLineTrendReport==null)
+    @QueryParam("reportType") String reportType) {
+	  Response response=null;
+    DeviceIssueTrendLineDto deviceIssueTimeLineTrendReport = null;
+    try
     {
-      response=Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity("No data").build();
+      deviceIssueTimeLineTrendReport = deviceIssueInfoService.getDeviceIssueTimeLineTrendReport(beginDate, endDate, reportType);
+
+      if (deviceIssueTimeLineTrendReport == null)
+      {
+        response = Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity("No data").build();
+      }
+      else
+      {
+        response = Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity(deviceIssueTimeLineTrendReport).build();
+      }
     }
-    else
+    catch (EngimaException e)
     {
-      response= Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity(deviceIssueTimeLineTrendReport).build();
+      response = Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity(e.getMessage()).build();
+      logger.error(e.getMessage());
     }
     return response;
   }
@@ -152,19 +200,47 @@ public class DeviceIssueInfoREST {
   @GET
   @Path("/devicesIssueReportByStatus")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getDevicesIssueReportByStatus(){
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getDevicesIssueReportByStatus();
-    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-    return response;
+  public Response getDevicesIssueReportByStatus()
+  {
+    String errorMessage = "";
+    EnigmaResponse deviceIssueResponse;
+    try
+    {
+      deviceIssueResponse = deviceIssueInfoService.getDevicesIssueReportByStatus();
+      Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
+        .entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+      return response;
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).status(deviceIssueResponse.getResponseCode().getCode()).build();
   }
   
   @GET
   @Path("/pendingDevicesReport")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getPendingDevicesReport(){
-    EnigmaResponse deviceIssueResponse = deviceIssueInfoService.getPendingDevicesReport();
-    Response response= Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-    return response;
+  public Response getPendingDevicesReport()
+  {
+    String errorMessage = "";
+    EnigmaResponse deviceIssueResponse;
+    try
+    {
+      deviceIssueResponse = deviceIssueInfoService.getPendingDevicesReport();
+      Response response = Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
+        .entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
+      return response;
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON).status(deviceIssueResponse.getResponseCode().getCode()).build();
   }
   
 	

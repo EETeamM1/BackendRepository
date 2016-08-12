@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DevicePushNotificationDao;
 import com.ee.enigma.dao.LocationInfoDao;
@@ -96,7 +98,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		this.userActivityDao = userActivityDao;
 	}
 
-	public EnigmaResponse userLoginService(Request loginInfo) {
+	public EnigmaResponse userLoginService(Request loginInfo) throws EngimaException {
 
 		response = new EnigmaResponse();
 		responseCode = new ResponseCode();
@@ -184,10 +186,17 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		response.setResponseCode(responseCode);
 		response.setResult(result);
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
 	}
@@ -266,7 +275,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		return false;
 	}
 
-	public EnigmaResponse userLogoutService(Request logoutInfo) {
+	public EnigmaResponse userLogoutService(Request logoutInfo) throws EngimaException {
 		String sessionToken = null;
 
 		response = new EnigmaResponse();
@@ -298,10 +307,17 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		response.setResponseCode(responseCode);
 		response.setResult(null);
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
     {
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
 	}

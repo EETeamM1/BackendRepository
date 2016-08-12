@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import com.ee.enigma.common.CommonUtils;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 //import com.ee.enigma.response.Response;
@@ -36,17 +38,40 @@ public class UserActivityREST {
 	@POST
 	@Path("/login")
 	public Response login(Request loginInfo){
-		EnigmaResponse loginResponse = userLoginLogoutService.userLoginService(loginInfo);
+	  EnigmaResponse loginResponse = null;
+    String errorMessage="";
+    try
+    {
+		loginResponse = userLoginLogoutService.userLoginService(loginInfo);
 		return Response.ok(loginResponse, MediaType.APPLICATION_JSON).status(loginResponse.getResponseCode().getCode()).build();
-		
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    loginResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(loginResponse, MediaType.APPLICATION_JSON).status(loginResponse.getResponseCode().getCode()).build();
 	}
 	
 	@POST
 	@Path("/logout")
 	public Response logout(Request logoutInfo){
-		EnigmaResponse logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
+	  EnigmaResponse logoutResponse = null;
+    String errorMessage="";
+    try
+    {
+		 logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
 		return Response.ok(logoutResponse, MediaType.APPLICATION_JSON).status(logoutResponse.getResponseCode().getCode()).build();
-		
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    logoutResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(logoutResponse, MediaType.APPLICATION_JSON).status(logoutResponse.getResponseCode().getCode()).build();
+
 	}
 	
 //	@POST

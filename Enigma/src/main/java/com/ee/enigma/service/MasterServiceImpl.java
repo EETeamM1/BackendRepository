@@ -1,6 +1,7 @@
 package com.ee.enigma.service;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.model.Master;
 import com.ee.enigma.request.Request;
@@ -28,7 +30,7 @@ public class MasterServiceImpl implements MasterService {
 	}
 
 	@Override
-	public EnigmaResponse updateMasterPassword(Request masterInfo) {
+	public EnigmaResponse updateMasterPassword(Request masterInfo) throws EngimaException {
     try
     {
 		String currentMasterPassword = null;
@@ -53,13 +55,25 @@ public class MasterServiceImpl implements MasterService {
 			return wrongPassword();
 		}
     }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
     catch(Exception e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Throwable e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
+    }
+    /* catch(Exception e)
     {
       ResponseCode responseCode = new ResponseCode();
       EnigmaResponse response = new EnigmaResponse();
       CommonUtils.internalSeverError(response, responseCode);
       return response;
-    }
+    }*/
 	}
 
 	private EnigmaResponse wrongPassword() {
