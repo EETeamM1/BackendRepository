@@ -173,7 +173,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
 		// create session validity entry.
 		createSessionEntry(activityId, loginTime, timeoutPeriod);
-		updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId);
+		updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId, activityId);
 
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
@@ -200,12 +200,13 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		sessionDao.createSeesionEntry(session);
 	}
 	
-	private void updateDevicePushNotification(Time timeoutPeriod, String deviceId, String deviceToken, String userId) {
+	private void updateDevicePushNotification(Time timeoutPeriod, String deviceId, String deviceToken, String userId, String activityId) {
 		DevicePushNotification devicePushNotification = devicePushNotificationDao.getDeviceInfo(deviceId);
 		devicePushNotification.setPush_notification_start_time(getNotificationStartTime(new Date(), timeoutPeriod, 0));
 		devicePushNotification.setPush_notification_end_time(getNotificationStartTime(new Date(), timeoutPeriod, 1));
 		devicePushNotification.setDeviceToken(deviceToken);
 		devicePushNotification.setUserId(userId);
+		devicePushNotification.setActivityId(activityId);
 		devicePushNotificationDao.updateDevicePushNotification(devicePushNotification);
 	}
 
