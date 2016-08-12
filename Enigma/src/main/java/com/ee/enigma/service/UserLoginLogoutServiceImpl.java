@@ -192,10 +192,6 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
@@ -311,10 +307,6 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
     }
     catch(Exception e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }

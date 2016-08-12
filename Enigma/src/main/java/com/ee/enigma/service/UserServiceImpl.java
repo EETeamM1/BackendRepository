@@ -76,10 +76,6 @@ public class UserServiceImpl implements UserService {
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;		
@@ -135,10 +131,6 @@ public class UserServiceImpl implements UserService {
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
 		return response;
@@ -177,11 +169,7 @@ public class UserServiceImpl implements UserService {
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
     }
-    catch(Exception e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
+		catch(Exception e)
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
@@ -211,10 +199,6 @@ public class UserServiceImpl implements UserService {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
     }
     catch(Exception e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
@@ -246,11 +230,7 @@ public class UserServiceImpl implements UserService {
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
     }
-    catch(Exception e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
+		catch(Exception e)
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
