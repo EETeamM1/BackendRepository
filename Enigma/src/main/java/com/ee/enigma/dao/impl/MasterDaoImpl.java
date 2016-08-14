@@ -1,4 +1,4 @@
-package com.ee.enigma.dao;
+package com.ee.enigma.dao.impl;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.model.Master;
 
 @Repository(value="masterDao")

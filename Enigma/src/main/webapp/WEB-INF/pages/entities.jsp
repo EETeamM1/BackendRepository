@@ -248,6 +248,8 @@
 	</div>
 
 	<script language="javascript" src="resources/app/js/entities.js"></script>
+	<script language="javascript" src="resources/app/js/deviceValidation.js"></script>
+	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<script src="resources/app/js/approval-requests.js"></script>
 	</sec:authorize>

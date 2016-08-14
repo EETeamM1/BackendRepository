@@ -22,13 +22,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.JunitConstants;
 import com.ee.enigma.dao.UserInfoDao;
-import com.ee.enigma.dao.UserInfoDaoImpl;
+import com.ee.enigma.dao.impl.UserInfoDaoImpl;
 import com.ee.enigma.model.UserInfo;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.request.RequestParameters;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
+import com.ee.enigma.service.impl.UserServiceImpl;
 
 
 @RunWith(MockitoJUnitRunner.class)

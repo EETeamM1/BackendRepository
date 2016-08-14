@@ -38,8 +38,8 @@ public class MasterAPI {
   public Response saveUserInfo(Request userInfo)
   {
     logger.debug(userInfo);
-    EnigmaResponse userResponse = null;
-    String errorMessage = "";
+    EnigmaResponse userResponse;
+    String errorMessage;
     try
     {
       userResponse = masterService.updateMasterPassword(userInfo);
@@ -48,6 +48,7 @@ public class MasterAPI {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);

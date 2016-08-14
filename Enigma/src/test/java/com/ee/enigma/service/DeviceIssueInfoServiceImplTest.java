@@ -27,8 +27,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.JunitConstants;
 import com.ee.enigma.dao.DeviceInfoDao;
-import com.ee.enigma.dao.DeviceIssueInfoDaoImpl;
-import com.ee.enigma.dao.UserInfoDaoImpl;
+import com.ee.enigma.dao.impl.DeviceIssueInfoDaoImpl;
+import com.ee.enigma.dao.impl.UserInfoDaoImpl;
 import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
@@ -42,6 +42,7 @@ import com.ee.enigma.request.RequestParameters;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
+import com.ee.enigma.service.impl.DeviceIssueInfoServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeviceIssueInfoServiceImplTest

@@ -1,4 +1,4 @@
-package com.ee.enigma.service;
+package com.ee.enigma.service.impl;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -15,6 +15,7 @@ import com.ee.enigma.model.Master;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
+import com.ee.enigma.service.MasterService;
 
 @Service(value = "masterService")
 @Transactional

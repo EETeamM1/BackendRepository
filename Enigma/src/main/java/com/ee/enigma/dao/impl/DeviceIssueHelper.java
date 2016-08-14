@@ -1,4 +1,4 @@
-package com.ee.enigma.dao;
+package com.ee.enigma.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;

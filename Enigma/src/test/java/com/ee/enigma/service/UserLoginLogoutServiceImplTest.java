@@ -13,11 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.dao.UserActivityDaoImpl;
+import com.ee.enigma.dao.impl.UserActivityDaoImpl;
 import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.request.RequestParameters;
 import com.ee.enigma.response.EnigmaResponse;
+import com.ee.enigma.service.impl.UserLoginLogoutServiceImpl;
 
 
 @RunWith(MockitoJUnitRunner.class)

@@ -43,8 +43,8 @@ public class UserREST
   @Path("/")
   public Response saveUserInfo(Request userInfo)
   {
-    EnigmaResponse userResponse = null;
-    String errorMessage="";
+    EnigmaResponse userResponse;
+    String errorMessage;
     try
     {
      userResponse = userService.saveUserInfo(userInfo,"save");
@@ -54,6 +54,7 @@ public class UserREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -64,8 +65,8 @@ public class UserREST
   @Path("/{id}")
   public Response updateUserInfo(@PathParam("id") String userId, Request userInfo)
   {
-    EnigmaResponse userResponse = null;
-    String errorMessage="";
+    EnigmaResponse userResponse;
+    String errorMessage;
     try
     {
 	 userInfo.getParameters().setUserId(userId);
@@ -76,6 +77,7 @@ public class UserREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -87,8 +89,8 @@ public class UserREST
   @Path("/{id}")
   public Response deleteUserInfo(@PathParam("id") String userId)
   {
-    EnigmaResponse userResponse = null;
-    String errorMessage="";
+    EnigmaResponse userResponse;
+    String errorMessage;
     try
     {
      userResponse = userService.deleteUserInfo(userId);
@@ -98,6 +100,7 @@ public class UserREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -110,8 +113,8 @@ public class UserREST
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserInfo(@PathParam("id") String userId)
   {
-    EnigmaResponse userResponse = null;
-    String errorMessage="";
+    EnigmaResponse userResponse;
+    String errorMessage;
     try
     {
       userResponse = userService.getUserInfo(userId);
@@ -121,6 +124,7 @@ public class UserREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -131,8 +135,8 @@ public class UserREST
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserInfo()
   {
-  EnigmaResponse userResponse = null;
-  String errorMessage="";
+  EnigmaResponse userResponse;
+  String errorMessage;
   try
   {
 	 userResponse=  userService.getAllUser();
@@ -142,6 +146,7 @@ public class UserREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);

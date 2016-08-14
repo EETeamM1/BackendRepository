@@ -1,4 +1,4 @@
-package com.ee.enigma.dao;
+package com.ee.enigma.dao.impl;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dto.DeviceReportDto;
 import com.ee.enigma.dto.TopDeviceDto;
 import com.ee.enigma.model.DeviceIssueInfo;

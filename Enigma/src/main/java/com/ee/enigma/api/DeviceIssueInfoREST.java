@@ -50,7 +50,7 @@ public class DeviceIssueInfoREST {
 	@POST
 	@Path("/")
 	public Response deviceIssueInfoService(Request deviceIssueInfo) {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse deviceIssueResponse;
     try
     {
@@ -60,6 +60,7 @@ public class DeviceIssueInfoREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
@@ -89,7 +90,7 @@ public class DeviceIssueInfoREST {
 	@POST
 	@Path("/submitDevice")
 	public EnigmaResponse submitDevice(Request deviceIssueInfo) {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse deviceIssueResponse;
     try
     {
@@ -99,6 +100,7 @@ public class DeviceIssueInfoREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
@@ -109,7 +111,7 @@ public class DeviceIssueInfoREST {
 	@Path("/deviceReportByAvailability")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDeviceReportAvailability() {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse deviceIssueResponse;
     try
     {
@@ -121,6 +123,7 @@ public class DeviceIssueInfoREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
@@ -132,7 +135,7 @@ public class DeviceIssueInfoREST {
 	@Path("/approveDevice")
   public Response approveDevice(Request requestInfo)
   {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse userResponse;
     try
     {
@@ -142,6 +145,7 @@ public class DeviceIssueInfoREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -173,6 +177,7 @@ public class DeviceIssueInfoREST {
     {
       response = Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity(e.getMessage()).build();
       logger.error(e.getMessage());
+      logger.error(e);
     }
     return response;
   }
@@ -184,7 +189,7 @@ public class DeviceIssueInfoREST {
   {
     DeviceIssueStatusDto deviceIssueStatusDto = deviceIssueInfoService
       .getDeviceIssueStatusForDevice(deviceId);
-    Response response = null;
+    Response response;
     if (deviceIssueStatusDto != null)
     {
       response = Response.ok(deviceIssueStatusDto, MediaType.APPLICATION_JSON)
@@ -202,7 +207,7 @@ public class DeviceIssueInfoREST {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getDevicesIssueReportByStatus()
   {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse deviceIssueResponse;
     try
     {
@@ -214,6 +219,7 @@ public class DeviceIssueInfoREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);
@@ -225,7 +231,7 @@ public class DeviceIssueInfoREST {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPendingDevicesReport()
   {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse deviceIssueResponse;
     try
     {
@@ -237,6 +243,7 @@ public class DeviceIssueInfoREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     deviceIssueResponse = CommonUtils.internalSeverError(errorMessage);

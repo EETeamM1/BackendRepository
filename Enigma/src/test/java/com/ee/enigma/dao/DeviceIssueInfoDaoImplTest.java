@@ -25,6 +25,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.JunitConstants;
+import com.ee.enigma.dao.impl.DeviceInfoDaoImpl;
+import com.ee.enigma.dao.impl.DeviceIssueInfoDaoImpl;
+import com.ee.enigma.dao.impl.UserInfoDaoImpl;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserInfo;

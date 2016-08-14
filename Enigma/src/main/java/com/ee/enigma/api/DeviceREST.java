@@ -46,7 +46,7 @@ public class DeviceREST
   @Path("/")
   public Response saveDeviceInfo(Request requestInfo)
   {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse userResponse;
     try
     {
@@ -57,6 +57,7 @@ public class DeviceREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -69,7 +70,7 @@ public class DeviceREST
   @Path("/{id}")
   public Response deleteUserInfo(@PathParam("id") String deviceId)
   {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse userResponse;
     try
     {
@@ -79,6 +80,7 @@ public class DeviceREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);
@@ -108,7 +110,7 @@ public class DeviceREST
   @Path("/{id}")
   public Response updateDeviceInfoStatus(@PathParam("id") String deviceId, Request requestInfo)
   {
-    String errorMessage = "";
+    String errorMessage;
     EnigmaResponse userResponse;
     try
     {
@@ -119,6 +121,7 @@ public class DeviceREST
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     userResponse = CommonUtils.internalSeverError(errorMessage);

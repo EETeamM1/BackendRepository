@@ -1,4 +1,4 @@
-package com.ee.enigma.dao;
+package com.ee.enigma.dao.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.dao.UserActivityDao;
 import com.ee.enigma.model.DeviceIssueInfo;
 import com.ee.enigma.model.UserActivity;
 

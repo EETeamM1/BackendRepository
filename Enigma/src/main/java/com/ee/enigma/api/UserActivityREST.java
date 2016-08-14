@@ -38,8 +38,8 @@ public class UserActivityREST {
 	@POST
 	@Path("/login")
 	public Response login(Request loginInfo){
-	  EnigmaResponse loginResponse = null;
-    String errorMessage="";
+	  EnigmaResponse loginResponse;
+    String errorMessage;
     try
     {
 		loginResponse = userLoginLogoutService.userLoginService(loginInfo);
@@ -48,6 +48,7 @@ public class UserActivityREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     loginResponse = CommonUtils.internalSeverError(errorMessage);
@@ -57,8 +58,8 @@ public class UserActivityREST {
 	@POST
 	@Path("/logout")
 	public Response logout(Request logoutInfo){
-	  EnigmaResponse logoutResponse = null;
-    String errorMessage="";
+	  EnigmaResponse logoutResponse;
+    String errorMessage;
     try
     {
 		 logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
@@ -67,6 +68,7 @@ public class UserActivityREST {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     logoutResponse = CommonUtils.internalSeverError(errorMessage);
