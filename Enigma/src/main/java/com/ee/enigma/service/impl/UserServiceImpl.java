@@ -1,4 +1,4 @@
-package com.ee.enigma.service;
+package com.ee.enigma.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +20,7 @@ import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
+import com.ee.enigma.service.UserService;
 
 @Service(value = "userService")
 @Transactional

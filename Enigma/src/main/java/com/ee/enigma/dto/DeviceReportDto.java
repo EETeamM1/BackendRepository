@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class DeviceReportDto {
 
-	Date loginTIme;
+	Date loginTime;
 	Date logOutTime;
 	String userId;
 	String userName;
 	public Date getLoginTIme() {
-		return loginTIme;
+		return loginTime;
 	}
 	
 	public void setLoginTIme(Date loginTIme) {
-		this.loginTIme = loginTIme;
+		this.loginTime = loginTIme;
 	}
 	
 	public Date getLogOutTime() {
@@ -42,7 +42,7 @@ public class DeviceReportDto {
 
 	@Override
 	public String toString() {
-		return "DeviceReportDto [loginTIme=" + loginTIme + ", logOutTime=" + logOutTime + ", userId=" + userId
+		return "DeviceReportDto [loginTIme=" + loginTime + ", logOutTime=" + logOutTime + ", userId=" + userId
 				+ ", userName=" + userName + "]";
 	}
 	

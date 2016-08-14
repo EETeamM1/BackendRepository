@@ -1,4 +1,4 @@
-package com.ee.enigma.service;
+package com.ee.enigma.service.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,9 +16,9 @@ import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.EngimaException;
 import com.ee.enigma.dao.DeviceInfoDao;
-import com.ee.enigma.dao.DeviceIssueHelper;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
+import com.ee.enigma.dao.impl.DeviceIssueHelper;
 import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.dto.DeviceStatusCountsInfo;
@@ -30,6 +30,7 @@ import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
+import com.ee.enigma.service.DeviceIssueInfoService;
 
 @Service(value = "deviceIssueInfoService")
 @Transactional

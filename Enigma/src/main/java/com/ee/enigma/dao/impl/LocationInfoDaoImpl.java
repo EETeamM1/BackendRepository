@@ -1,4 +1,4 @@
-package com.ee.enigma.dao;
+package com.ee.enigma.dao.impl;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ee.enigma.dao.LocationInfoDao;
 import com.ee.enigma.model.LocationInfo;
 
 @Repository(value = "locationInfoDao")

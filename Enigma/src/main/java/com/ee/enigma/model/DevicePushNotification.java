@@ -16,6 +16,7 @@ public class DevicePushNotification {
 	private Date push_notification_start_time;
 	private Date push_notification_end_time;
 	private String userId;
+	private String activityId;
 	
 	public String getDeviceId() {	
 		return deviceId;
@@ -56,12 +57,21 @@ public class DevicePushNotification {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
+	public String getActivityId() {
+		return activityId;
+	}
+
+	public void setActivityId(String activityId) {
+		this.activityId = activityId;
+	}
+	
 
 	@Override
 	public String toString() {
 		return "DevicePushNotification [deviceId=" + deviceId + ", deviceToken=" + deviceToken
 				+ ", push_notification_start_time=" + push_notification_start_time + ", push_notification_end_time="
-				+ push_notification_end_time + ", userId=" + userId + "]";
+				+ push_notification_end_time + ", userId=" + userId + "+ , activitId=" + activityId + "]";
 	}
 	
 	

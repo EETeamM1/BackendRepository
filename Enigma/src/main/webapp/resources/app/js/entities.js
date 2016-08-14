@@ -57,20 +57,19 @@ $('#form_user_save')
 					var userName = $("#userName").val().trim();
 					var password = $("#user_password").val();
 
-					if (userId.length < 4) {
+					if (userId.length < 4 || userId.length > 20) {
 						document.getElementById("userId").setCustomValidity(
-								"User Id Must Have 4 character long");
+								"User Id Must Have 4 to 20 character long length");
 						return;
 					}
-					if (userName.length < 6) {
+					if (userName.length < 4 || userName.length > 50) {
 						document.getElementById("userName").setCustomValidity(
-								"User Name Must Have 6 character long");
+								"User Name Must Have 4 to 50 character long legth");
 						return;
 					}
-					if (password.length < 6) {
+					if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,10}$/.test(password) == false) {
 						document.getElementById("user_password")
-								.setCustomValidity(
-										"Passwords Must Have 6 character long");
+						.setCustomValidity("Password must have 6 to 10 character with small, capital letter and a numric number");
 						return;
 					}
 
@@ -122,6 +121,43 @@ $('#form_device_submit')
 					var OSVersion = $("#OSVersion").val();
 					var yearOfManufacturing = $("#yearOfManufacturing").val();
 					var timeoutPeriod = $("#timeoutPeriod").val();
+					
+
+					if (deviceId.length < 10 || deviceId.length > 20) {
+						document.getElementById("deviceName").setCustomValidity(
+								"deviceId Name Must Have 10 to 20 character long lenght");
+						return;
+					}
+					if (/^[a-zA-Z0-9]*$/.test(deviceId) == false) {
+						document.getElementById("deviceId").setCustomValidity(
+								"Device Id Must Have only 0-9 digit and a-z character");
+						return;
+					}
+					if (deviceName.length < 6 || deviceName.length > 30) {
+						document.getElementById("deviceName").setCustomValidity(
+								"Device Name Must Have 4 to 30 character long lenght");
+						return;
+					}
+					if (manufacturer.length < 4 || manufacturer.length > 20) {
+						document.getElementById("manufacturer").setCustomValidity(
+								"Manufacturer Name Must Have 4 to 20 character long lenght");
+						return;
+					}
+					if (OSVersion.length < 1 || OSVersion.length > 30) {
+						document.getElementById("OSVersion").setCustomValidity(
+								"OSVersion Must Have 1 to 10 character long lenght");
+						return;
+					}
+					if (yearOfManufacturing.length != 4) {
+						document.getElementById("yearOfManufacturing").setCustomValidity(
+								"yearOfManufacturing Must Have 4 digit numeric year");
+						return;
+					}
+					if (/^[0-9]*$/.test(yearOfManufacturing) == false) {
+						document.getElementById("yearOfManufacturing").setCustomValidity(
+								"yearOfManufacturing must have 4 digit numeric value");
+						return;
+					}
 
 					$
 							.ajax({

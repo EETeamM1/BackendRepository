@@ -43,8 +43,8 @@ public class SearchAPI {
 	@GET
 	@Path("/")
 	public Response searchUser(@QueryParam("user") String userSearchQuery, @QueryParam("device") String deviceSearchQuery) {
-		EnigmaResponse response = null;
-		String errorMessage = "";
+		EnigmaResponse response;
+		String errorMessage;
     try
     {
 		if(null != userSearchQuery && !userSearchQuery.trim().isEmpty()){
@@ -61,6 +61,7 @@ public class SearchAPI {
     catch (EngimaException e)
     {
       errorMessage = e.getMessage();
+      logger.error(e);
       logger.error(e.getMessage());
     }
     response = CommonUtils.internalSeverError(errorMessage);

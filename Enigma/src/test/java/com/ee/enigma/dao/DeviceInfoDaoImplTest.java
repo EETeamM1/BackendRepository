@@ -24,6 +24,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.JunitConstants;
+import com.ee.enigma.dao.impl.DeviceInfoDaoImpl;
 import com.ee.enigma.model.DeviceInfo;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -1,4 +1,4 @@
-package com.ee.enigma.service;
+package com.ee.enigma.service.impl;
 
 import java.sql.Time;
 import java.util.Date;
@@ -19,8 +19,8 @@ import com.ee.enigma.dao.LocationInfoDao;
 import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.dao.SessionDao;
 import com.ee.enigma.dao.UserActivityDao;
-import com.ee.enigma.dao.UserActivityDaoImpl;
 import com.ee.enigma.dao.UserInfoDao;
+import com.ee.enigma.dao.impl.UserActivityDaoImpl;
 import com.ee.enigma.model.DeviceInfo;
 import com.ee.enigma.model.DevicePushNotification;
 import com.ee.enigma.model.LocationInfo;
@@ -32,6 +32,8 @@ import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 import com.ee.enigma.response.ResponseResult;
+import com.ee.enigma.service.DeviceIssueInfoService;
+import com.ee.enigma.service.UserLoginLogoutService;
 
 @Service(value = "userLoginLogoutService")
 @Transactional
@@ -175,7 +177,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
 		// create session validity entry.
 		createSessionEntry(activityId, loginTime, timeoutPeriod);
-		updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId);
+		updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId, activityId);
 
 		// Success response.
 		responseCode.setCode(Constants.CODE_SUCCESS);
@@ -205,12 +207,13 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 		sessionDao.createSeesionEntry(session);
 	}
 	
-	private void updateDevicePushNotification(Time timeoutPeriod, String deviceId, String deviceToken, String userId) {
+	private void updateDevicePushNotification(Time timeoutPeriod, String deviceId, String deviceToken, String userId, String activityId) {
 		DevicePushNotification devicePushNotification = devicePushNotificationDao.getDeviceInfo(deviceId);
 		devicePushNotification.setPush_notification_start_time(getNotificationStartTime(new Date(), timeoutPeriod, 0));
 		devicePushNotification.setPush_notification_end_time(getNotificationStartTime(new Date(), timeoutPeriod, 1));
 		devicePushNotification.setDeviceToken(deviceToken);
 		devicePushNotification.setUserId(userId);
+		devicePushNotification.setActivityId(activityId);
 		devicePushNotificationDao.updateDevicePushNotification(devicePushNotification);
 	}
 
