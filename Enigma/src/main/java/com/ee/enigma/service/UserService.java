@@ -15,4 +15,6 @@ public interface UserService
   public EnigmaResponse getUserInfo(String userId) throws EngimaException;
   
   public EnigmaResponse searchUserResult(String searchQuery) throws EngimaException;
+  
+  public EnigmaResponse updatePassword (Request updatePassword) throws EngimaException;
 }

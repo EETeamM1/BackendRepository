@@ -218,6 +218,9 @@ a{
 .table>tbody>tr>td:last-child{
 	border-right : none;
 }
+#profile_table>tbody>tr>td{
+	padding : 10px;	
+}
 
 .glyphicon { margin-right:5px; }
 

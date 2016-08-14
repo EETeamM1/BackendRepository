@@ -108,6 +108,29 @@ public class UserREST
 
   }
   
+  
+  @POST
+  @Path("/updatePassword")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUserInfo(Request updatePasswordInfo)
+  {
+    EnigmaResponse userResponse = null;
+    String errorMessage="";
+    try
+    {
+      userResponse = userService.updatePassword(updatePasswordInfo);
+      return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+        .status(userResponse.getResponseCode().getCode()).build();
+    }
+    catch (EngimaException e)
+    {
+      errorMessage = e.getMessage();
+      logger.error(e.getMessage());
+    }
+    userResponse = CommonUtils.internalSeverError(errorMessage);
+    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+  }
+  
   @GET
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)

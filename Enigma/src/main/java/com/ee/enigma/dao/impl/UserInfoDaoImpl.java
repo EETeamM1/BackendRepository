@@ -140,4 +140,17 @@ public class UserInfoDaoImpl implements UserInfoDao {
 		return userInfoList;
 	}
 
+	@Override
+	public int udpateUserPassword(String userId, String password, String newPassword) {
+	    
+	      String hql = "update UserInfo set password=:newPassword where userId= :userId and password= :password";
+	      Session session = this.sessionFactory.getCurrentSession();
+	      Query query = session.createQuery(hql);
+	      query.setParameter("userId", userId);
+	      query.setParameter("password", password);
+	      query.setParameter("newPassword", newPassword);
+	      return query.executeUpdate();
+	      
+	}
+
 }

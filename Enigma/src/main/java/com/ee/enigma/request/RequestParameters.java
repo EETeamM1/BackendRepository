@@ -26,6 +26,7 @@ public class RequestParameters {
 	private String newMasterPassword;
 	private String deviceStatus;
 	private String issueType;
+	private String newPassword;
 	
 	private String deviceToken;
 
@@ -218,6 +219,16 @@ public class RequestParameters {
 
 	public void setYearOfManufacturing(String yearOfManufacturing) {
 		this.yearOfManufacturing = yearOfManufacturing;
+	}
+
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
 }

@@ -32,7 +32,7 @@
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="border-bottom:none;" role="button" aria-haspopup="true" aria-expanded="false">
       						${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
     						<ul class="dropdown-menu">
-    							<li><a href="/profile" style="border-bottom:none;">Profile</a></li>
+    							<li><a href="profile" style="border-bottom:none;">Profile</a></li>
 						<li><a href="<c:url value="/j_spring_security_logout"/>" style="border-bottom:none;">
 								Logout</a></li>
     						</ul>
@@ -111,7 +111,7 @@
 				</label><br/><label class="control-label t2 n1 font-bold hide">DeviceId <br/><span class="t1 n3"> @{deviceId}</span></label><!--<br/>--><label class="control-label t2 n1 font-bold">OS Version <br/><span class="t1 n3"> @{OSVersion}</span></label><br/><label class="control-label t2 n1 font-bold">Status <br/> <span class="list_status t1 n3">@{status}</span><span class="@{hideIssuedDetails}"> - ( @{user_name} )</span></label></br></div>
 				<div style="text-align:right; margin-right: 10px;">
 				<button type="button" class="btn btn-success issue_device_modal @{hideAvailable}" device-id="@{deviceId}" device-name="@{device_name}" data-toggle="modal">Issue</button>
-				<button type="button" class="btn btn-warning submit_device @{hideIssued}" device-id="@{deviceId}" device-name="@{device_name}" user-id="@{user_id}" data-toggle="modal">Submit</button>
+				<button type="button" class="btn btn-warning submit_device @{hideIssued}" device-id="@{deviceId}" device-name="@{device_name}" user-id="@{user_id}" user-name="@{user_name}" data-toggle="modal">Submit</button>
 				</div>
 			</div>
 	</script>
@@ -208,7 +208,7 @@
 	<div class="modal-dialog modal-sm">
 	 <div class="modal-content ">
 	  <div class="modal-body">
-	    Are you sure?<br/>
+	    Really want to submit?<br/>
 	    <table>
 			<tbody>
 				<tr>

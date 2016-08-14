@@ -15,7 +15,9 @@ var URL = {
 	APPROVE_DEVICE_URL : '/api/deviceIssue/approveDevice',
 	PENDING_DEVICE_URL : '/api/deviceIssue/pendingDevicesReport',
 	DEVICE_TMELINE_URL : '/api/deviceIssue/deviceTimeLineReport',
-	USER_TIMELINE_URL : '/api/deviceIssue/userTimeLineReport'
+	USER_TIMELINE_URL : '/api/deviceIssue/userTimeLineReport',
+	USER_DETAILS : '/api/user',
+	UPDATE_USER_PASSWORD : '/api/user/updatePassword'
 }
 
 var alertBox = function(msg){
