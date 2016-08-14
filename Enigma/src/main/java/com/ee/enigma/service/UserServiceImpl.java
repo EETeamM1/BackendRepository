@@ -263,4 +263,51 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
+
+	@Override
+	public EnigmaResponse updatePassword(Request updatePassword) throws EngimaException {
+		response = new EnigmaResponse();
+		responseCode = new ResponseCode();
+    try
+    {
+    	String userId;
+		String password;
+		String newPassword;
+		try {
+			userId = updatePassword.getParameters().getUserId();
+			newPassword = updatePassword.getParameters().getNewPassword();
+			password = updatePassword.getParameters().getPassword();
+		} catch (Exception e) {
+			return CommonUtils.badRequest();
+		}
+
+		// Checking whether request contains all require fields or not.
+		if (null == userId || "" == userId.trim() || null == password || "" == password.trim() || null == newPassword || "" == newPassword.trim()) {
+			return CommonUtils.badRequest();
+		}
+		
+		int result = userInfoDao.udpateUserPassword(userId,password,newPassword);		
+			
+		// Success response.
+		if(result == 1){
+			responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
+			responseCode.setCode(Constants.CODE_SUCCESS);
+			response.setResponseCode(responseCode);
+		}else{
+			responseCode.setMessage(Constants.MESSAGE_PASSWORD_NOT_MATCH);
+			responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
+			response.setResponseCode(responseCode);
+		}
+    }
+    catch(HibernateException e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
+    }
+    catch(Exception e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
+    }
+		return response;
+	}
+
 }

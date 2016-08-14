@@ -369,7 +369,7 @@ $("#issue_btn").click(function(e) {
 var submitDevice = function(self){
 	$("#confirmModal_device_detail_modal_name").text($(self).attr("device-name"));
 	$("#confirmModal_device_detail_modal_id").text($(self).attr("device-id"));
-	$("#confirmModa_device_detail_modal_user").text($(self).attr("user-id"));
+	$("#confirmModa_device_detail_modal_user").text($(self).attr("user-name"));
 	$("#confirmModal").modal({                    
 	    "backdrop"  : "static",
 	    "show"      : true                     
@@ -399,21 +399,31 @@ $("#confirmModalYes").click(function(e){
 			$("#confirmModal_device_detail_modal_name").text("");
 			$("#confirmModal_device_detail_modal_id").text("");
 			$("#confirmModa_device_detail_modal_user").text("");
-			$.each(DeviceRenderingData, function(i, v) {
-				if (v.deviceId == deviceId) {
-					v.status = "Available";
-					v.user_id =  "";
-					v.user_name = "";
-					if($("#isAdmin").text()){
-						v.hideAvailable = "";
+			if(byAdmin){
+				$.each(DeviceRenderingData, function(i, v) {
+					if (v.deviceId == deviceId) {
+						v.status = "Available";
+						v.user_id =  "";
+						v.user_name = "";
+						if($("#isAdmin").text()){
+							v.hideAvailable = "";
+						}
+						v.hideIssuedDetails = "hide";
+						v.hideIssued = "hide";				
 					}
-					v.hideIssuedDetails = "hide";
-					v.hideIssued = "hide";				
-				}
-			});
+				});
+			}else{
+				var index=0;
+				$.each(myDeviceRenderingData, function(i, v) {
+					if (v.deviceId == deviceId) {
+						myDeviceRenderingData.splice(index,1);			
+					}
+					index++;
+				});
+			}
 			alertBox(response.responseCode.message);
 			deviceStatusviseCount();
-			viewRenderer();
+			viewRenderer(!byAdmin);
 		},
 		error : function(xhr, status, error) {
 			try {

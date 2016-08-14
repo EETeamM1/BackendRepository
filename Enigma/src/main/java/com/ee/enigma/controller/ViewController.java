@@ -19,6 +19,12 @@ public class ViewController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/profile")
+	public ModelAndView profilePage() {
+		ModelAndView mav = new ModelAndView("profile");
+		return mav;
+	}
+	
 	@RequestMapping(value = "/entities")
 	public ModelAndView entityPage() {
 		ModelAndView mav = new ModelAndView("entities");
