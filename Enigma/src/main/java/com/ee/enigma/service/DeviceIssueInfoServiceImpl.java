@@ -131,10 +131,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
   }
@@ -204,12 +200,9 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
+   
   }
     
     
@@ -283,14 +276,11 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   {
     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
   }
-  catch(Exception e)
-  {
-    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-  }
-  catch(Throwable e)
-  {
-    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
-  }
+   catch(Exception e)
+   {
+     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
+   }
+  
    return issueId;
  } 
  
@@ -348,14 +338,11 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
   {
     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
   }
-  catch(Exception e)
-  {
-    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-  }
-  catch(Throwable e)
-  {
-    throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
-  }
+    catch(Exception e)
+    {
+      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
+    }
+   
     return deviceIssueTrendLineDto;
   }
   
@@ -428,12 +415,9 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
    }
    catch(Exception e)
    {
-     throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-   }
-   catch(Throwable e)
-   {
      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
    }
+  
    return response;
  }
  
@@ -491,12 +475,9 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
+   
     return response;
   }
  
@@ -530,10 +511,6 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
     }
     catch(Exception e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
     {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }

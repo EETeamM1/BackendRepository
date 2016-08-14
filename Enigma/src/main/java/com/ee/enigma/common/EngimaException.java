@@ -15,11 +15,6 @@ public class EngimaException extends Exception
   {
     super();
   }
-
-  public EngimaException(Throwable cause)
-  {
-    super(cause);
-  }
   
   public EngimaException(String message,Throwable cause)
   {

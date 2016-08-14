@@ -61,19 +61,9 @@ public class MasterServiceImpl implements MasterService {
     }
     catch(Exception e)
     {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Throwable e)
-    {
       throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
     }
-    /* catch(Exception e)
-    {
-      ResponseCode responseCode = new ResponseCode();
-      EnigmaResponse response = new EnigmaResponse();
-      CommonUtils.internalSeverError(response, responseCode);
-      return response;
-    }*/
+    
 	}
 
 	private EnigmaResponse wrongPassword() {
