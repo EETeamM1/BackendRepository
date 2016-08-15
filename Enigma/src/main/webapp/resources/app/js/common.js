@@ -1,3 +1,6 @@
+/**
+ *  All URLs for ajax calls.
+ */
 var URL = {
 	HOST_NAME : 'http://'+window.location.hostname+':'+window.location.port,
 	APPLICATION_NAME : '/InventoryManagement',
@@ -20,6 +23,9 @@ var URL = {
 	UPDATE_USER_PASSWORD : '/api/user/updatePassword'
 }
 
+/**
+ *  Logic for alert box.
+ */
 var alertBox = function(msg){
 	if(!msg){
 		return;
@@ -31,7 +37,9 @@ var alertBox = function(msg){
 	  });
 }
 
-
+/**
+ *  fetching user list from server.
+ */
 var getUserList = function() {
 	var userList;
 	$.ajax({

@@ -1,8 +1,10 @@
+
+/**
+ *  validating and submitting master form 
+ */
 $('#form_master').submit(
 		function(e) {
-
 			e.preventDefault();
-
 			var $form = $(this);
 
 			// check if the input is valid
@@ -45,6 +47,9 @@ $('#form_master').submit(
 			});
 		});
 
+/**
+ *  Validating and submitting User form.
+ */
 $('#form_user_save')
 		.submit(
 				function(e) {
@@ -106,6 +111,9 @@ $('#form_user_save')
 							});
 				});
 
+/**
+ *  Validating and submitting device form. 
+ */
 $('#form_device_submit')
 		.submit(
 				function(e) {

@@ -8,6 +8,9 @@ $("#availableDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:2
 $("#issuedDevices").html('<i class="fa fa-refresh fa-spin" style="font-size:24px"></i>');
 $("#device_list").html('<div style="font-size:32px;text-align:center;"><i class="fa fa-refresh fa-spin"></i> Loading Device List...</div>');
 
+/**
+ * Fetching devices availability details.
+ */
 var deviceStatusviseCount = function(){
 		
 	$.ajax({
@@ -34,6 +37,12 @@ var deviceStatusviseCount = function(){
 }
 deviceStatusviseCount();
 
+/**
+ * sorting in ascending order.
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
 function compare(a,b) {
   if (a.status < b.status)
     return -1;
@@ -42,6 +51,12 @@ function compare(a,b) {
   return compareByName(a,b);
 }
 
+/**
+ * sorting in ascending order by Name.
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
 function compareByName(a,b){
 	if (a.device_name.toLowerCase() < b.device_name.toLowerCase())
 	    return -1;
@@ -49,6 +64,13 @@ function compareByName(a,b){
 	    return 1;
 	  return 0;
 }
+
+/**
+ *  Sorting in ascending order but keeping self assigned devices on top.
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
 function compareForUser(a,b){
 	if(a.hideIssued=="" && b.hideIssued!=""){
 		return -1
@@ -62,14 +84,21 @@ function compareForUser(a,b){
 
 var DeviceRenderingData = [];
 var myDeviceRenderingData = [];
+
+/**
+ *  View Rendering logic
+ */
 var viewRenderer = function(isMyDevice){
 	var isAdmin = $("#isAdmin").text();
 	var temp = $('#deviceStatusTemplate').text().replace(/@/g, '$');
 	$('#deviceStatusTemplate').text(temp);
 	$("#device_list").html('');
+	
+	/* Rendering myDevice view for user */
 	if(isMyDevice){
 		myDeviceRenderingData.sort(compareByName);
 		myDeviceRenderingData.sort(compareForUser);
+		/* if no user assigned device found then hiding myDevices tab and showing home.*/
 		if(myDeviceRenderingData.length==0){
 			$("#myDevices").addClass("hide");
 			$("#deviceStatusTemplate").tmpl(DeviceRenderingData).appendTo("#device_list");
@@ -117,6 +146,9 @@ $("#home").on("click",function(e){
 	$(".nav.navbar-nav li:last").removeClass("active");
 });
 
+/**
+ *  fetching all devices.
+ */
 $.ajax({
 			type : 'GET',
 			url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.DEVICE_DETAILS,
@@ -202,6 +234,9 @@ $.ajax({
 		});
 
 
+/**
+ *  searching logic
+ */
 $("#search_box").keyup(function() {
 	var searchText ="";
 	if($(".apple_icon").hasClass( "active" )){
@@ -292,6 +327,9 @@ var issueDeviceModel = function(self){
 	$("#deviceIssueModal").modal('show');
 }
 
+/**
+ *  autocomplete for user-name
+ */
 var setAutocompleteList = function() {
 	$("#userAutocomplete").autocomplete({
 		minLength : 0,
@@ -319,6 +357,9 @@ $('#deviceIssueModal').on('hidden.bs.modal', function () {
 	}
 })
 
+/**
+ *  issue device logic
+ */
 var issueDevice = function(e){
 	e.preventDefault();
 	var userId = $("#issue_modal_user_id").html();
@@ -366,6 +407,10 @@ var issueDevice = function(e){
 $("#issue_btn").click(function(e) {
 	issueDevice(e);
 });
+
+/**
+ * opening submit device model
+ */
 var submitDevice = function(self){
 	$("#confirmModal_device_detail_modal_name").text($(self).attr("device-name"));
 	$("#confirmModal_device_detail_modal_id").text($(self).attr("device-id"));
@@ -376,6 +421,9 @@ var submitDevice = function(self){
 	});	
 }
 
+/**
+ *  Submitting device on affirmative response.
+ */
 $("#confirmModalYes").click(function(e){
     var byAdmin=false;
     var deviceId = $("#confirmModal_device_detail_modal_id").text();

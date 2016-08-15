@@ -98,9 +98,4 @@ $('body').on("click", ".device_approve_btn", function() {
 		}
 
 	});
-	
-	//post approve/reject data to server 
-	//delete this data from array.
-	//hide data from popover
-	//if popover gets empty then hide popover.
 });

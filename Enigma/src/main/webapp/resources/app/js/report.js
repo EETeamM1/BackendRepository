@@ -1,10 +1,18 @@
+/* importing charting packages */
 google.charts.load('current', {	'packages' : [ 'line','corechart', 'timeline' ]});
 
+/* drawing 3 chart on loading */
 google.charts.setOnLoadCallback(drawIssueTrendChart);
 google.charts.setOnLoadCallback(drawSubmitTrendChart);
 google.charts.setOnLoadCallback(drawTopDevicesChart);
 
+/*showing loading bar until chart loads */
 $("#barchart_top5").html('<div style="font-size:32px;text-align:center; height:400px;"><i class="fa fa-refresh fa-spin"></i> Loading...</div>');
+
+var dateFormat = 'M dd, yy';
+/**
+ * Device Issue Trend Chart
+ */
 function drawIssueTrendChart() {
 
 	var startDate;
@@ -35,7 +43,7 @@ function drawIssueTrendChart() {
 	var options = {
 		chart : {
 			title : 'Devices Issue Trend in Transility',
-			subtitle : 'from '+startDate+' to '+endDate
+			subtitle : 'from '+$.datepicker.formatDate( dateFormat, new Date(startDate) )+' to '+$.datepicker.formatDate( dateFormat, new Date(endDate) )
 		},
 		legend: { position: 'bottom' },
 		width : 930,
@@ -46,11 +54,15 @@ function drawIssueTrendChart() {
 	chart.draw(data, options);
 }
 
+/**
+ * Device submit Trend Chart
+ */
 function drawSubmitTrendChart() {
 
 	var startDate;
 	var endDate;
 	var ReportData=[];
+	/* fetching data from server */
 	$.ajax({
 		type : 'GET',
 		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.DEVICE_ISSUE_TIMELINE+'?reportType=submit',
@@ -66,6 +78,7 @@ function drawSubmitTrendChart() {
 		}
 	});
 	
+	/* if empty data received from server then return. */
 	if(ReportData === []){
 		return;
 	}
@@ -81,7 +94,7 @@ function drawSubmitTrendChart() {
 	var options = {
 		chart : {
 			title : 'Devices Submit Trend in Transility',
-			subtitle : 'from '+startDate+' to '+endDate
+			subtitle : 'from '+$.datepicker.formatDate( dateFormat, new Date(startDate) )+' to '+$.datepicker.formatDate( dateFormat, new Date(endDate) )
 		},
 		legend: { position: 'bottom' },
 		width : 930,
@@ -92,6 +105,7 @@ function drawSubmitTrendChart() {
 	chart.draw(data, options);
 }
 
+/* sorting in descending order */
 function compareByCount(a,b){
 	if (a.count < b.count)
 	    return 1;
@@ -100,9 +114,13 @@ function compareByCount(a,b){
 	  return 0;
 }
 
+/**
+ *  Top five popular devices.
+ */
 function drawTopDevicesChart(){
 	var dataArray=[];
 	var ReportData=[["Device Name", "Count"]];
+	/* fetching data from server */
 	$.ajax({
 		type : 'GET',
 		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.TOP_DEVICES,
@@ -140,6 +158,10 @@ function drawTopDevicesChart(){
 
 }
 
+/**
+ *  calling server to fetch user list when clicked on user tab
+ *  and setting auto-complete.
+ **/
 var userList;
 $("#tabUserReport").on("click",function(e){
 	if(!userList){
@@ -148,7 +170,10 @@ $("#tabUserReport").on("click",function(e){
 	}
 	
 });
-
+/**
+ *  calling server to fetch device list when clicked on device tab
+ *  and setting auto-complete.
+ **/
 var deviceList;
 $("#tabDeviceReport").on("click",function(){
 	if(!deviceList){
@@ -157,6 +182,9 @@ $("#tabDeviceReport").on("click",function(){
 	}
 });
 
+/**
+ *  fetching device list from server.
+ */
 var getDeviceList = function(){
 	var deviceList=[];
 	$.ajax({
@@ -184,6 +212,9 @@ var getDeviceList = function(){
 	return deviceList;
 }
 
+/**
+ * setting autocomplete for user.
+ */
 var setAutocompleteList = function() {
 	$("#userAutocomplete").autocomplete({
 		minLength : 0,
@@ -200,6 +231,9 @@ var setAutocompleteList = function() {
 	});
 };
 
+/**
+ * setting autocomplete for devices. 
+ */
 var setDeviceAutocompleteList = function() {
 	$("#deviceAutocomplete").autocomplete({
 		minLength : 0,
@@ -250,6 +284,9 @@ $( function() {
     }
   } );
 
+/**
+ * handling event when clicked on user report.
+ */
 $("#fetchUserReport").on("click",function(e){
 	var userId = $("#userAutocomplete").attr("user-id");
 	if(!userId){
@@ -259,6 +296,9 @@ $("#fetchUserReport").on("click",function(e){
 	google.charts.setOnLoadCallback(userTimelineReport);
 });
 
+/**
+ * Handling event when clicked on device report
+ */
 $("#fetchDeviceReport").on("click",function(e){
 	var deviceId = $("#deviceAutocomplete").attr("device-id");
 	if(!deviceId){
@@ -269,11 +309,15 @@ $("#fetchDeviceReport").on("click",function(e){
 	
 });
 	
+/**
+ *  Drawing Device Timeline report.
+ */
 function deviceTimelineReport(){
 	var ReportData = [];
 	var deviceId = $("#deviceAutocomplete").attr("device-id");
 	var container = document.getElementById('device_timeline');
 	var dateString = getDateRange('device');
+	$("#device_timeline").html('<div style="font-size:32px;text-align:center; height:400px;"><i class="fa fa-refresh fa-spin"></i> Loading...</div>');
 	$.ajax({
 		type : 'GET',
 		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.DEVICE_TMELINE_URL+'?deviceId='+deviceId+dateString,
@@ -315,6 +359,7 @@ function deviceTimelineReport(){
 		return;
 	}
 	
+	/* setting height of chart */
 	var rowHeight = 41;
     var chartHeight = (ReportData.length) * rowHeight;
 
@@ -333,11 +378,15 @@ function deviceTimelineReport(){
     chart.draw(dataTable, options);
 }
 
+/**
+ *  Drawing user Timeline report.
+ */
 function userTimelineReport(){
 	var ReportData = [];
 	var userId = $("#userAutocomplete").attr("user-id");
 	var container = document.getElementById('user_timeline');
 	var dateString = getDateRange('user');
+	$("#user_timeline").html('<div style="font-size:32px;text-align:center; height:400px;"><i class="fa fa-refresh fa-spin"></i> Loading...</div>');
 	$.ajax({
 		type : 'GET',
 		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.USER_TIMELINE_URL+'?userId='+userId+dateString,
@@ -379,6 +428,7 @@ function userTimelineReport(){
 		return;
 	}
 	
+	/* setting chart height */
 	var rowHeight = 41;
     var chartHeight = (ReportData.length) * rowHeight;
 
@@ -403,6 +453,9 @@ Date.prototype.addDays = function(days) {
     return dat;
 }
 
+/*
+ * converting date range(start-end) to date array of each date.
+ */
 function getDates(startDate, stopDate) {
    var dateArray = new Array();
    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0);
@@ -452,6 +505,11 @@ $(".calendar-icon-user").on("click",function(e){
 	}
 });
 
+/**
+ * getting start end date on clicking of 1d, 1w, 1m, 3m icon.
+ * @param reportType
+ * @returns {String}
+ */
 function getDateRange(reportType){
 	var elements ;
 	var dateRange = "";
