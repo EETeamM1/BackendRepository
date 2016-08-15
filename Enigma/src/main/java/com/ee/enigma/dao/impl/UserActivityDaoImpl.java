@@ -1,5 +1,6 @@
 package com.ee.enigma.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class UserActivityDaoImpl implements UserActivityDao {
         } catch (ObjectNotFoundException ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -87,7 +88,7 @@ public class UserActivityDaoImpl implements UserActivityDao {
     @Override
     public void logOutBYDeviceId(String deviceId) {
         List<UserActivity> userActivityList = getUserActivityByDeviceId(deviceId);
-        if (null != userActivityList) {
+        if (!userActivityList.isEmpty()) {
             for (UserActivity userActivity : userActivityList) {
                 if (null == userActivity.getLogoutTime()) {
                     userActivity.setLogoutTime(new Date());
@@ -100,8 +101,8 @@ public class UserActivityDaoImpl implements UserActivityDao {
     @Override
     public List<UserActivity> getUserActivityByDates(String deviceId, Date fromDate, Date toDate) {
         try {
-            String hql = null;
-            Query query = null;
+            String hql ;
+            Query query ;
             Session session = this.sessionFactory.getCurrentSession();
             if (fromDate == null) {
                 hql = "from UserActivity where deviceId= :deviceId order by loginTime desc";
@@ -115,14 +116,11 @@ public class UserActivityDaoImpl implements UserActivityDao {
                 query.setParameter("toDate", toDate);
             }
             List<UserActivity> userActivityList = (List<UserActivity>) query.list();
-            if (null == userActivityList || userActivityList.isEmpty()) {
-                return null;
-            }
             LOGGER.info(userActivityList.toString());
             return userActivityList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 

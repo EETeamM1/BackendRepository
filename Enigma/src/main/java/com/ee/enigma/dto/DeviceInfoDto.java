@@ -8,8 +8,8 @@ public class DeviceInfoDto {
     private String deviceId;
     private String deviceName;
     private String manufacturer;
-    private String OS;
-    private String OSVersion;
+    private String os;
+    private String osVersion;
     private String yearOfManufacturing;
     private boolean isMasterSet;
     private Time timeoutPeriod;
@@ -39,20 +39,20 @@ public class DeviceInfoDto {
         this.manufacturer = manufacturer;
     }
 
-    public String getOS() {
-        return OS;
+    public String getOs() {
+        return os;
     }
 
-    public void setOS(String oS) {
-        OS = oS;
+    public void setOs(String oS) {
+        os = oS;
     }
 
-    public String getOSVersion() {
-        return OSVersion;
+    public String getOsVersion() {
+        return osVersion;
     }
 
-    public void setOSVersion(String oSVersion) {
-        OSVersion = oSVersion;
+    public void setOsVersion(String oSVersion) {
+        osVersion = oSVersion;
     }
 
     public String getYearOfManufacturing() {
@@ -95,8 +95,8 @@ public class DeviceInfoDto {
             deviceInfoDto.setDeviceId(deviceInfo.getDeviceId());
             deviceInfoDto.setDeviceName(deviceInfo.getDeviceName());
             deviceInfoDto.setManufacturer(deviceInfo.getManufacturer());
-            deviceInfoDto.setOS(deviceInfo.getOS());
-            deviceInfoDto.setOSVersion(deviceInfo.getOSVersion());
+            deviceInfoDto.setOs(deviceInfo.getOs());
+            deviceInfoDto.setOsVersion(deviceInfo.getOsVersion());
             deviceInfoDto.setTimeoutPeriod(deviceInfo.getTimeoutPeriod());
             deviceInfoDto.setYearOfManufacturing(deviceInfo.getYearOfManufacturing());
         }

@@ -149,8 +149,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
             String masterPassword = master.getMasterPassword();
 
             // check and update OS Version.
-            if (osVersion != null && !osVersion.equals(deviceInfo.getOSVersion())) {
-                deviceInfo.setOSVersion(osVersion);
+            if (osVersion != null && !osVersion.equals(deviceInfo.getOsVersion())) {
+                deviceInfo.setOsVersion(osVersion);
                 deviceInfoDao.updateDeviceInfo(deviceInfo);
             }
 
@@ -208,8 +208,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
     private void updateDevicePushNotification(Time timeoutPeriod, String deviceId, String deviceToken, String userId,
             String activityId) {
         DevicePushNotification devicePushNotification = devicePushNotificationDao.getDeviceInfo(deviceId);
-        devicePushNotification.setPush_notification_start_time(getNotificationStartTime(new Date(), timeoutPeriod, 0));
-        devicePushNotification.setPush_notification_end_time(getNotificationStartTime(new Date(), timeoutPeriod, 1));
+        devicePushNotification.setPushNotificationStartTime(getNotificationStartTime(new Date(), timeoutPeriod, 0));
+        devicePushNotification.setPushNotificationEndTime(getNotificationStartTime(new Date(), timeoutPeriod, 1));
         devicePushNotification.setDeviceToken(deviceToken);
         devicePushNotification.setUserId(userId);
         devicePushNotification.setActivityId(activityId);

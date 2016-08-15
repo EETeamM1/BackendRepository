@@ -12,6 +12,9 @@ import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.response.ResponseCode;
 
 public class CommonUtils {
+    
+    private CommonUtils() {
+    }
     private static final Logger LOGGER = Logger.getLogger(CommonUtils.class);
 
     public static java.sql.Date getCurrentDate() {
@@ -184,11 +187,11 @@ public class CommonUtils {
     }
 
     public static String displayTimeStringNA(String timeString) {
-        timeString = (timeString + "").trim();
-        if ("null".equalsIgnoreCase(timeString) || "".equals(timeString)) {
+        String tmString = (timeString + "").trim();
+        if ("null".equalsIgnoreCase(tmString) || "".equals(tmString)) {
             return Constants.RETURN_NA;
         } else {
-            return timeString;
+            return tmString;
         }
     }
 

@@ -107,7 +107,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
         List<Object[]> objs = query.list();
         if (null == objs || objs.isEmpty()) {
-            return null;
+            return userInfoList;
         }
         for (Object[] obj : objs) {
             UserInfo user = new UserInfo();
@@ -128,9 +128,6 @@ public class UserInfoDaoImpl implements UserInfoDao {
         query.setString("searchText", "%" + searchText + "%");
 
         List<UserInfo> userInfoList = (List<UserInfo>) query.list();
-        if (null == userInfoList || userInfoList.isEmpty()) {
-            return null;
-        }
         return userInfoList;
     }
 

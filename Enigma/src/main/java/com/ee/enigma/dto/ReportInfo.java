@@ -21,8 +21,8 @@ public class ReportInfo {
     private Boolean submitByAdmin;
     private String deviceAvailability;
     private String manufacturer;
-    private String OS;
-    private String OSVersion;
+    private String os;
+    private String osVersion;
     private String issuedBy;
     private String yearOfManufacturing;
 
@@ -50,20 +50,20 @@ public class ReportInfo {
         this.manufacturer = manufacturer;
     }
 
-    public String getOS() {
-        return OS;
+    public String getOs() {
+        return os;
     }
 
-    public void setOS(String oS) {
-        OS = oS;
+    public void setOs(String oS) {
+        this.os = oS;
     }
 
-    public String getOSVersion() {
-        return OSVersion;
+    public String getOsVersion() {
+        return osVersion;
     }
 
-    public void setOSVersion(String oSVersion) {
-        OSVersion = oSVersion;
+    public void setOsVersion(String oSVersion) {
+        this.osVersion = oSVersion;
     }
 
     public Boolean getIssueByAdmin() {

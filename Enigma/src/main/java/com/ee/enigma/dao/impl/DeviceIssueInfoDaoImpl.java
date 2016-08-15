@@ -54,13 +54,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             }
             List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
             if (null == deviceIssueInfoList || deviceIssueInfoList.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             LOGGER.info(deviceIssueInfoList.toString());
             return deviceIssueInfoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -68,8 +68,8 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
     public List<DeviceIssueInfo> getDeviceIssueListByUserId(String userId, java.util.Date beginDate,
             java.util.Date endDate) {
         try {
-            String hql = null;
-            Query query = null;
+            String hql ;
+            Query query ;
             Session session = this.sessionFactory.getCurrentSession();
             if (beginDate == null) {
                 hql = "from DeviceIssueInfo where deviceId= :deviceId order by issueTime desc";
@@ -84,13 +84,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             }
             List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
             if (null == deviceIssueInfoList || deviceIssueInfoList.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             LOGGER.info(deviceIssueInfoList.toString());
             return deviceIssueInfoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -118,13 +118,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             query.setParameter("deviceId", deviceId);
             List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
             if (null == deviceIssueInfoList || deviceIssueInfoList.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             LOGGER.info(deviceIssueInfoList.toString());
             return deviceIssueInfoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -138,13 +138,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             query.setParameter("userId", userId);
             List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
             if (null == deviceIssueInfoList || deviceIssueInfoList.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             LOGGER.info(deviceIssueInfoList.toString());
             return deviceIssueInfoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -185,13 +185,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             }
             List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
             if (null == deviceIssueInfoList || deviceIssueInfoList.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             LOGGER.info(deviceIssueInfoList.toString());
             return deviceIssueInfoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -231,7 +231,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             List<Objects[]> topDeviceDtoListObjects = (List<Objects[]>) query.list();
             List<TopDeviceDto> topDeviceDtoList = new ArrayList<TopDeviceDto>();
             if (null == topDeviceDtoListObjects || topDeviceDtoListObjects.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             } else {
                 for (Object[] topDevice : topDeviceDtoListObjects) {
                     TopDeviceDto topDeviceDto = new TopDeviceDto();
@@ -245,7 +245,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             return topDeviceDtoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -257,13 +257,13 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
             Query query = session.createQuery(hql);
             List<DeviceIssueInfo> deviceIssueInfoList = (List<DeviceIssueInfo>) query.list();
             if (null == deviceIssueInfoList || deviceIssueInfoList.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             LOGGER.info(deviceIssueInfoList.toString());
             return deviceIssueInfoList;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -284,7 +284,7 @@ public class DeviceIssueInfoDaoImpl implements DeviceIssueInfoDao {
         List<Objects[]> deviceReportDtoObjects = (List<Objects[]>) query.list();
         List<DeviceReportDto> deviceReportDtoList = new ArrayList<DeviceReportDto>();
         if (null == deviceReportDtoObjects || deviceReportDtoObjects.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         } else {
             for (Object[] deviceReport : deviceReportDtoObjects) {
                 DeviceReportDto deviceReportDto = new DeviceReportDto();

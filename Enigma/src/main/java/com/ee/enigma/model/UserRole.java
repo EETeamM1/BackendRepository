@@ -1,5 +1,6 @@
 package com.ee.enigma.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,17 +10,18 @@ import javax.persistence.Table;
 public class UserRole {
 
     @Id
-    private int user_Role_Id;
+    @Column(name = "user_Role_Id")
+    private int userRoleId;
     private String userId;
     private String role;
 
     /* GETTERS AND SETTERS */
     public int getRoleId() {
-        return user_Role_Id;
+        return userRoleId;
     }
 
     public void setRoleId(int userId) {
-        this.user_Role_Id = userId;
+        this.userRoleId = userId;
     }
 
     public String getUserId() {

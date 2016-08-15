@@ -1,5 +1,6 @@
 package com.ee.enigma.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -78,14 +79,10 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
             Session session = this.sessionFactory.getCurrentSession();
             Query query = session.createQuery(hql);
             List<DeviceInfo> deviceInfo = (List<DeviceInfo>) query.list();
-            if (null == deviceInfo || deviceInfo.isEmpty()) {
-                return null;
-            }
-            LOGGER.info(deviceInfo.toString());
             return deviceInfo;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -114,12 +111,12 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
             }
             List<DeviceInfo> deviceInfo = (List<DeviceInfo>) query.list();
             if (null == deviceInfo || deviceInfo.isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }
             return deviceInfo;
         } catch (HibernateException e) {
             LOGGER.error(e);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -133,7 +130,7 @@ public class DeviceInfoDaoImpl implements DeviceInfoDao {
 
         List<DeviceInfo> deviceInfoList = (List<DeviceInfo>) query.list();
         if (null == deviceInfoList || deviceInfoList.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
         return deviceInfoList;
     }

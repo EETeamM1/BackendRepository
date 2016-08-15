@@ -190,8 +190,8 @@ public class DeviceInfoDaoImplTest
     deviceInfo.setManufacturer(JunitConstants.DEVICE_MANUFACTURER);
     deviceInfo.setYearOfManufacturing(JunitConstants.DEVICE_YR_OF_MANUFACTURING);
     deviceInfo.setTimeoutPeriod(new Time(new java.util.Date().getTime()));
-    deviceInfo.setOSVersion(JunitConstants.DEVICE_OS_VERSION);
-    deviceInfo.setOS(JunitConstants.DEVICE_OS);
+    deviceInfo.setOsVersion(JunitConstants.DEVICE_OS_VERSION);
+    deviceInfo.setOs(JunitConstants.DEVICE_OS);
     deviceInfo.setDeviceAvailability(Constants.DEVICE_ISSUE);
     return deviceInfo;
   }

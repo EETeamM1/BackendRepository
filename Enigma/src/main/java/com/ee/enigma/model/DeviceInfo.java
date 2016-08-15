@@ -2,6 +2,7 @@ package com.ee.enigma.model;
 
 import java.sql.Time;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,8 +15,10 @@ public class DeviceInfo {
     private String deviceId;
     private String deviceName;
     private String manufacturer;
-    private String OS;
-    private String OSVersion;
+    @Column(name = "OS")
+    private String os;
+    @Column(name = "OSVersion")
+    private String osVersion;
     private String yearOfManufacturing;
     private boolean isMasterSet;
     private Time timeoutPeriod;
@@ -54,20 +57,20 @@ public class DeviceInfo {
         this.manufacturer = manufacturer;
     }
 
-    public String getOS() {
-        return OS;
+    public String getOs() {
+        return os;
     }
 
-    public void setOS(String oS) {
-        OS = oS;
+    public void setOs(String oS) {
+        os = oS;
     }
 
-    public String getOSVersion() {
-        return OSVersion;
+    public String getOsVersion() {
+        return osVersion;
     }
 
-    public void setOSVersion(String osVersion) {
-        OSVersion = osVersion;
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
     }
 
     public String getYearOfManufacturing() {
@@ -96,8 +99,8 @@ public class DeviceInfo {
 
     @Override
     public String toString() {
-        return "DeviceId : " + this.getDeviceId() + ", DeviceName: " + this.getDeviceName() + ", OS: " + this.getOS()
-                + ", OSVersion: " + this.getOSVersion() + ", Manufacturer: " + this.getManufacturer() + ", YOM: "
+        return "DeviceId : " + this.getDeviceId() + ", DeviceName: " + this.getDeviceName() + ", OS: " + this.getOs()
+                + ", OSVersion: " + this.getOsVersion() + ", Manufacturer: " + this.getManufacturer() + ", YOM: "
                 + this.getYearOfManufacturing() + ", TimeoutPeriod: " + this.getTimeoutPeriod() + ", isMasterSet: "
                 + this.isMasterSet();
     }

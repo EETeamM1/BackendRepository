@@ -50,15 +50,16 @@ public class UserServiceImpl implements UserService {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
+        String uId;
         try {
             try {
-                userId = userId.trim();
+                uId = userId.trim();
             } catch (Exception e) {
                 LOGGER.debug(e);
                 return CommonUtils.badRequest();
             }
 
-            UserInfo userInfo = userInfoDao.getUserInfo(userId);
+            UserInfo userInfo = userInfoDao.getUserInfo(uId);
 
             if (null == userInfo) {
                 return userNotFound();
@@ -135,24 +136,25 @@ public class UserServiceImpl implements UserService {
 
         responseCode = new ResponseCode();
         response = new EnigmaResponse();
+        String uId;
         try {
             try {
-                userId = userId.trim();
+                uId = userId.trim();
             } catch (Exception e) {
                 LOGGER.debug(e);
                 return CommonUtils.badRequest();
             }
 
             // Checking whether request contains all require fields or not.
-            if (null == userId) {
+            if (uId.isEmpty()) {
                 return CommonUtils.badRequest();
             }
-            if (!isUserExists(userId)) {
+            if (!isUserExists(uId)) {
                 return userNotFound();
             }
 
             UserInfo userInfo = new UserInfo();
-            userInfo.setUserId(userId);
+            userInfo.setUserId(uId);
             userInfoDao.deleteUserInfo(userInfo);
             responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_DELETED);
             // Success response.
@@ -174,7 +176,7 @@ public class UserServiceImpl implements UserService {
         result = new ResponseResult();
         try {
             List<UserInfo> userInfoList = userInfoDao.getAllUserInfo();
-            if (null == userInfoList) {
+            if (userInfoList.isEmpty()) {
                 return userNotFound();
             }
 
@@ -267,8 +269,7 @@ public class UserServiceImpl implements UserService {
             }
 
             // Checking whether request contains all require fields or not.
-            if (null == userId || "" == userId.trim() || null == password || "" == password.trim()
-                    || null == newPassword || "" == newPassword.trim()) {
+            if (userId.isEmpty() || password.isEmpty() || newPassword.isEmpty()) {
                 return CommonUtils.badRequest();
             }
 

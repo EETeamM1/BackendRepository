@@ -543,8 +543,8 @@ public class DeviceIssueHelper {
                     reportInfo.setDeviceName(deviceIssueInfo.getDeviceInfo().getDeviceName());
                     reportInfo.setDeviceAvailability(deviceIssueInfo.getDeviceInfo().getDeviceAvailability());
                     reportInfo.setManufacturer(deviceIssueInfo.getDeviceInfo().getManufacturer());
-                    reportInfo.setOS(deviceIssueInfo.getDeviceInfo().getOS());
-                    reportInfo.setOSVersion(deviceIssueInfo.getDeviceInfo().getOSVersion());
+                    reportInfo.setOs(deviceIssueInfo.getDeviceInfo().getOs());
+                    reportInfo.setOsVersion(deviceIssueInfo.getDeviceInfo().getOsVersion());
                     if (!Constants.DEVICE_STATUS_AVAILABLE.equalsIgnoreCase(reportInfo.getDeviceAvailability())) {
                         reportInfo.setUserId(deviceIssueInfo.getUserId());
                         reportInfo.setUserName(deviceIssueInfo.getUserInfo().getUserName());
@@ -561,8 +561,8 @@ public class DeviceIssueHelper {
                 reportInfo.setDeviceName(deviceInfo.getDeviceName());
                 reportInfo.setDeviceAvailability(deviceInfo.getDeviceAvailability());
                 reportInfo.setManufacturer(deviceInfo.getManufacturer());
-                reportInfo.setOS(deviceInfo.getOS());
-                reportInfo.setOSVersion(deviceInfo.getOSVersion());
+                reportInfo.setOs(deviceInfo.getOs());
+                reportInfo.setOsVersion(deviceInfo.getOsVersion());
                 reportInfoList.add(reportInfo);
             }
         }

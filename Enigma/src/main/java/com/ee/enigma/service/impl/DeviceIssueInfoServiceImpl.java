@@ -233,10 +233,11 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
     public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(String beginDateString, String endDateString,
             String reportType) throws EngimaException {
         DeviceIssueTrendLineDto deviceIssueTrendLineDto = null;
+        String rType = reportType;
         try {
             try {
                 if (reportType == null) {
-                    reportType = Constants.DEVICE_ISSUE_ALL;
+                    rType = Constants.DEVICE_ISSUE_ALL;
                 }
                 beginDate = CommonUtils.getSqlDateByString(beginDateString);
                 endDate = CommonUtils.getSqlDateByString(endDateString);
@@ -257,10 +258,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
             }
             DeviceIssueHelper deviceIssueHelper = new DeviceIssueHelper();
             List<DeviceIssueInfo> deviceIssueInfoList = null;
-            deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueList(beginDate, endDate, reportType);
-            if (Constants.DEVICE_ISSUE.equalsIgnoreCase(reportType)) {
+            deviceIssueInfoList = deviceIssueInfoDao.getDeviceIssueList(beginDate, endDate, rType);
+            if (Constants.DEVICE_ISSUE.equalsIgnoreCase(rType)) {
                 deviceIssueTrendLineDto = deviceIssueHelper.buildDeviceIssueTimeLineTrendReport(deviceIssueInfoList);
-            } else if (Constants.DEVICE_SUBMIT.equalsIgnoreCase(reportType)) {
+            } else if (Constants.DEVICE_SUBMIT.equalsIgnoreCase(rType)) {
                 deviceIssueTrendLineDto = deviceIssueHelper.buildDeviceSubmitTimeLineTrendReport(deviceIssueInfoList);
 
             }

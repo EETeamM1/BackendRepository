@@ -107,16 +107,18 @@ public class DeviceServiceImpl implements DeviceService {
             }
 
             // Checking whether request contains all require fields or not.
-            if (null == deviceId || null == deviceName || null == opration || null == manufacturer || null == oS
-                    || null == osVersion || null == yearOfManufacturing) {
+            if (deviceId.isEmpty() || opration.isEmpty() || manufacturer.isEmpty() || oS.isEmpty()){
+                return CommonUtils.badRequest(response, responseCode);
+            }
+            if( osVersion.isEmpty() || yearOfManufacturing.isEmpty()) {
                 return CommonUtils.badRequest(response, responseCode);
             }
             deviceInfo = new DeviceInfo();
             deviceInfo.setDeviceId(deviceId);
             deviceInfo.setDeviceName(deviceName);
             deviceInfo.setManufacturer(manufacturer);
-            deviceInfo.setOS(oS);
-            deviceInfo.setOSVersion(osVersion);
+            deviceInfo.setOs(oS);
+            deviceInfo.setOsVersion(osVersion);
             deviceInfo.setYearOfManufacturing(yearOfManufacturing);
             deviceInfo.setTimeoutPeriod(timeOutPeriod);
             deviceInfo.setDeviceAvailability("Available");
@@ -334,12 +336,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public List<DeviceReportDto> getDeviceReport(String deviceId, Date startDate, Date endDate) {
+        Date sDate = startDate;
+        Date eDate = endDate;
         if (null == startDate) {
-            startDate = CommonUtils.getDayBeginTime(new Date());
-            endDate = CommonUtils.getDayEndTime(new Date());
+            sDate = CommonUtils.getDayBeginTime(new Date());
+            eDate = CommonUtils.getDayEndTime(new Date());
 
         }
-        return deviceIssueInfoDao.getDeviceReport(deviceId, startDate, endDate);
+        return deviceIssueInfoDao.getDeviceReport(deviceId, sDate, eDate);
     }
 
 }
