@@ -4,5 +4,5 @@ import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 
 public interface UserReportService {
-	public EnigmaResponse getUserReportForDateRange(Request userReportInfo);
+    public EnigmaResponse getUserReportForDateRange(Request userReportInfo);
 }

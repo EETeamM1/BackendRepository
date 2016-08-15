@@ -9,13 +9,23 @@ import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 
 public interface DeviceIssueInfoService {
-	public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo) throws EngimaException;
-	public JSONObject getDeviceTimeLineReport(String beginDateString,String endDateString,String id,String reportType);
-	public EnigmaResponse submitDevice(Request deviceIssueInfo) throws EngimaException;
-	public String populateDeviceIssueInfo(String deviceId, String userId) throws EngimaException;//
-	public EnigmaResponse getDeviceReportAvailability() throws EngimaException;
-	public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(String beginDateString,String endDateString,String reportType) throws EngimaException;//
-	public DeviceIssueStatusDto getDeviceIssueStatusForDevice(String deviceId);
-	public EnigmaResponse getDevicesIssueReportByStatus() throws EngimaException;
-	public EnigmaResponse getPendingDevicesReport() throws EngimaException;
+    public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfo) throws EngimaException;
+
+    public JSONObject getDeviceTimeLineReport(String beginDateString, String endDateString, String id,
+            String reportType);
+
+    public EnigmaResponse submitDevice(Request deviceIssueInfo) throws EngimaException;
+
+    public String populateDeviceIssueInfo(String deviceId, String userId) throws EngimaException;
+
+    public EnigmaResponse getDeviceReportAvailability() throws EngimaException;
+
+    public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(String beginDateString, String endDateString,
+            String reportType) throws EngimaException;
+
+    public DeviceIssueStatusDto getDeviceIssueStatusForDevice(String deviceId);
+
+    public EnigmaResponse getDevicesIssueReportByStatus() throws EngimaException;
+
+    public EnigmaResponse getPendingDevicesReport() throws EngimaException;
 }

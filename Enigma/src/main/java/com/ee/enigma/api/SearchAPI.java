@@ -23,50 +23,48 @@ import com.ee.enigma.service.UserService;
 @Consumes("application/json")
 @Produces("application/json")
 public class SearchAPI {
-	
-	private UserService userService;
-	private DeviceService deviceService;
-	 private Logger logger = Logger.getLogger(SearchAPI.class);
-	 
-	@Autowired(required = true)
-	@Qualifier(value = "userService")
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
 
-	@Autowired(required = true)
-	@Qualifier(value = "deviceService")
-	public void setDeviceService(DeviceService deviceService) {
-		this.deviceService = deviceService;
-	}
+    private UserService userService;
+    private DeviceService deviceService;
+    private static final Logger LOGGER = Logger.getLogger(SearchAPI.class);
 
-	@GET
-	@Path("/")
-	public Response searchUser(@QueryParam("user") String userSearchQuery, @QueryParam("device") String deviceSearchQuery) {
-		EnigmaResponse response;
-		String errorMessage;
-    try
-    {
-		if(null != userSearchQuery && !userSearchQuery.trim().isEmpty()){
-			response = userService.searchUserResult(userSearchQuery.trim());
-		}else if(null != deviceSearchQuery && !deviceSearchQuery.trim().isEmpty()){
-			response = deviceService.searchDevice(deviceSearchQuery.trim());
-		}else{
-			return Response.ok(CommonUtils.badRequest(), MediaType.APPLICATION_JSON).status(CommonUtils.badRequest().getResponseCode().getCode())
-					.build();
-		}
-		return Response.ok(response, MediaType.APPLICATION_JSON).status(response.getResponseCode().getCode())
-				.build();
+    @Autowired(required = true)
+    @Qualifier(value = "userService")
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
-    catch (EngimaException e)
-    {
-      errorMessage = e.getMessage();
-      logger.error(e);
-      logger.error(e.getMessage());
-    }
-    response = CommonUtils.internalSeverError(errorMessage);
-    return Response.ok(response, MediaType.APPLICATION_JSON).status(response.getResponseCode().getCode()).build();
 
-	}
+    @Autowired(required = true)
+    @Qualifier(value = "deviceService")
+    public void setDeviceService(DeviceService deviceService) {
+        this.deviceService = deviceService;
+    }
+
+    @GET
+    @Path("/")
+    public Response searchUser(@QueryParam("user") String userSearchQuery,
+            @QueryParam("device") String deviceSearchQuery) {
+        EnigmaResponse response;
+        String errorMessage;
+        try {
+            if (null != userSearchQuery && !userSearchQuery.trim().isEmpty()) {
+                response = userService.searchUserResult(userSearchQuery.trim());
+            } else if (null != deviceSearchQuery && !deviceSearchQuery.trim().isEmpty()) {
+                response = deviceService.searchDevice(deviceSearchQuery.trim());
+            } else {
+                return Response.ok(CommonUtils.badRequest(), MediaType.APPLICATION_JSON)
+                        .status(CommonUtils.badRequest().getResponseCode().getCode()).build();
+            }
+            return Response.ok(response, MediaType.APPLICATION_JSON).status(response.getResponseCode().getCode())
+                    .build();
+        } catch (EngimaException e) {
+            errorMessage = e.getMessage();
+            LOGGER.error(e);
+            LOGGER.error(e.getMessage());
+        }
+        response = CommonUtils.internalSeverError(errorMessage);
+        return Response.ok(response, MediaType.APPLICATION_JSON).status(response.getResponseCode().getCode()).build();
+
+    }
 
 }

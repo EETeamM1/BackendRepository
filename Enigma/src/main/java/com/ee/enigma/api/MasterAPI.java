@@ -1,7 +1,6 @@
 package com.ee.enigma.api;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -24,35 +23,33 @@ import com.ee.enigma.service.MasterService;
 @Produces("application/json")
 public class MasterAPI {
 
-	private Logger logger = Logger.getLogger(MasterAPI.class);
-	private MasterService masterService;
+    private static final Logger LOGGER = Logger.getLogger(MasterAPI.class);
+    private MasterService masterService;
 
-	@Autowired(required = true)
-	@Qualifier(value = "masterService")
-	public void setMasterService(MasterService masterService) {
-		this.masterService = masterService;
-	}
+    @Autowired(required = true)
+    @Qualifier(value = "masterService")
+    public void setMasterService(MasterService masterService) {
+        this.masterService = masterService;
+    }
 
-	@PUT
-	@Path("/")
-  public Response saveUserInfo(Request userInfo)
-  {
-    logger.debug(userInfo);
-    EnigmaResponse userResponse;
-    String errorMessage;
-    try
-    {
-      userResponse = masterService.updateMasterPassword(userInfo);
-      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    @PUT
+    @Path("/")
+    public Response saveUserInfo(Request userInfo) {
+        LOGGER.debug(userInfo);
+        EnigmaResponse userResponse;
+        String errorMessage;
+        try {
+            userResponse = masterService.updateMasterPassword(userInfo);
+            return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+                    .status(userResponse.getResponseCode().getCode()).build();
+        } catch (EngimaException e) {
+            errorMessage = e.getMessage();
+            LOGGER.error(e);
+            LOGGER.error(e.getMessage());
+        }
+        userResponse = CommonUtils.internalSeverError(errorMessage);
+        return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode())
+                .build();
     }
-    catch (EngimaException e)
-    {
-      errorMessage = e.getMessage();
-      logger.error(e);
-      logger.error(e.getMessage());
-    }
-    userResponse = CommonUtils.internalSeverError(errorMessage);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
-  }
 
 }

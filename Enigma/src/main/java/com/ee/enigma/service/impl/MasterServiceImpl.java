@@ -21,69 +21,66 @@ import com.ee.enigma.service.MasterService;
 @Transactional
 public class MasterServiceImpl implements MasterService {
 
-	private Logger logger = Logger.getLogger(MasterServiceImpl.class);
-	private MasterDao masterDao;
+    private static final Logger LOGGER = Logger.getLogger(MasterServiceImpl.class);
+    private MasterDao masterDao;
 
-	@Autowired
-	@Qualifier(value = "masterDao")
-	public void setMasterDao(MasterDao masterDao) {
-		this.masterDao = masterDao;
-	}
-
-	@Override
-	public EnigmaResponse updateMasterPassword(Request masterInfo) throws EngimaException {
-    try
-    {
-		String currentMasterPassword = null;
-		String newMasterPassword = null;
-		try {
-			currentMasterPassword = masterInfo.getParameters().getCurrentMasterPassword();
-			newMasterPassword = masterInfo.getParameters().getNewMasterPassword();
-		} catch (Exception e) {
-			logger.error(e);
-			return CommonUtils.badRequest();
-		}
-		if (null == currentMasterPassword || null == newMasterPassword || currentMasterPassword.isEmpty() || newMasterPassword.isEmpty()) {
-			return CommonUtils.badRequest();
-		}
-
-		Master masterData = masterDao.getMasterInfo();
-		if (currentMasterPassword.equals(masterData.getMasterPassword())) {
-			masterData.setMasterPassword(newMasterPassword);
-			masterDao.updateMasterInfo(masterData);
-			return successResponse();
-		} else {
-			return wrongPassword();
-		}
+    @Autowired
+    @Qualifier(value = "masterDao")
+    public void setMasterDao(MasterDao masterDao) {
+        this.masterDao = masterDao;
     }
-    catch(HibernateException e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e);
-    }
-    catch(Exception e)
-    {
-      throw new EngimaException("Excepton in "+new Object(){}.getClass().getEnclosingMethod().getName()+"()  : "+e,e);
-    }
-    
-	}
 
-	private EnigmaResponse wrongPassword() {
-		ResponseCode responseCode = new ResponseCode();
-		EnigmaResponse response = new EnigmaResponse();
-		responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
-		responseCode.setMessage(Constants.MESSAGE_WRONG_PASSWORD);
-		response.setResponseCode(responseCode);
-		return response;
-	}
-	
-	
-	private EnigmaResponse successResponse() {
-		ResponseCode responseCode = new ResponseCode();
-		EnigmaResponse response = new EnigmaResponse();
-		responseCode.setCode(Constants.CODE_SUCCESS);
-		responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
-		response.setResponseCode(responseCode);
-		return response;
-	}
+    @Override
+    public EnigmaResponse updateMasterPassword(Request masterInfo) throws EngimaException {
+        try {
+            String currentMasterPassword = null;
+            String newMasterPassword = null;
+            try {
+                currentMasterPassword = masterInfo.getParameters().getCurrentMasterPassword();
+                newMasterPassword = masterInfo.getParameters().getNewMasterPassword();
+            } catch (Exception e) {
+                LOGGER.error(e);
+                return CommonUtils.badRequest();
+            }
+            if (null == currentMasterPassword || null == newMasterPassword || currentMasterPassword.isEmpty()
+                    || newMasterPassword.isEmpty()) {
+                return CommonUtils.badRequest();
+            }
+
+            Master masterData = masterDao.getMasterInfo();
+            if (currentMasterPassword.equals(masterData.getMasterPassword())) {
+                masterData.setMasterPassword(newMasterPassword);
+                masterDao.updateMasterInfo(masterData);
+                return successResponse();
+            } else {
+                return wrongPassword();
+            }
+        } catch (HibernateException e) {
+            throw new EngimaException("Excepton in " + new Object() {
+            }.getClass().getEnclosingMethod().getName() + "()  : " + e);
+        } catch (Exception e) {
+            throw new EngimaException("Excepton in " + new Object() {
+            }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
+        }
+
+    }
+
+    private EnigmaResponse wrongPassword() {
+        ResponseCode responseCode = new ResponseCode();
+        EnigmaResponse response = new EnigmaResponse();
+        responseCode.setCode(Constants.CODE_AUTHENTICATION_FAILD);
+        responseCode.setMessage(Constants.MESSAGE_WRONG_PASSWORD);
+        response.setResponseCode(responseCode);
+        return response;
+    }
+
+    private EnigmaResponse successResponse() {
+        ResponseCode responseCode = new ResponseCode();
+        EnigmaResponse response = new EnigmaResponse();
+        responseCode.setCode(Constants.CODE_SUCCESS);
+        responseCode.setMessage(Constants.MESSAGE_SUCCESSFULLY_UPDATED);
+        response.setResponseCode(responseCode);
+        return response;
+    }
 
 }

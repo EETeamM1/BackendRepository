@@ -29,103 +29,89 @@ import com.ee.enigma.service.DeviceService;
 @Controller(value = "devicInfoREST")
 @Consumes("application/json")
 @Produces("application/json")
-public class DeviceREST
-{
-   private Logger logger = Logger.getLogger(DeviceREST.class);
+public class DeviceREST {
+    private static final Logger LOGGER = Logger.getLogger(DeviceREST.class);
 
-  private DeviceService deviceService;
+    private DeviceService deviceService;
 
-  @Autowired(required = true)
-  @Qualifier(value = "deviceService")
-  public void setDeviceService(DeviceService deviceService)
-  {
-    this.deviceService = deviceService;
-  }
-
-  @POST
-  @Path("/")
-  public Response saveDeviceInfo(Request requestInfo)
-  {
-    String errorMessage;
-    EnigmaResponse userResponse;
-    try
-    {
-    userResponse = deviceService.saveDeviceInfo(requestInfo);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON)
-      .status(userResponse.getResponseCode().getCode()).build();
+    @Autowired(required = true)
+    @Qualifier(value = "deviceService")
+    public void setDeviceService(DeviceService deviceService) {
+        this.deviceService = deviceService;
     }
-    catch (EngimaException e)
-    {
-      errorMessage = e.getMessage();
-      logger.error(e);
-      logger.error(e.getMessage());
-    }
-    userResponse = CommonUtils.internalSeverError(errorMessage);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
 
-  }
+    @POST
+    @Path("/")
+    public Response saveDeviceInfo(Request requestInfo) {
+        String errorMessage;
+        EnigmaResponse userResponse;
+        try {
+            userResponse = deviceService.saveDeviceInfo(requestInfo);
+            return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+                    .status(userResponse.getResponseCode().getCode()).build();
+        } catch (EngimaException e) {
+            errorMessage = e.getMessage();
+            LOGGER.error(e);
+            LOGGER.error(e.getMessage());
+        }
+        userResponse = CommonUtils.internalSeverError(errorMessage);
+        return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode())
+                .build();
 
+    }
 
-  @DELETE
-  @Path("/{id}")
-  public Response deleteUserInfo(@PathParam("id") String deviceId)
-  {
-    String errorMessage;
-    EnigmaResponse userResponse;
-    try
-    {
-      userResponse = deviceService.deleteDeviceInfo(deviceId);
-      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    @DELETE
+    @Path("/{id}")
+    public Response deleteUserInfo(@PathParam("id") String deviceId) {
+        String errorMessage;
+        EnigmaResponse userResponse;
+        try {
+            userResponse = deviceService.deleteDeviceInfo(deviceId);
+            return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+                    .status(userResponse.getResponseCode().getCode()).build();
+        } catch (EngimaException e) {
+            errorMessage = e.getMessage();
+            LOGGER.error(e);
+            LOGGER.error(e.getMessage());
+        }
+        userResponse = CommonUtils.internalSeverError(errorMessage);
+        return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode())
+                .build();
     }
-    catch (EngimaException e)
-    {
-      errorMessage = e.getMessage();
-      logger.error(e);
-      logger.error(e.getMessage());
-    }
-    userResponse = CommonUtils.internalSeverError(errorMessage);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
-  }
-  
-  @GET
-  @Path("/{id}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public DeviceInfoDto getDeviceInfo(@PathParam("id") String deviceId)
-  {
-    DeviceInfoDto deviceInfoDto=deviceService.getDeviceInfo(deviceId);
-    return deviceInfoDto;
-  }
-  
 
-  @GET
-  @Path("/getDevicesInfoByStatus")
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<DeviceInfoDto> getDevicesInfoByStatus(@QueryParam("deviceId") String deviceId, @QueryParam("deviceStatus") String deviceStatus)
-  {
-    List<DeviceInfoDto> deviceInfoDtos=deviceService.getDevicesInfoByStatus(deviceId,deviceStatus);
-    return deviceInfoDtos;
-  }
-  
-  @PUT
-  @Path("/{id}")
-  public Response updateDeviceInfoStatus(@PathParam("id") String deviceId, Request requestInfo)
-  {
-    String errorMessage;
-    EnigmaResponse userResponse;
-    try
-    {
-      requestInfo.getParameters().setDeviceId(deviceId);
-      userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
-      return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DeviceInfoDto getDeviceInfo(@PathParam("id") String deviceId) {
+        return deviceService.getDeviceInfo(deviceId);
     }
-    catch (EngimaException e)
-    {
-      errorMessage = e.getMessage();
-      logger.error(e);
-      logger.error(e.getMessage());
+
+    @GET
+    @Path("/getDevicesInfoByStatus")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<DeviceInfoDto> getDevicesInfoByStatus(@QueryParam("deviceId") String deviceId,
+            @QueryParam("deviceStatus") String deviceStatus) {
+        return deviceService.getDevicesInfoByStatus(deviceId, deviceStatus);
     }
-    userResponse = CommonUtils.internalSeverError(errorMessage);
-    return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode()).build();
-  }
-  
+
+    @PUT
+    @Path("/{id}")
+    public Response updateDeviceInfoStatus(@PathParam("id") String deviceId, Request requestInfo) {
+        String errorMessage;
+        EnigmaResponse userResponse;
+        try {
+            requestInfo.getParameters().setDeviceId(deviceId);
+            userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
+            return Response.ok(userResponse, MediaType.APPLICATION_JSON)
+                    .status(userResponse.getResponseCode().getCode()).build();
+        } catch (EngimaException e) {
+            errorMessage = e.getMessage();
+            LOGGER.error(e);
+            LOGGER.error(e.getMessage());
+        }
+        userResponse = CommonUtils.internalSeverError(errorMessage);
+        return Response.ok(userResponse, MediaType.APPLICATION_JSON).status(userResponse.getResponseCode().getCode())
+                .build();
+    }
+
 }

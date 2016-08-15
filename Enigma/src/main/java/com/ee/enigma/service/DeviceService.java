@@ -11,21 +11,21 @@ import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 
 public interface DeviceService {
-	public EnigmaResponse saveDeviceInfo(Request userInfo) throws EngimaException;
+    public EnigmaResponse saveDeviceInfo(Request userInfo) throws EngimaException;
 
-	public EnigmaResponse deleteDeviceInfo(String deviceId) throws EngimaException;
+    public EnigmaResponse deleteDeviceInfo(String deviceId) throws EngimaException;
 
-	public DeviceInfoDto getDeviceInfo(String deviceId);
+    public DeviceInfoDto getDeviceInfo(String deviceId);
 
-	public List<DeviceInfoDto> getDevicesInfoByStatus(String deviceId,String deviceStatus);
+    public List<DeviceInfoDto> getDevicesInfoByStatus(String deviceId, String deviceStatus);
 
-	public EnigmaResponse updateDeviceInfoStatus(Request requestInfo) throws EngimaException;
+    public EnigmaResponse updateDeviceInfoStatus(Request requestInfo) throws EngimaException;
 
-	public EnigmaResponse approveDevice(Request requestInfo) throws EngimaException;
-	
-	public List<TopDeviceDto> getTopDevices();
-	
+    public EnigmaResponse approveDevice(Request requestInfo) throws EngimaException;
+
+    public List<TopDeviceDto> getTopDevices();
+
     public EnigmaResponse searchDevice(String searchQuery) throws EngimaException;
 
-	List<DeviceReportDto> getDeviceReport(String deviceId, Date startDate, Date endDate);
+    List<DeviceReportDto> getDeviceReport(String deviceId, Date startDate, Date endDate);
 }

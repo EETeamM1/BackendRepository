@@ -3,232 +3,227 @@ package com.ee.enigma.request;
 import java.sql.Time;
 
 public class RequestParameters {
-	private String userId;
-	private String password;
-	private String deviceId;
-	private String osVersion;
-	private float latitude;
-	private float longitude;
-	private String sessionToken;
-	private Boolean byAdmin;
-	private String beginDate;
-	private String endDate;
-	private String userName;
-	private String opration;
+    private String userId;
+    private String password;
+    private String deviceId;
+    private String osVersion;
+    private float latitude;
+    private float longitude;
+    private String sessionToken;
+    private Boolean byAdmin;
+    private String beginDate;
+    private String endDate;
+    private String userName;
+    private String opration;
 
-	private String deviceName;
-	private boolean isAdminApproved;
-	private String manufacturer;
-	private String oS;
-	private Time timeoutPeriod;
-	private String yearOfManufacturing;
-	private String currentMasterPassword;
-	private String newMasterPassword;
-	private String deviceStatus;
-	private String issueType;
-	private String newPassword;
-	
-	private String deviceToken;
+    private String deviceName;
+    private boolean isAdminApproved;
+    private String manufacturer;
+    private String oS;
+    private Time timeoutPeriod;
+    private String yearOfManufacturing;
+    private String currentMasterPassword;
+    private String newMasterPassword;
+    private String deviceStatus;
+    private String issueType;
+    private String newPassword;
 
-	public String getDeviceToken() {
-		return deviceToken;
-	}
-	
+    private String deviceToken;
 
-	public void setDeviceToken(String deviceToken) {
-		this.deviceToken = deviceToken;
-	}
-	
+    public String getDeviceToken() {
+        return deviceToken;
+    }
 
-	public void setAdminApproved(boolean isAdminApproved) {
-		this.isAdminApproved = isAdminApproved;
-	}
-	
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
 
-	public String getDeviceStatus() {
-		return deviceStatus;
-	}
+    public void setAdminApproved(boolean isAdminApproved) {
+        this.isAdminApproved = isAdminApproved;
+    }
 
-	public void setDeviceStatus(String deviceStatus) {
-		this.deviceStatus = deviceStatus;
-	}
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
 
-	public String getIssueType() {
-		return issueType;
-	}
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
+    }
 
-	public void setIssueType(String issueType) {
-		this.issueType = issueType;
-	}
+    public String getIssueType() {
+        return issueType;
+    }
 
-	public String getCurrentMasterPassword() {
-		return currentMasterPassword;
-	}
+    public void setIssueType(String issueType) {
+        this.issueType = issueType;
+    }
 
-	public void setCurrentMasterPassword(String currentMasterPassword) {
-		this.currentMasterPassword = currentMasterPassword;
-	}
+    public String getCurrentMasterPassword() {
+        return currentMasterPassword;
+    }
 
-	public String getNewMasterPassword() {
-		return newMasterPassword;
-	}
+    public void setCurrentMasterPassword(String currentMasterPassword) {
+        this.currentMasterPassword = currentMasterPassword;
+    }
 
-	public void setNewMasterPassword(String newMasterPassword) {
-		this.newMasterPassword = newMasterPassword;
-	}
+    public String getNewMasterPassword() {
+        return newMasterPassword;
+    }
 
-	public String getBeginDate() {
-		return beginDate;
-	}
+    public void setNewMasterPassword(String newMasterPassword) {
+        this.newMasterPassword = newMasterPassword;
+    }
 
-	public void setBeginDate(String beginDate) {
-		this.beginDate = beginDate;
-	}
+    public String getBeginDate() {
+        return beginDate;
+    }
 
-	public String getEndDate() {
-		return endDate;
-	}
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
+    public String getEndDate() {
+        return endDate;
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getDeviceId() {
-		return deviceId;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
-	}
+    public String getDeviceId() {
+        return deviceId;
+    }
 
-	public String getOsVersion() {
-		return osVersion;
-	}
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
-	public void setOsVersion(String osVersion) {
-		this.osVersion = osVersion;
-	}
+    public String getOsVersion() {
+        return osVersion;
+    }
 
-	public float getLatitude() {
-		return latitude;
-	}
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
 
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
-	}
+    public float getLatitude() {
+        return latitude;
+    }
 
-	public float getLongitude() {
-		return longitude;
-	}
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
 
-	public void setLongitude(float longitude) {
-		this.longitude = longitude;
-	}
+    public float getLongitude() {
+        return longitude;
+    }
 
-	public String getSessionToken() {
-		return sessionToken;
-	}
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 
-	public void setSessionToken(String sessionToken) {
-		this.sessionToken = sessionToken;
-	}
+    public String getSessionToken() {
+        return sessionToken;
+    }
 
-	public Boolean getByAdmin() {
-		return byAdmin;
-	}
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
 
-	public void setByAdmin(Boolean byAdmin) {
-		this.byAdmin = byAdmin;
-	}
+    public Boolean getByAdmin() {
+        return byAdmin;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public void setByAdmin(Boolean byAdmin) {
+        this.byAdmin = byAdmin;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getOpration() {
-		return opration;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setOpration(String opration) {
-		this.opration = opration;
-	}
+    public String getOpration() {
+        return opration;
+    }
 
-	public String getDeviceName() {
-		return deviceName;
-	}
+    public void setOpration(String opration) {
+        this.opration = opration;
+    }
 
-	public void setDeviceName(String deviceName) {
-		this.deviceName = deviceName;
-	}
+    public String getDeviceName() {
+        return deviceName;
+    }
 
-	public boolean getIsAdminApproved() {
-		return isAdminApproved;
-	}
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 
-	public void setIsAdminApproved(boolean isAdminApproved) {
-		this.isAdminApproved = isAdminApproved;
-	}
+    public boolean getIsAdminApproved() {
+        return isAdminApproved;
+    }
 
-	public String getManufacturer() {
-		return manufacturer;
-	}
+    public void setIsAdminApproved(boolean isAdminApproved) {
+        this.isAdminApproved = isAdminApproved;
+    }
 
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
-	}
+    public String getManufacturer() {
+        return manufacturer;
+    }
 
-	public String getoS() {
-		return oS;
-	}
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
-	public void setoS(String oS) {
-		this.oS = oS;
-	}
+    public String getoS() {
+        return oS;
+    }
 
-	public Time getTimeoutPeriod() {
-		return timeoutPeriod;
-	}
+    public void setoS(String oS) {
+        this.oS = oS;
+    }
 
-	public void setTimeoutPeriod(Time timeoutPeriod) {
-		this.timeoutPeriod = timeoutPeriod;
-	}
+    public Time getTimeoutPeriod() {
+        return timeoutPeriod;
+    }
 
-	public String getYearOfManufacturing() {
-		return yearOfManufacturing;
-	}
+    public void setTimeoutPeriod(Time timeoutPeriod) {
+        this.timeoutPeriod = timeoutPeriod;
+    }
 
-	public void setYearOfManufacturing(String yearOfManufacturing) {
-		this.yearOfManufacturing = yearOfManufacturing;
-	}
+    public String getYearOfManufacturing() {
+        return yearOfManufacturing;
+    }
 
+    public void setYearOfManufacturing(String yearOfManufacturing) {
+        this.yearOfManufacturing = yearOfManufacturing;
+    }
 
-	public String getNewPassword() {
-		return newPassword;
-	}
+    public String getNewPassword() {
+        return newPassword;
+    }
 
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
 }

@@ -1,236 +1,189 @@
 package com.ee.enigma.dto;
 
-//import java.sql.Timestamp;
 import java.util.Date;
 
-public class ReportInfo
-{
-  String activityId;
-  String loginTime;
-  String logoutTime;
-  
-  Date inDate;
-  Date outDate;
-  
-  String location;
-  String userId;
-  String issueId;
-  String deviceId;
-  String fromTable;
-  String userName;
-  String deviceName;
-  private Boolean issueByAdmin;
-  private Boolean submitByAdmin;
-  private String deviceAvailability;
-  private String manufacturer;
-  private String OS;
-  private String OSVersion;
-  private String issuedBy;
-  private String yearOfManufacturing;
-  
-   public String getYearOfManufacturing()
-  {
-    return yearOfManufacturing;
-  }
+public class ReportInfo {
+    String activityId;
+    String loginTime;
+    String logoutTime;
 
-  public void setYearOfManufacturing(String yearOfManufacturing)
-  {
-    this.yearOfManufacturing = yearOfManufacturing;
-  }
+    Date inDate;
+    Date outDate;
 
-    public String getIssuedBy()
-  {
-    return issuedBy;
-  }
+    String location;
+    String userId;
+    String issueId;
+    String deviceId;
+    String fromTable;
+    String userName;
+    String deviceName;
+    private Boolean issueByAdmin;
+    private Boolean submitByAdmin;
+    private String deviceAvailability;
+    private String manufacturer;
+    private String OS;
+    private String OSVersion;
+    private String issuedBy;
+    private String yearOfManufacturing;
 
-  public void setIssuedBy(String issuedBy)
-  {
-    this.issuedBy = issuedBy;
-  }
+    public String getYearOfManufacturing() {
+        return yearOfManufacturing;
+    }
 
-  public String getManufacturer()
-  {
-    return manufacturer;
-  }
+    public void setYearOfManufacturing(String yearOfManufacturing) {
+        this.yearOfManufacturing = yearOfManufacturing;
+    }
 
-  public void setManufacturer(String manufacturer)
-  {
-    this.manufacturer = manufacturer;
-  }
+    public String getIssuedBy() {
+        return issuedBy;
+    }
 
-  public String getOS()
-  {
-    return OS;
-  }
+    public void setIssuedBy(String issuedBy) {
+        this.issuedBy = issuedBy;
+    }
 
-  public void setOS(String oS)
-  {
-    OS = oS;
-  }
+    public String getManufacturer() {
+        return manufacturer;
+    }
 
-  public String getOSVersion()
-  {
-    return OSVersion;
-  }
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
-  public void setOSVersion(String oSVersion)
-  {
-    OSVersion = oSVersion;
-  }
+    public String getOS() {
+        return OS;
+    }
 
-  
+    public void setOS(String oS) {
+        OS = oS;
+    }
 
-  public Boolean getIssueByAdmin()
-  {
-    return issueByAdmin;
-  }
+    public String getOSVersion() {
+        return OSVersion;
+    }
 
-  public void setIssueByAdmin(Boolean issueByAdmin)
-  {
-    this.issueByAdmin = issueByAdmin;
-  }
+    public void setOSVersion(String oSVersion) {
+        OSVersion = oSVersion;
+    }
 
-  
-  
+    public Boolean getIssueByAdmin() {
+        return issueByAdmin;
+    }
 
-  public String getDeviceName()
-  {
-    return deviceName;
-  }
+    public void setIssueByAdmin(Boolean issueByAdmin) {
+        this.issueByAdmin = issueByAdmin;
+    }
 
-  public void setDeviceName(String deviceName)
-  {
-    this.deviceName = deviceName;
-  }
+    public String getDeviceName() {
+        return deviceName;
+    }
 
-  public String getActivityId()
-  {
-    return activityId;
-  }
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 
-  public void setActivityId(String activityId)
-  {
-    this.activityId = activityId;
-  }
+    public String getActivityId() {
+        return activityId;
+    }
 
-  public String getLoginTime()
-  {
-    return loginTime;
-  }
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
 
-  public void setLoginTime(String loginTime)
-  {
-    this.loginTime = loginTime;
-  }
+    public String getLoginTime() {
+        return loginTime;
+    }
 
-  public String getLogoutTime()
-  {
-    return logoutTime;
-  }
+    public void setLoginTime(String loginTime) {
+        this.loginTime = loginTime;
+    }
 
-  public void setLogoutTime(String logoutTime)
-  {
-    this.logoutTime = logoutTime;
-  }
+    public String getLogoutTime() {
+        return logoutTime;
+    }
 
-  public String getLocation()
-  {
-    return location;
-  }
+    public void setLogoutTime(String logoutTime) {
+        this.logoutTime = logoutTime;
+    }
 
-  public void setLocation(String location)
-  {
-    this.location = location;
-  }
+    public String getLocation() {
+        return location;
+    }
 
-  public String getUserId()
-  {
-    return userId;
-  }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-  public void setUserId(String userId)
-  {
-    this.userId = userId;
-  }
+    public String getUserId() {
+        return userId;
+    }
 
-  public String getIssueId()
-  {
-    return issueId;
-  }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-  public void setIssueId(String issueId)
-  {
-    this.issueId = issueId;
-  }
+    public String getIssueId() {
+        return issueId;
+    }
 
-  public String getDeviceId()
-  {
-    return deviceId;
-  }
+    public void setIssueId(String issueId) {
+        this.issueId = issueId;
+    }
 
-  public void setDeviceId(String deviceId)
-  {
-    this.deviceId = deviceId;
-  }
+    public String getDeviceId() {
+        return deviceId;
+    }
 
-  public String getFromTable()
-  {
-    return fromTable;
-  }
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
-  public void setFromTable(String fromTable)
-  {
-    this.fromTable = fromTable;
-  }
+    public String getFromTable() {
+        return fromTable;
+    }
 
-  public String getUserName()
-  {
-    return userName;
-  }
+    public void setFromTable(String fromTable) {
+        this.fromTable = fromTable;
+    }
 
-  public void setUserName(String userName)
-  {
-    this.userName = userName;
-  }
+    public String getUserName() {
+        return userName;
+    }
 
-  public String getDeviceAvailability()
-  {
-    return deviceAvailability;
-  }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-  public void setDeviceAvailability(String deviceAvailability)
-  {
-    this.deviceAvailability = deviceAvailability;
-  }
+    public String getDeviceAvailability() {
+        return deviceAvailability;
+    }
 
-  public Boolean getSubmitByAdmin()
-  {
-    return submitByAdmin;
-  }
+    public void setDeviceAvailability(String deviceAvailability) {
+        this.deviceAvailability = deviceAvailability;
+    }
 
-  public void setSubmitByAdmin(Boolean submitByAdmin)
-  {
-    this.submitByAdmin = submitByAdmin;
-  }
+    public Boolean getSubmitByAdmin() {
+        return submitByAdmin;
+    }
 
-  public Date getInDate()
-  {
-    return inDate;
-  }
+    public void setSubmitByAdmin(Boolean submitByAdmin) {
+        this.submitByAdmin = submitByAdmin;
+    }
 
-  public void setInDate(Date inDate)
-  {
-    this.inDate = inDate;
-  }
+    public Date getInDate() {
+        return inDate;
+    }
 
-  public Date getOutDate()
-  {
-    return outDate;
-  }
+    public void setInDate(Date inDate) {
+        this.inDate = inDate;
+    }
 
-  public void setOutDate(Date outDate)
-  {
-    this.outDate = outDate;
-  }
+    public Date getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(Date outDate) {
+        this.outDate = outDate;
+    }
 
 }

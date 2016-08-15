@@ -11,31 +11,32 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.model.Master;
 
-@Repository(value="masterDao")
+@Repository(value = "masterDao")
 @Transactional
-public class MasterDaoImpl implements MasterDao{
+public class MasterDaoImpl implements MasterDao {
 
-	private Logger logger = Logger.getLogger(MasterDaoImpl.class);
-	private SessionFactory sessionFactory;	
-	@Autowired
-	@Qualifier(value="sessionFactory")
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-	
-	@Override
-	public Master getMasterInfo() {
-		Session session = this.sessionFactory.getCurrentSession();
-		Master master = (Master) session.load(Master.class, 1);
-		logger.info(master);
-		return master;
-	}
+    private static final Logger LOGGER = Logger.getLogger(MasterDaoImpl.class);
+    private SessionFactory sessionFactory;
 
-	@Override
-	public void updateMasterInfo(Master master) {
-		logger.info(master);
-	    Session session = this.sessionFactory.getCurrentSession();
-	    session.update(master);
-	}
-	
+    @Autowired
+    @Qualifier(value = "sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public Master getMasterInfo() {
+        Session session = this.sessionFactory.getCurrentSession();
+        Master master = (Master) session.load(Master.class, 1);
+        LOGGER.info(master);
+        return master;
+    }
+
+    @Override
+    public void updateMasterInfo(Master master) {
+        LOGGER.info(master);
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(master);
+    }
+
 }
