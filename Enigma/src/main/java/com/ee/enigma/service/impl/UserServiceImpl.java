@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
                 return CommonUtils.badRequest();
             }
 
-            UserInfo userInfo = userInfoDao.getUserInfo(uId);
+            UserInfo userInfo = userInfoDao.getUserDetailById(uId);
 
             if (null == userInfo) {
                 return userNotFound();

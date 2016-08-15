@@ -21,4 +21,6 @@ public interface UserInfoDao {
     public List<UserInfo> getUsersByIdAndName(String searchText);
 
     public int udpateUserPassword(String userId, String password, String newPassword);
+
+    public UserInfo getUserDetailById(String userId);
 }

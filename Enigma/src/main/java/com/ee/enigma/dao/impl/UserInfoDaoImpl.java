@@ -99,6 +99,25 @@ public class UserInfoDaoImpl implements UserInfoDao {
     }
 
     @Override
+    public UserInfo getUserDetailById(String userId) {
+        String hql = "select userId, userName from UserInfo where userId= :userId ";
+            Session session = this.sessionFactory.getCurrentSession();
+            Query query = session.createQuery(hql);
+            query.setParameter("userId", userId);
+       UserInfo userInfo = new UserInfo();
+
+        List<Object[]> objs = query.list();
+        if (null == objs || objs.isEmpty()) {
+            return null;
+        }
+        for (Object[] obj : objs) {
+            userInfo.setUserId((String) obj[0]);
+            userInfo.setUserName((String) obj[1]);
+        }
+        return userInfo;
+    }
+
+    @Override
     public List<UserInfo> getAllUserInfo() {
         String hql = "select userId, userName from UserInfo";
         Session session = this.sessionFactory.getCurrentSession();
