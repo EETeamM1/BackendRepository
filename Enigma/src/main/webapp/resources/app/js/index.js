@@ -415,6 +415,7 @@ var submitDevice = function(self){
 	$("#confirmModal_device_detail_modal_name").text($(self).attr("device-name"));
 	$("#confirmModal_device_detail_modal_id").text($(self).attr("device-id"));
 	$("#confirmModa_device_detail_modal_user").text($(self).attr("user-name"));
+	$("#confirmModa_device_detail_modal_user_id").text($(self).attr("user-id"));
 	$("#confirmModal").modal({                    
 	    "backdrop"  : "static",
 	    "show"      : true                     
@@ -435,7 +436,7 @@ $("#confirmModalYes").click(function(e){
 		url : URL.HOST_NAME+URL.APPLICATION_NAME+URL.SUBMIT_DEVICE,
 		data : JSON.stringify({
 			  "parameters": {
-			      "userId": $("#confirmModa_device_detail_modal_user").text(),
+			      "userId": $("#confirmModa_device_detail_modal_user_id").text(),
 			      "deviceId": deviceId,
 			      "byAdmin": byAdmin
 			  }
@@ -465,6 +466,7 @@ $("#confirmModalYes").click(function(e){
 				$.each(myDeviceRenderingData, function(i, v) {
 					if (v.deviceId == deviceId) {
 						myDeviceRenderingData.splice(index,1);			
+						return false;
 					}
 					index++;
 				});

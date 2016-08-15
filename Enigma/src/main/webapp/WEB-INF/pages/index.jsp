@@ -226,6 +226,7 @@
 					<td>:&nbsp&nbsp&nbsp</td>
 					<td class="n3 font-bold" id="confirmModa_device_detail_modal_user"></td>
 				</tr>
+				<tr class="hide"><td colspan="3" id="confirmModa_device_detail_modal_user_id"></td></tr>
 			</tbody>
 		</table>
 	  </div>

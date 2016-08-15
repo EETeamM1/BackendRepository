@@ -15,9 +15,12 @@ function getApproveRequests(){
 			responseData = response 
 			
 			requestCount=responseData.length;
+			$("#requestCount").text(requestCount || 0);
+			$("#pendingDevices").text(requestCount || 0);
 		}
 	});
 }
+setInterval(getApproveRequests, 40000);
 getApproveRequests();
 $("#requestCount").text(requestCount || 0);
 $("#pendingDevices").text(requestCount || 0);

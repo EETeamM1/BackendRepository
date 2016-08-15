@@ -27,7 +27,7 @@
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="border-bottom:none;" role="button" aria-haspopup="true" aria-expanded="false">
       						${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
     						<ul class="dropdown-menu">
-    							<li><a href="/profile" style="border-bottom:none;">Profile</a></li>
+    							<li><a href="profile" style="border-bottom:none;">Profile</a></li>
 						<li><a href="<c:url value="/j_spring_security_logout"/>" style="border-bottom:none;">
 								Logout</a></li>
     						</ul>
