@@ -194,7 +194,7 @@ $.ajax({
 								'deviceId' : value.deviceId,
 								'device_name' : value.deviceName,
 								'status' : value.deviceAvailability,
-								'OSVersion' : value.osversion,
+								'OSVersion' : value.osVersion,
 								'user_id': userId,
 								'user_name' : userName,
 								'hideAvailable' : hideAvailable,
@@ -210,7 +210,7 @@ $.ajax({
 						'deviceId' : value.deviceId,
 						'device_name' : value.deviceName,
 						'status' : value.deviceAvailability,
-						'OSVersion' : value.osversion,
+						'OSVersion' : value.osVersion,
 						'user_id': userId,
 						'user_name' : userName,
 						'hideAvailable' : hideAvailable,
@@ -308,7 +308,7 @@ var deviceDetails = function(self){
 			$("#device_detail_modal_id").html(v.deviceId);
 			$("#device_detail_modal_manufacturer").html(v.manufacturer);
 			$("#device_detail_modal_os").html(v.os);
-			$("#device_detail_modal_os_version").html(v.osversion);
+			$("#device_detail_modal_os_version").html(v.osVersion);
 			$("#deviceDetailModal").modal('show');
 		}
 	});
