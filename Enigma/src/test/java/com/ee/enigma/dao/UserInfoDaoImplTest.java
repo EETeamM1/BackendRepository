@@ -120,7 +120,7 @@ public class UserInfoDaoImplTest
     List<UserInfo> userInfoList=null;
     Mockito.when(query.list()).thenReturn(null);
     userInfoList=userInfoDaoImpl.getAllUserInfo();
-    Assert.assertTrue(userInfoList==null);
+    Assert.assertTrue(userInfoList.size() == 0);
   }
   
   public List<Object[]> populateUserObjectInfoList()

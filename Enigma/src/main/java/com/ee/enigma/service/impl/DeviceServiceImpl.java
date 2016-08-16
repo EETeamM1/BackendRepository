@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.DevicePushNotificationDao;
@@ -78,7 +78,7 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceInfoDtos;
     }
 
-    public EnigmaResponse saveDeviceInfo(Request requestInfo) throws EngimaException {
+    public EnigmaResponse saveDeviceInfo(Request requestInfo) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -140,16 +140,16 @@ public class DeviceServiceImpl implements DeviceService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
     }
 
-    public EnigmaResponse updateDeviceInfoStatus(Request requestInfo) throws EngimaException {
+    public EnigmaResponse updateDeviceInfoStatus(Request requestInfo) throws EnigmaException {
 
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
@@ -186,17 +186,17 @@ public class DeviceServiceImpl implements DeviceService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
 
     }
 
-    public EnigmaResponse deleteDeviceInfo(String deviceId) throws EngimaException {
+    public EnigmaResponse deleteDeviceInfo(String deviceId) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -215,10 +215,10 @@ public class DeviceServiceImpl implements DeviceService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
@@ -231,7 +231,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public EnigmaResponse approveDevice(Request requestInfo) throws EngimaException {
+    public EnigmaResponse approveDevice(Request requestInfo) throws EnigmaException {
         String deviceId = null;
         boolean isAdminApproved = false;
         response = new EnigmaResponse();
@@ -254,10 +254,10 @@ public class DeviceServiceImpl implements DeviceService {
             response.setResponseCode(responseCode);
             response.setResult(null);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
@@ -302,7 +302,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public EnigmaResponse searchDevice(String searchQuery) throws EngimaException {
+    public EnigmaResponse searchDevice(String searchQuery) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -318,10 +318,10 @@ public class DeviceServiceImpl implements DeviceService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;

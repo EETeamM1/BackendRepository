@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DeviceIssueInfoDao;
 import com.ee.enigma.dao.UserInfoDao;
@@ -67,7 +67,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
         this.userInfoDao = userInfoDao;
     }
 
-    public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest) throws EngimaException {
+    public EnigmaResponse deviceIssueInfoService(Request deviceIssueInfoRequest) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -111,15 +111,15 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
             response.setResult(result);
             return response;
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
     }
 
-    public EnigmaResponse submitDevice(Request deviceIssueInfoRequest) throws EngimaException {
+    public EnigmaResponse submitDevice(Request deviceIssueInfoRequest) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -163,17 +163,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
                     Constants.CODE_SUCCESS);
             return response;
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
 
     }
 
     @Override
-    public String populateDeviceIssueInfo(String deviceId, String userId) throws EngimaException {
+    public String populateDeviceIssueInfo(String deviceId, String userId) throws EnigmaException {
         String issueId = null;
         try {
             DeviceIssueInfo newDeviceIssueInfo = null;
@@ -220,10 +220,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
                 }
             }
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
 
@@ -231,7 +231,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
     }
 
     public DeviceIssueTrendLineDto getDeviceIssueTimeLineTrendReport(String beginDateString, String endDateString,
-            String reportType) throws EngimaException {
+            String reportType) throws EnigmaException {
         DeviceIssueTrendLineDto deviceIssueTrendLineDto = null;
         String rType = reportType;
         try {
@@ -270,10 +270,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
                 deviceIssueTrendLineDto.setEndDate(endDate);
             }
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
 
@@ -299,8 +299,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
         }
         if (endDate == null) {
             endDate = beginDate;
-        }
-        if (endDate != null) {
+        } else {
             endDate = CommonUtils.getDayEndTime(endDate);
         }
 
@@ -318,7 +317,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
         return jsonObject;
     }
 
-    public EnigmaResponse getDeviceReportAvailability() throws EngimaException {
+    public EnigmaResponse getDeviceReportAvailability() throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -333,10 +332,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
 
@@ -369,7 +368,7 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
         return deviceIssueStatusDto;
     }
 
-    public EnigmaResponse getDevicesIssueReportByStatus() throws EngimaException {
+    public EnigmaResponse getDevicesIssueReportByStatus() throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -383,17 +382,17 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
             CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_SUCCESS, Constants.CODE_SUCCESS);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
 
         return response;
     }
 
-    public EnigmaResponse getPendingDevicesReport() throws EngimaException {
+    public EnigmaResponse getPendingDevicesReport() throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -413,10 +412,10 @@ public class DeviceIssueInfoServiceImpl implements DeviceIssueInfoService {
             CommonUtils.updateResponse(response, responseCode, Constants.MESSAGE_SUCCESS, Constants.CODE_SUCCESS);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;

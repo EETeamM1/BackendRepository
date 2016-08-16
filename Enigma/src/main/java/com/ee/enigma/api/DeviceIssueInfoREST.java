@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dto.DeviceIssueStatusDto;
 import com.ee.enigma.dto.DeviceIssueTrendLineDto;
 import com.ee.enigma.request.Request;
@@ -56,7 +56,7 @@ public class DeviceIssueInfoREST {
             deviceIssueResponse = deviceIssueInfoService.deviceIssueInfoService(deviceIssueInfo);
             return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
                     .status(deviceIssueResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -93,7 +93,7 @@ public class DeviceIssueInfoREST {
         try {
             deviceIssueResponse = deviceIssueInfoService.submitDevice(deviceIssueInfo);
             return deviceIssueResponse;
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -112,7 +112,7 @@ public class DeviceIssueInfoREST {
             deviceIssueResponse = deviceIssueInfoService.getDeviceReportAvailability();
             return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
                     .entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -131,7 +131,7 @@ public class DeviceIssueInfoREST {
             userResponse = deviceService.approveDevice(requestInfo);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -159,7 +159,7 @@ public class DeviceIssueInfoREST {
                 response = Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON)
                         .entity(deviceIssueTimeLineTrendReport).build();
             }
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             response = Response.ok(deviceIssueTimeLineTrendReport, MediaType.APPLICATION_JSON).entity(e.getMessage())
                     .build();
             LOGGER.error(e.getMessage());
@@ -193,7 +193,7 @@ public class DeviceIssueInfoREST {
             deviceIssueResponse = deviceIssueInfoService.getDevicesIssueReportByStatus();
             return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
                     .entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -213,7 +213,7 @@ public class DeviceIssueInfoREST {
             deviceIssueResponse = deviceIssueInfoService.getPendingDevicesReport();
             return Response.ok(deviceIssueResponse, MediaType.APPLICATION_JSON)
                     .entity(deviceIssueResponse.getResponseCode().getResultObject()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());

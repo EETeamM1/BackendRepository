@@ -150,7 +150,7 @@ public class DeviceInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceInfo> deviceInfos=deviceInfoDaoImpl.getDevicesListByIDAndStatus(JunitConstants.DEVICE_ID, Constants.DEVICE_ISSUE);
-    Assert.assertTrue(null==deviceInfos);
+    Assert.assertTrue(deviceInfos.size() == 0);
   }
   
   @Test
@@ -166,7 +166,7 @@ public class DeviceInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceInfo> deviceInfos=deviceInfoDaoImpl.getDeviceFields(JunitConstants.SEARCH_TEXT);
-    Assert.assertTrue(null==deviceInfos);
+    Assert.assertTrue(deviceInfos.size() == 0);
   }
   
 

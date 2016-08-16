@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.CommonUtils;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.UserService;
@@ -45,7 +45,7 @@ public class UserREST {
             userResponse = userService.saveUserInfo(userInfo, "save");
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -65,7 +65,7 @@ public class UserREST {
             userResponse = userService.saveUserInfo(userInfo, "update");
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -85,7 +85,7 @@ public class UserREST {
             userResponse = userService.deleteUserInfo(userId);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -106,7 +106,7 @@ public class UserREST {
             userResponse = userService.updatePassword(updatePasswordInfo);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
         }
@@ -125,7 +125,7 @@ public class UserREST {
             userResponse = userService.getUserInfo(userId);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -144,7 +144,7 @@ public class UserREST {
             userResponse = userService.getAllUser();
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());

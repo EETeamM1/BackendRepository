@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.CommonUtils;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.DeviceService;
 import com.ee.enigma.service.UserService;
@@ -57,7 +57,7 @@ public class SearchAPI {
             }
             return Response.ok(response, MediaType.APPLICATION_JSON).status(response.getResponseCode().getCode())
                     .build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());

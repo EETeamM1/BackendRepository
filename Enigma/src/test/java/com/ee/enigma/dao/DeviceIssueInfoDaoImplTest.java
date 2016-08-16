@@ -77,7 +77,7 @@ public class DeviceIssueInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceIssueInfo> deviceIssueInfos=deviceIssueInfoDaoImpl.getDeviceIssueList(JunitConstants.CURRENT_DATE,JunitConstants.CURRENT_DATE,Constants.DEVICE_ISSUE);
-    Assert.assertTrue(deviceIssueInfos==null);
+    Assert.assertTrue(deviceIssueInfos.size() == 0);
   }
   
   
@@ -121,7 +121,7 @@ public class DeviceIssueInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceIssueInfo> deviceIssueInfos=deviceIssueInfoDaoImpl.getDeviceIssueList(JunitConstants.DEVICE_ID,JunitConstants.CURRENT_DATE,JunitConstants.CURRENT_DATE);
-    Assert.assertTrue(deviceIssueInfos==null);
+    Assert.assertTrue(deviceIssueInfos.size() == 0);
   }
   
   @Test
@@ -158,7 +158,7 @@ public class DeviceIssueInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceIssueInfo> deviceIssueInfos=deviceIssueInfoDaoImpl.getDeviceIssueInfoList(JunitConstants.DEVICE_ID);
-    Assert.assertTrue(deviceIssueInfos==null);
+    Assert.assertTrue(deviceIssueInfos.size() == 0);
   }
   
   @Test
@@ -174,7 +174,7 @@ public class DeviceIssueInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceIssueInfo> deviceIssueInfos=deviceIssueInfoDaoImpl.getDeviceIssueInfoList(JunitConstants.DEVICE_ID,JunitConstants.USER_ID);
-    Assert.assertTrue(deviceIssueInfos==null);
+    Assert.assertTrue(deviceIssueInfos.size() == 0);
   }
   
   @Test
@@ -190,7 +190,7 @@ public class DeviceIssueInfoDaoImplTest
   {
     Mockito.when(query.list()).thenReturn(null);
     List<DeviceIssueInfo> deviceIssueInfos=deviceIssueInfoDaoImpl.getAllDeviceIssueInfoList();
-    Assert.assertTrue(deviceIssueInfos==null);
+    Assert.assertTrue(deviceIssueInfos.size() == 0);
   }
   
   @Test

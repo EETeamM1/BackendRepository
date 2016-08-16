@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import com.ee.enigma.common.Constants;
+import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.impl.UserActivityDaoImpl;
 import com.ee.enigma.model.UserActivity;
 import com.ee.enigma.request.Request;
@@ -26,9 +27,12 @@ public class UserLoginLogoutServiceImplTest {
 	
 	  @InjectMocks
 	  private UserLoginLogoutServiceImpl userLoginLogoutServiceImpl;
-	  
+
 	  @InjectMocks
 	  private UserActivityDaoImpl userActivityDaoImpl;
+	  
+	  @InjectMocks
+	  private DeviceInfoDao deviceInfoDao;
 	  
 	  @Mock
 	  private SessionFactory sessionFactory;
@@ -80,6 +84,28 @@ public class UserLoginLogoutServiceImplTest {
 		  enigma = userLoginLogoutServiceImpl.userLogoutService(requestInfo);
 		  Assert.assertEquals(Constants.CODE_SUCCESS, enigma.getResponseCode().getCode());
 		  Assert.assertEquals(Constants.LOGOUT_SUCCESS, enigma.getResponseCode().getMessage());
+	  }
+	  
+	  @Test
+	  public void testUserLoginService() throws Exception
+	  {
+		  parameters.setUserId("userId");
+		  parameters.setPassword("password");
+		  requestInfo.setParameters(parameters);
+		  EnigmaResponse enigma =userLoginLogoutServiceImpl.userLoginService(requestInfo);
+		  Assert.assertEquals(Constants.CODE_BAD_REQUEST, enigma.getResponseCode().getCode());
+		  Assert.assertEquals(Constants.MESSAGE_BAD_REQUEST, enigma.getResponseCode().getMessage());
+
+		  Mockito.when(deviceInfoDao.getDeviceInfo(Mockito.anyString()))
+		  .thenReturn(null);
+		  
+		  parameters.setDeviceId("deviceId");
+		  requestInfo.setParameters(parameters);
+		  enigma =userLoginLogoutServiceImpl.userLoginService(requestInfo);
+		  
+		  
+		  System.out.println(enigma);
+		  
 	  }
 	
 }

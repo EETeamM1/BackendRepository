@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.dao.UserRoleDao;
 import com.ee.enigma.dao.impl.UserActivityDaoImpl;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         this.userRoleDao = userRoleDao;
     }
 
-    public EnigmaResponse getUserInfo(String userId) throws EngimaException {
+    public EnigmaResponse getUserInfo(String userId) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -70,16 +70,16 @@ public class UserServiceImpl implements UserService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
     }
 
-    public EnigmaResponse saveUserInfo(Request requestInfo, String operation) throws EngimaException {
+    public EnigmaResponse saveUserInfo(Request requestInfo, String operation) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         try {
@@ -123,16 +123,16 @@ public class UserServiceImpl implements UserService {
             responseCode.setCode(Constants.CODE_SUCCESS);
             response.setResponseCode(responseCode);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
     }
 
-    public EnigmaResponse deleteUserInfo(String userId) throws EngimaException {
+    public EnigmaResponse deleteUserInfo(String userId) throws EnigmaException {
 
         responseCode = new ResponseCode();
         response = new EnigmaResponse();
@@ -161,16 +161,16 @@ public class UserServiceImpl implements UserService {
             responseCode.setCode(Constants.CODE_SUCCESS);
             response.setResponseCode(responseCode);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
     }
 
-    public EnigmaResponse getAllUser() throws EngimaException {
+    public EnigmaResponse getAllUser() throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -187,10 +187,10 @@ public class UserServiceImpl implements UserService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public EnigmaResponse searchUserResult(String searchQuery) throws EngimaException {
+    public EnigmaResponse searchUserResult(String searchQuery) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         result = new ResponseResult();
@@ -216,10 +216,10 @@ public class UserServiceImpl implements UserService {
             response.setResponseCode(responseCode);
             response.setResult(result);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public EnigmaResponse updatePassword(Request updatePassword) throws EngimaException {
+    public EnigmaResponse updatePassword(Request updatePassword) throws EnigmaException {
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
         try {
@@ -286,10 +286,10 @@ public class UserServiceImpl implements UserService {
                 response.setResponseCode(responseCode);
             }
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;

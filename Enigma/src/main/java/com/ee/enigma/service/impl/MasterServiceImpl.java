@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.CommonUtils;
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dao.MasterDao;
 import com.ee.enigma.model.Master;
 import com.ee.enigma.request.Request;
@@ -31,7 +31,7 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public EnigmaResponse updateMasterPassword(Request masterInfo) throws EngimaException {
+    public EnigmaResponse updateMasterPassword(Request masterInfo) throws EnigmaException {
         try {
             String currentMasterPassword = null;
             String newMasterPassword = null;
@@ -56,10 +56,10 @@ public class MasterServiceImpl implements MasterService {
                 return wrongPassword();
             }
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
 

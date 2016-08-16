@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.CommonUtils;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
 import com.ee.enigma.service.UserLoginLogoutService;
@@ -41,7 +41,7 @@ public class UserActivityREST {
             loginResponse = userLoginLogoutService.userLoginService(loginInfo);
             return Response.ok(loginResponse, MediaType.APPLICATION_JSON)
                     .status(loginResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -60,7 +60,7 @@ public class UserActivityREST {
             logoutResponse = userLoginLogoutService.userLogoutService(logoutInfo);
             return Response.ok(logoutResponse, MediaType.APPLICATION_JSON)
                     .status(logoutResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());

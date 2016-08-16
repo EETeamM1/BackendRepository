@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ee.enigma.common.Constants;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dao.DeviceInfoDao;
 import com.ee.enigma.dao.DevicePushNotificationDao;
 import com.ee.enigma.dao.LocationInfoDao;
@@ -100,7 +100,8 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
     }
 
     @SuppressWarnings("deprecation")
-    public EnigmaResponse userLoginService(Request loginInfo) throws EngimaException {
+    @Override
+    public EnigmaResponse userLoginService(Request loginInfo) throws EnigmaException {
 
         response = new EnigmaResponse();
         responseCode = new ResponseCode();
@@ -114,45 +115,29 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
             String osVersion;
             String deviceToken;
 
-            try {
-                userId = loginInfo.getParameters().getUserId().trim();
-                password = loginInfo.getParameters().getPassword();
-                deviceId = loginInfo.getParameters().getDeviceId().trim();
-                latitude = loginInfo.getParameters().getLatitude();
-                longitude = loginInfo.getParameters().getLongitude();
-                osVersion = loginInfo.getParameters().getOsVersion();
-                deviceToken = loginInfo.getParameters().getDeviceToken();
-            } catch (Exception e) {
-                LOGGER.error(e);
-                return badRequest();
-            }
+			userId = loginInfo.getParameters().getUserId().trim();
+			password = loginInfo.getParameters().getPassword();
+			deviceId = loginInfo.getParameters().getDeviceId().trim();
+			latitude = loginInfo.getParameters().getLatitude();
+			longitude = loginInfo.getParameters().getLongitude();
+			osVersion = loginInfo.getParameters().getOsVersion();
+			deviceToken = loginInfo.getParameters().getDeviceToken();
+            
+    		// Checking device info
+    		DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
 
-            // Checking whether request contains all require fields or not.
-            if (null == userId || null == password) {
-                return badRequest();
+            EnigmaResponse checkRequest = checkRequest(userId, password, deviceInfo);
+            if(null != checkRequest)
+            {
+            	return checkRequest;
             }
-
-            // Authenticating User.
-            if (!isUserAuthenticated(userId, password)) {
-                return authenticationFailedResponse();
-            }
-
-            // Checking device info
-            DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfo(deviceId);
-            if (null == deviceInfo) {
-                return deviceNotRegisteredResponse();
-            }
+    		
             Time timeoutPeriod = deviceInfo.getTimeoutPeriod();
 
             // fetching Master passwrod
             Master master = masterDao.getMasterInfo();
             String masterPassword = master.getMasterPassword();
 
-            // check and update OS Version.
-            if (osVersion != null && !osVersion.equals(deviceInfo.getOsVersion())) {
-                deviceInfo.setOsVersion(osVersion);
-                deviceInfoDao.updateDeviceInfo(deviceInfo);
-            }
 
             // call "DeviceIssueInfoService" to get issueId
             String issueId = deviceIssueInfoService.populateDeviceIssueInfo(deviceId, userId);
@@ -163,21 +148,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
 
             // Checking is previous user logout on device
             userActivityDao.logOutBYDeviceId(deviceId);
-            // make UserActivity entry.
-            Date loginTime = new Date();
-            String activityId = activityIdGenerator(userId, loginTime.getTime());
-            UserActivity userAct = new UserActivity();
-            userAct.setUserId(userId);
-            userAct.setDeviceId(deviceId);
-            userAct.setIssueId(issueId);
-            userAct.setLocation(location);
-            userAct.setLoginTime(loginTime);
-            userAct.setActivityId(activityId);
-            userActivityDao.createNewActivity(userAct);
-
-            // create session validity entry.
-            createSessionEntry(activityId, loginTime, timeoutPeriod);
-            updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId, activityId);
+            String activityId = createNewActivity(userId, deviceId, deviceToken, timeoutPeriod, issueId, location, osVersion, deviceInfo);
 
             // Success response.
             responseCode.setCode(Constants.CODE_SUCCESS);
@@ -187,15 +158,76 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
             result.setTimeout(timeoutPeriod.getHours() * 60 + timeoutPeriod.getMinutes());
             response.setResponseCode(responseCode);
             response.setResult(result);
-        } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+        } catch (NullPointerException npe) {
+            LOGGER.error(npe);
+            return badRequest();
+        }catch (HibernateException e) {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;
     }
+
+	/**
+	 * @param userId
+	 * @param password
+	 * @param deviceInfo 
+	 * @return
+	 */
+	private EnigmaResponse checkRequest(String userId, String password, DeviceInfo deviceInfo) {
+		// Checking whether request contains all require fields or not.
+		if (null == userId || null == password) {
+		    return badRequest();
+		}
+
+		// Authenticating User.
+		if (!isUserAuthenticated(userId, password)) {
+		    return authenticationFailedResponse();
+		}
+		
+		if (null == deviceInfo) {
+		    return deviceNotRegisteredResponse();
+		}
+		return null;
+	}
+
+	/**
+	 * @param userId
+	 * @param deviceId
+	 * @param deviceToken
+	 * @param timeoutPeriod
+	 * @param issueId
+	 * @param location
+	 * @return
+	 */
+	private String createNewActivity(String userId, String deviceId, String deviceToken, Time timeoutPeriod,
+			String issueId, String location, String osVersion, DeviceInfo deviceInfo) {
+
+        // check and update OS Version.
+        if (osVersion != null && !osVersion.equals(deviceInfo.getOsVersion())) {
+            deviceInfo.setOsVersion(osVersion);
+            deviceInfoDao.updateDeviceInfo(deviceInfo);
+        }
+		// make UserActivity entry.
+		Date loginTime = new Date();
+		String activityId = activityIdGenerator(userId, loginTime.getTime());
+		UserActivity userAct = new UserActivity();
+		userAct.setUserId(userId);
+		userAct.setDeviceId(deviceId);
+		userAct.setIssueId(issueId);
+		userAct.setLocation(location);
+		userAct.setLoginTime(loginTime);
+		userAct.setActivityId(activityId);
+		userActivityDao.createNewActivity(userAct);
+
+		// create session validity entry.
+		createSessionEntry(activityId, loginTime, timeoutPeriod);
+		updateDevicePushNotification(timeoutPeriod, deviceId, deviceToken, userId, activityId);
+		return activityId;
+	}
 
     private void createSessionEntry(String activityId, Date loginTime, Time timeoutPeriod) {
         Session session = new Session();
@@ -217,9 +249,9 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
     }
 
     private String getGeoLocation(float latitude, float longitude) {
-        LocationInfo locationInfo = null;
+        LocationInfo locationInfo;
         String location = null;
-        if (0 != latitude && 0 != longitude) {
+        if (0 < latitude && 0 < longitude) {
             locationInfo = locationInfoDao.getLocationName(latitude, longitude);
             if (null == locationInfo) {
                 location = latitude + "," + longitude;
@@ -273,7 +305,7 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
         return false;
     }
 
-    public EnigmaResponse userLogoutService(Request logoutInfo) throws EngimaException {
+    public EnigmaResponse userLogoutService(Request logoutInfo) throws EnigmaException {
         String sessionToken = null;
 
         response = new EnigmaResponse();
@@ -305,10 +337,10 @@ public class UserLoginLogoutServiceImpl implements UserLoginLogoutService {
             response.setResponseCode(responseCode);
             response.setResult(null);
         } catch (HibernateException e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e);
         } catch (Exception e) {
-            throw new EngimaException("Excepton in " + new Object() {
+            throw new EnigmaException("Excepton in " + new Object() {
             }.getClass().getEnclosingMethod().getName() + "()  : " + e, e);
         }
         return response;

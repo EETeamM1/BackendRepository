@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ee.enigma.common.CommonUtils;
-import com.ee.enigma.common.EngimaException;
+import com.ee.enigma.common.EnigmaException;
 import com.ee.enigma.dto.DeviceInfoDto;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.response.EnigmaResponse;
@@ -49,7 +49,7 @@ public class DeviceREST {
             userResponse = deviceService.saveDeviceInfo(requestInfo);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -69,7 +69,7 @@ public class DeviceREST {
             userResponse = deviceService.deleteDeviceInfo(deviceId);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
@@ -104,7 +104,7 @@ public class DeviceREST {
             userResponse = deviceService.updateDeviceInfoStatus(requestInfo);
             return Response.ok(userResponse, MediaType.APPLICATION_JSON)
                     .status(userResponse.getResponseCode().getCode()).build();
-        } catch (EngimaException e) {
+        } catch (EnigmaException e) {
             errorMessage = e.getMessage();
             LOGGER.error(e);
             LOGGER.error(e.getMessage());
