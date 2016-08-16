@@ -306,6 +306,87 @@ public class UserServiceImplTest  {
     EnigmaResponse response =userServiceImpl.searchUserResult(searchQuery);
     Assert.assertTrue(Constants.MESSAGE_BAD_REQUEST.equals(response.getResponseCode().getMessage()));
   }
+ 
+  @Test
+  public void testUpdatePassword() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    String userId =JunitConstants.USER_ID;
+    String password = JunitConstants.PASSWORD;
+    String newPassword = JunitConstants.PASSWORD+JunitConstants.PASSWORD;
+    String userName = JunitConstants.USER_NAME;
+    String opration =JunitConstants.OPRATION_SAVE;
+    parameters.setUserId(userId);
+    parameters.setPassword(password);
+    parameters.setNewPassword(newPassword);
+    parameters.setUserName(userName);
+    parameters.setOpration(opration);
+    
+    Mockito.doReturn(1).when(userInfoDaoImpl).udpateUserPassword(Mockito.anyString(),Mockito.anyString(),Mockito.anyString());
+    response=userServiceImpl.updatePassword(requestInfo);
+    Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_SUCCESSFULLY_UPDATED));
+   }
+  
+  @Test
+  public void testUpdatePasswordNotmatching() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    String userId =JunitConstants.USER_ID;
+    String password = JunitConstants.PASSWORD;
+    String newPassword = JunitConstants.PASSWORD+JunitConstants.PASSWORD;
+    String userName = JunitConstants.USER_NAME;
+    String opration =JunitConstants.OPRATION_SAVE;
+    parameters.setUserId(userId);
+    parameters.setPassword(password);
+    parameters.setNewPassword(newPassword);
+    parameters.setUserName(userName);
+    parameters.setOpration(opration);
+    
+    Mockito.doReturn(0).when(userInfoDaoImpl).udpateUserPassword(Mockito.anyString(),Mockito.anyString(),Mockito.anyString());
+    response=userServiceImpl.updatePassword(requestInfo);
+    Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_PASSWORD_NOT_MATCH));
+   }
+  
+  
+  @Test
+  public void testUpdatePasswordWithBlankInputs() throws Exception
+  {
+    response = new EnigmaResponse();
+    parameters = new RequestParameters();
+    requestInfo = new Request();
+    requestInfo.setParameters(parameters);
+    String userId =JunitConstants.USER_ID;
+    String password =JunitConstants.PASSWORD;
+    String newPassword = JunitConstants.PASSWORD+JunitConstants.PASSWORD;
+    String userName = JunitConstants.USER_NAME;
+    String opration =JunitConstants.OPRATION_SAVE;
+    parameters.setUserId(userId);
+    parameters.setPassword(password);
+    parameters.setNewPassword(newPassword);
+    parameters.setUserName(userName);
+    parameters.setOpration(opration);
+
+    parameters.setPassword("");
+    response=userServiceImpl.updatePassword(requestInfo);
+    Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));
+    
+    parameters.setPassword(password);
+    parameters.setUserId("");
+    response=userServiceImpl.updatePassword(requestInfo);
+    Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));  
+    
+    parameters.setUserId(userId);
+    parameters.setNewPassword("");
+    response=userServiceImpl.updatePassword(requestInfo);
+    Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_BAD_REQUEST));
+   }
+  
   
   @AfterClass
   public static void destroy() throws Exception

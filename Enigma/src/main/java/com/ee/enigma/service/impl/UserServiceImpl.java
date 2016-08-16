@@ -27,7 +27,7 @@ import com.ee.enigma.service.UserService;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOGGER = Logger.getLogger(UserActivityDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     private UserInfoDao userInfoDao;
     private UserRoleDao userRoleDao;
     private EnigmaResponse response;
