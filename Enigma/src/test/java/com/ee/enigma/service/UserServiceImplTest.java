@@ -23,7 +23,9 @@ import com.ee.enigma.common.Constants;
 import com.ee.enigma.common.JunitConstants;
 import com.ee.enigma.dao.UserInfoDao;
 import com.ee.enigma.dao.impl.UserInfoDaoImpl;
+import com.ee.enigma.dao.impl.UserRoleDaoImpl;
 import com.ee.enigma.model.UserInfo;
+import com.ee.enigma.model.UserRole;
 import com.ee.enigma.request.Request;
 import com.ee.enigma.request.RequestParameters;
 import com.ee.enigma.response.EnigmaResponse;
@@ -41,6 +43,9 @@ public class UserServiceImplTest  {
   @Mock
   private UserInfoDaoImpl userInfoDaoImpl;
  
+  @Mock 
+  private UserRoleDaoImpl userRoleDaoImpl;
+  
   @Mock
   private SessionFactory sessionFactory;
   @Mock
@@ -65,7 +70,7 @@ public class UserServiceImplTest  {
   public static void init() throws Exception
   {
    }
-  //@Test
+  @Test
   public void testSaveUserInfoForSaveOpration() throws Exception
   {
     response = new EnigmaResponse();
@@ -80,8 +85,9 @@ public class UserServiceImplTest  {
     parameters.setPassword(password);
     parameters.setUserName(userName);
     parameters.setOpration(opration);
-    //Mockito.doNothing().when(userInfoDaoImpl).updateUserInfo(Matchers.any(UserInfo.class));
+    Mockito.doNothing().when(userInfoDaoImpl).createUserInfo(Matchers.any(UserInfo.class));
     Mockito.doNothing().when(session).persist(Matchers.any(UserInfo.class));
+    Mockito.doNothing().when(userRoleDaoImpl).saveUserRole(Matchers.any(UserRole.class));
     response=userServiceImpl.saveUserInfo(requestInfo,opration);
     Mockito.verify(userInfoDaoImpl,Mockito.times(1)).createUserInfo(Mockito.any(UserInfo.class));
     Assert.assertTrue(response.getResponseCode().getMessage().equals(Constants.MESSAGE_SUCCESSFULLY_SAVE));
@@ -190,7 +196,7 @@ public class UserServiceImplTest  {
     userInfo.setPassword(JunitConstants.PASSWORD);
     userInfo.setUserName(JunitConstants.USER_NAME);
     Mockito.doReturn(userInfo).when(userInfoDaoImpl)
-    .getUserInfo(Matchers.anyString());
+    .getUserDetailById(Matchers.anyString());
     UserInfo userInfo2=null;
     EnigmaResponse response =userServiceImpl.getUserInfo(JunitConstants.USER_ID);
     userInfo2 = response.getResult().getUser();
@@ -244,7 +250,7 @@ public class UserServiceImplTest  {
     requestInfo = new Request();
     requestInfo.setParameters(parameters);
     parameters.setUserId(JunitConstants.USER_ID);
-    List<UserInfo> userInfoList=null;
+    List<UserInfo> userInfoList=new ArrayList<UserInfo>();
     Mockito.doReturn(userInfoList).when(userInfoDaoImpl).getAllUserInfo();
      
     EnigmaResponse response =userServiceImpl.getAllUser();
